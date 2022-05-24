@@ -48,12 +48,14 @@ router.post("/login", async function (req, res) {
 
         // If there is a user, and the password returns valid
         if (validPassword == true) {
-            console.log("Test is valid password true?")
-
+            
             // Auth success - give that user an authToken, save the token in a cookie, and redirect to the homepage.
             const authToken = uuid();
-            user.authToken = authToken;
-            await userDao.updateUser(user);
+
+            //Does the auth token need to be saved to the database??
+//            user.authToken = authToken;
+//           await userDao.updateUser(user);
+
             res.cookie("authToken", authToken);
             res.locals.user = user;
             res.redirect("/");
@@ -63,7 +65,7 @@ router.post("/login", async function (req, res) {
             res.locals.user = null;
             //    res.setToastMessage("Password is incorrect!");
             res.redirect("./login");
-            
+
         }
 
     // if no matching user:
