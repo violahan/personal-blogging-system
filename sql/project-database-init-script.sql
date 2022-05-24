@@ -3,14 +3,13 @@
  * It should contain all DROP TABLE and CREATE TABLE statments, and any INSERT statements
  * required.
  */
-
-drop table if exists user;
-drop table if exists articles;
-drop table if exists comments;
-drop table if exists likes;
-drop table if exists images;
-drop table if exists subscribes;
 drop table if exists notifications;
+drop table if exists subscribes;
+drop table if exists images;
+drop table if exists likes;
+drop table if exists comments;
+drop table if exists articles;
+drop table if exists user;
 
 create table user
 (
@@ -31,13 +30,11 @@ create table articles
     articleID        integer    not null primary key,
     authorID         integer    not null,
     title            text       not null,
-    thumbnailImageID varchar,
     publishDate      timestamp  not null default CURRENT_TIMESTAMP,
     content          mediumtext not null,
     numberOfComments integer    not null default 0,
     numberOfLikes    integer    not null default 0,
-    foreign key (authorID) references user (userID),
-    foreign key (thumbnailImageID) references images (imageID)
+    foreign key (authorID) references user (userID)
 
 );
 
