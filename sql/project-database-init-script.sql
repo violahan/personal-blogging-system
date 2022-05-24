@@ -5,9 +5,9 @@
  */
 drop table if exists notifications;
 drop table if exists subscribes;
-drop table if exists images;
 drop table if exists likes;
 drop table if exists comments;
+drop table if exists images;
 drop table if exists articles;
 drop table if exists user;
 
