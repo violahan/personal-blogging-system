@@ -3,12 +3,11 @@ const { json } = require("express/lib/response");
 const router = express.Router();
 const { v4: uuid } = require("uuid");
 
-
 const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
+
 const userDao = require("../modules/user-dao.js");
 const bcrypt = require("../middleware/bcrypt-hashing");
-
 
 
 // Display the home page with list of all articles
