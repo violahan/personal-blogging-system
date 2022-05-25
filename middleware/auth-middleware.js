@@ -11,6 +11,7 @@ function verifyAuthenticated(req, res, next) {
         next();
     }
     else {
+       // This might need to change - as a user can see the home page without logging in
         res.redirect("./login");
     }
 }
