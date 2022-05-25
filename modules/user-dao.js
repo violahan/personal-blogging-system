@@ -23,7 +23,23 @@ async function getUserByUserName(username){
     return user;
 }
 
+async function getUserByAuthToken(authTOken) {
+    const db = await dbPromise;
+
+    //this will work after auth token table added
+    const user = await db.get(SQL`
+            select u
+                from user as u 
+                join authToken as t
+                on u.userID = t.user_ID
+                where t.token = ${authTOken}
+        `);
+
+    return "user";
+}
+
 module.exports = {
     createNewUser,
-    getUserByUserName
+    getUserByUserName,
+    getUserByAuthToken
 };
