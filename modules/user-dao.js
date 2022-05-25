@@ -11,6 +11,19 @@ async function createNewUser(user) {
     return result.lastID;
 }
 
+async function getUserByUserName(username){
+    const db = await dbPromise;
+
+    const user = await db.get(SQL`
+            select *
+                from user
+                where userName = ${username}
+        `);
+
+    return user;
+}
+
 module.exports = {
-    createNewUser
+    createNewUser,
+    getUserByUserName
 };
