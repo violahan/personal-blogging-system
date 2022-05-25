@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { v4: uuid } = require("uuid");
-const testDao = require("../modules/test-dao.js");
 const userDao = require("../modules/user-dao.js");
 const bcrypt = require("../middleware/bcrypt-hashing");
 
