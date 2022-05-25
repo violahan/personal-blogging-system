@@ -1,13 +1,7 @@
 const res = require("express/lib/response");
 const articleDAO = require("./article-dao.js");
-const userDAO = require();
-const imageDAO = require();
-
-
-
-
-
-
+// const userDAO = require();
+// const imageDAO = require();
 
 // Adjust this number to change the initial number of articles to load and number loaded on updates
 const loadArticleCount = 3;
@@ -18,6 +12,8 @@ let loadArticleNext = 0;
 
 // Initial function to load a number of articles
 async function loadArticles(orderedArticleArray){
+
+console.log("Test 1: Load article function called");
 
 
 // orderedArticleArray should be an array of articles in the

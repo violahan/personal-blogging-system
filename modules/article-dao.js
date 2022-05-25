@@ -14,15 +14,18 @@ async function getAllArticles(){
 };
 
 async function getAllArticlesOrderedBy(orderColumn, orderDirection){
+
     const db = await dbPromise;
 
-    const allArticlesByDateDescending = await db.get(SQL`
+    // Removed SQL template string protection to allow the user of order by
+    // These variables are not editable from the user
+    const allArticlesOrderedBy = await db.all(`
         select *
         from articles
         order by ${orderColumn} ${orderDirection}
         `);
 
-    return allArticlesByDateDescending;
+    return allArticlesOrderedBy;
 
 };
 
