@@ -21,7 +21,8 @@ create table user
     DOB            date         not null,
     description    text         not null,
     avatarFilePath varchar(255) not null,
-    adminFlag      integer      not null
+    adminFlag      integer      not null,
+    authToken      varchar(128)
 
 );
 
