@@ -1,66 +1,58 @@
 const res = require("express/lib/response");
 const articleDAO = require("./article-dao.js");
-// const userDAO = require();
-// const imageDAO = require();
-
-// Adjust this number to change the initial number of articles to load and number loaded on updates
-const loadArticleCount = 3;
-
-// Will be updated when new articles are loaded
-let loadArticleNext = 0;
-
+const userDAO = require("./user-dao");
+const imageDAO = require("./images-dao");
 
 // Initial function to load a number of articles
-async function loadArticles(orderedArticleArray){
+async function loadArticles(orderedArticleArray, numberToLoad){
 
-console.log("Test 1: Load article function called");
+let cardsToDisplay = "";
 
+    for (let i = 0; i < numberToLoad; i++) {
+        let articleID = orderedArticleArray[i].articleID;
+        let title = orderedArticleArray[i].title;
+        let authorID = orderedArticleArray[i].authorID;
+        let author = await userDAO.getUserByID(authorID)
+        let authorName = (author.fName + " " + author.lName);
+        let publishDate = orderedArticleArray[i].publishDate;
 
-// orderedArticleArray should be an array of articles in the
-// order/filter that is wanted to be displayed - this should be prepared before passing
-// to this function
-
-    const articleCardContainer = createElement("div");
-
-    // Loop through array, to display first set of articles
-    for (let i = 0; i < loadArticleCount+1; i++) {
+        let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleID);
         
-        let articleCard = await displayArticleCard(orderedArticleArray[i])
+        let thumbnailImagePath = "";
+
+        if(thumbnailImage != ""){
+             thumbnailImagePath = await thumbnailImage[0].path; 
+         } else {
+            thumbnailImagePath = "";
+        }
+       
+        let cardHTML = `
+                <div class="card">
+                    <div class="cardImage">
+                        <img src="${thumbnailImagePath}" alt="">
+                    </div>
+                    <div class="cardContent">
+                        <p>ArticleID = ${articleID}</p>
+                        <a href="">
+                            <h3>${title}</h3>
+                        </a>
+                        <a href="/userLoad">
+                            <h4>${authorName}</h4>
+                        </a>
+                            
+                        <p>${publishDate}</p>
+                    </div>
+                </div>
+                `    
         
-        articleCardContainer.appendChild(articleCard);
-
-    }
-
-     // Update the loadArticleNext variable so that in subsequent calls it picks other articles
-     loadArticleNext +=loadArticleCount;
+        cardsToDisplay = cardsToDisplay+cardHTML;
+    };
 
 
-     return articleCardContainer;
+     return cardsToDisplay;
      
-    // let articleCardContainer = document.querySelector("#all-article-card-container");
-
 }
 
-async function loadMoreArticles(orderedArticleArray){
-
-    let articleCardContainer = document.querySelector("#all-article-card-container");
-
-    // Loop through array, to display first set of articles
-    for (let i = loadArticleNext; i < loadArticleNext+loadArticleCount+1; i++) {
-        
-        let articleCard = await displayArticleCard(articleArray[i])
-        
-        articleCardContainer.appendChild(articleCard);
-
-    }
-
-
-
-    // Update the loadArticleNext variable so that in subsequent calls it picks other articles
-    loadArticleNext +=loadArticleCount;
-
-
-}
 
 
 // Receive an article as an object, display contents as a card
@@ -85,28 +77,14 @@ async function displayArticleCard(articleObj){
     // Article Author
     // Article Date
     const articleCard = document.createElement("div");
-    articleCard.innerHTML = `
-        <div class="cardImage">
-            <img src="${thumbnailImagePath}" alt="">
-        </div>
-        <div class="cardContent">
-            <a href="${articleID}">
-                <h3>${title}</h3>
-            </a>
-            <a href="/userLoad">
-                <h4>${authorID}</h4>
-            </a>
-                
-            <p>${publishDate}</p>
-        </div>
-    `
+  //  articleCard.innerHTML =  
 
     // Return card to be appended to another element from where it was called
-    return articleCard;
-}
+ //   return articleCard;
+
+};
 
 // Export functions.
 module.exports = {
     loadArticles
 };
-
