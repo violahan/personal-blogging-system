@@ -1,9 +1,34 @@
 {{!-- Main home page for users logged in or not will display list of articles, with filter options --}}
 
+{{!-- All articles / Your article headings will act as buttons to allow switching
+between viewing all articles and viewing your articles --}}
 <div>
-    <h2>Latest Articles</h2>
+    <h1>All Articles</h2>
+    <div>
+        <h2>Latest Articles</h2>
+    </div>
+    <div id="all-article-card-container">
+
+        {{!-- Article cards populate here from AJAX --}}
+
+    </div>
+
+    <div id="all-article-load-button" class="article-load-button">Load more articles</div>
+
 </div>
 
-<div class="article-card-container">
+<div>
+    <h1>Your Articles</h1>
+    <div>
+        <h2>Your Latest Articles</h2>
+    </div>
+    <div id="your-article-card-container">
+
+        {{!-- Article cards populate here from AJAX --}}
+
+    </div>
+
+    <div id="your-article-load-button" class="article-load-button">Load more articles</div>
 
 </div>
+
