@@ -3,14 +3,13 @@ const express = require("express");
 const router = express.Router();
 
 
-const userDao = require("../modules/users-dao.js");
+// const userDao = require("../modules/users-dao.js");
 const { use } = require("./application-routes.js");
 
 
 // Whenever we navigate to /login, if we're already logged in, redirect to "/".
 // Otherwise, render the "login" view.
 router.get("/login", function (req, res) {
-
 
     // TODO - Update this redirect if required - for home page/main article page
 
@@ -77,11 +76,5 @@ router.post("/login", async function (req, res) {
 
     }
 
-
-
-
-    
-
-  
 
 });
