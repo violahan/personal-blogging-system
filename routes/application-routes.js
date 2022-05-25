@@ -35,7 +35,7 @@ router.post("/createUser", async function (req, res) {
     res.render("signup");
   }
   //hash password
-  user.password = bcrypt.hashPassword(user.password);
+  user.password = await bcrypt.hashPassword(user.password);
   //save user, return the user_id we might need it later
   const userId = await userDao.createNewUser(user);
 
