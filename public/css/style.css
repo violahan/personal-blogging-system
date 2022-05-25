@@ -13,4 +13,22 @@ form>button[type=submit] {
 
 form>* {
     margin-bottom: 3px;
+
+}
+
+.card-container {
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.card {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    width: 75%;
 }

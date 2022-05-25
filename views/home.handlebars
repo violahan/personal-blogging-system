@@ -1,9 +1,29 @@
-<h1>My stuff:</h1>
-<ul>
-    {{#each allTestData}}
-    <li>{{this.stuff}}</li>
-    {{/each}}
-</ul>
+{{!-- Main home page for users logged in or not will display list of articles, with filter options --}}
 
-<h1>A dragon:</h1>
-<img src="./images/Dragonite.png">
+{{!-- All articles / Your article headings will act as buttons to allow switching
+between viewing all articles and viewing your articles --}}
+<div>
+
+Test - Not logged in - {{user.userName}}
+<br>
+Test - logged in - {{user.userName}}
+<br>
+Test - logged in - {{user}}
+<br>
+Test - logged in - {{test}}
+
+
+    <h1>All Articles</h2>
+    <div>
+        <h2>Latest Articles</h2>
+    </div>
+    <div class="card-container">
+
+        {{{articleToDisplayTest}}}
+
+    </div>
+
+    <div id="all-article-load-button" class="article-load-button">Load more articles</div>
+
+</div>
+<a href=""></a>

@@ -23,23 +23,45 @@ async function getUserByUserName(username){
     return user;
 }
 
-async function getUserByAuthToken(authTOken) {
+async function getUserByID(userID){
     const db = await dbPromise;
 
-    //this will work after auth token table added
     const user = await db.get(SQL`
-            select u
-                from user as u 
-                join authToken as t
-                on u.userID = t.user_ID
-                where t.token = ${authTOken}
+            select *
+                from user
+                where userID = ${userID}
         `);
 
-    return "user";
+    return user;
+}
+
+
+// Gets the user with the given authToken from the database.
+// If there is no such user, undefined will be returned.
+async function retrieveUserWithAuthToken(authToken) {
+    const db = await dbPromise;
+
+    const user = await db.get(SQL`
+        select * from user
+        where authToken = ${authToken}`);
+
+    return user;
+}
+
+async function giveAuthToken(user) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set authToken = ${user.authToken}
+            where userID = ${user.userID}
+        `);
 }
 
 module.exports = {
     createNewUser,
     getUserByUserName,
-    getUserByAuthToken
+    getUserByID,
+    retrieveUserWithAuthToken,
+    giveAuthToken
 };
