@@ -1,6 +1,13 @@
-const articleDAO = require();
+const res = require("express/lib/response");
+const articleDAO = require("./article-dao.js");
 const userDAO = require();
 const imageDAO = require();
+
+
+
+
+
+
 
 // Adjust this number to change the initial number of articles to load and number loaded on updates
 const loadArticleCount = 3;
@@ -12,23 +19,29 @@ let loadArticleNext = 0;
 // Initial function to load a number of articles
 async function loadArticles(orderedArticleArray){
 
+
 // orderedArticleArray should be an array of articles in the
 // order/filter that is wanted to be displayed - this should be prepared before passing
 // to this function
 
-    let articleCardContainer = document.querySelector("#all-article-card-container");
+    const articleCardContainer = document.createElement("div");
 
     // Loop through array, to display first set of articles
     for (let i = 0; i < loadArticleCount+1; i++) {
         
-        let articleCard = await displayArticleCard(articleArray[i])
+        let articleCard = await displayArticleCard(orderedArticleArray[i])
         
         articleCardContainer.appendChild(articleCard);
 
     }
 
-    // Update the loadArticleNext variable so that in subsequent calls it picks other articles
-    loadArticleNext +=loadArticleCount;
+     // Update the loadArticleNext variable so that in subsequent calls it picks other articles
+     loadArticleNext +=loadArticleCount;
+
+
+     return articleCardContainer;
+     
+    // let articleCardContainer = document.querySelector("#all-article-card-container");
 
 }
 
@@ -45,8 +58,11 @@ async function loadMoreArticles(orderedArticleArray){
 
     }
 
+
+
     // Update the loadArticleNext variable so that in subsequent calls it picks other articles
     loadArticleNext +=loadArticleCount;
+
 
 }
 
@@ -62,8 +78,8 @@ async function displayArticleCard(articleObj){
     const numComments = articleObj.numberOfComments;
     const numLikes = articleObj.numberOfLikes;
 
-    const authorName = await userDAO.getUserByID(authorID);
-    const thumbnailImagePath = await imageDAO.getThumbnailImageByArticleID(articleID);
+//    const authorName = await userDAO.getUserByID(authorID);
+//    const thumbnailImagePath = await imageDAO.getThumbnailImageByArticleID(articleID);
 
 
 
@@ -78,11 +94,11 @@ async function displayArticleCard(articleObj){
             <img src="${thumbnailImagePath}" alt="">
         </div>
         <div class="cardContent">
-            <a href="${UPDATE-ROUTE-WITH-ARTICLE-ID}">
+            <a href="${articleID}">
                 <h3>${title}</h3>
             </a>
             <a href="/userLoad">
-                <h4>${authorName}</h4>
+                <h4>${authorID}</h4>
             </a>
                 
             <p>${publishDate}</p>
@@ -93,4 +109,8 @@ async function displayArticleCard(articleObj){
     return articleCard;
 }
 
+// Export functions.
+module.exports = {
+    loadArticles
+};
 

@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const articleDAO = require();
-const userDAO = require();
+const articleDAO = require("../modules/article-dao.js");
+const articleFunctions = require("../modules/display-articles");
+
 
 // const testDao = require("../modules/test-dao.js");
 
@@ -10,7 +11,14 @@ const userDAO = require();
 router.get("/", async function(req, res) {
 
     // Get default article view - articles in descending order from latest:
-    const articlesByDateDes = await articleDAO. ...
+    let orderColumn = publishDate;
+    let orderBy = desc;
+    let orderedArticles = await articleDAO.getAllArticlesOrderedBy(orderColumn, orderBy);
+    console.log(JSON.stringify.orderedArticles);
+
+    let articleCards = await articleFunctions.loadArticles(orderedArticles);
+
+    res.locals.articleCards = articleCards;
 
     // Call display articles function to get article cards
 
