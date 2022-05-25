@@ -23,7 +23,20 @@ async function getUserByUserName(username){
     return user;
 }
 
+async function getUserByID(userID){
+    const db = await dbPromise;
+
+    const user = await db.get(SQL`
+            select *
+                from user
+                where userID = ${userID}
+        `);
+
+    return user;
+}
+
 module.exports = {
     createNewUser,
-    getUserByUserName
+    getUserByUserName,
+    getUserByID
 };

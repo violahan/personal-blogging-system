@@ -1,15 +1,34 @@
 const express = require("express");
+const { json } = require("express/lib/response");
 const router = express.Router();
 const { v4: uuid } = require("uuid");
+
+const articleDAO = require("../modules/article-dao.js");
+const articleFunctions = require("../modules/display-articles");
+
 const userDao = require("../modules/user-dao.js");
 const bcrypt = require("../middleware/bcrypt-hashing");
 
-router.get("/", async function (req, res) {
-  
-    console.log("Test - hit home page / ")
 
-  res.render("home");
+// Display the home page with list of all articles
+router.get("/", async function(req, res) {
+
+    // Get default article view - articles in descending order from latest:
+    let orderColumn = "publishDate";
+    let orderBy = "desc";
+
+    let orderedArticles = await articleDAO.getAllArticlesOrderedBy(orderColumn, orderBy);
+    
+    let totalArticles = orderedArticles.length;
+
+    // This call can be adjusted (change total articles) to change the number of articles initially loaded
+    let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
+
+    res.locals.articleToDisplayTest = cardsToDisplay;
+
+    res.render("home");
 });
+
 
 router.get("/signup", async function (req, res) {
   res.locals.title = "Sign up";
@@ -45,6 +64,8 @@ router.post("/createUser", async function (req, res) {
 // Whenever we navigate to /login, if we're already logged in, redirect to "/".
 // Otherwise, render the "login" view.
 router.get("/login", function (req, res) {
+
+    
 
     // TODO - Update this redirect if required - for home page/main article page
 
