@@ -17,11 +17,7 @@ router.get("/", async function(req, res) {
 
     let orderedArticles = await articleDAO.getAllArticlesOrderedBy(orderColumn, orderBy);
     
-    
-
-    // res.locals.allArticles = JSON.stringify(orderedArticles)
-
-    // let articleCards = await articleFunctions.loadArticles(orderedArticles);
+    let articleCards = await articleFunctions.loadArticles(orderedArticles);
 
     // res.locals.articleCards = articleCards;
 

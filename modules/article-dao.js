@@ -4,7 +4,7 @@ const dbPromise = require("./database.js");
 async function getAllArticles(){
     const db = await dbPromise;
 
-    const allArticles = await db.get(SQL`
+    const allArticles = await db.all(SQL`
         select *
         from articles
         `);
@@ -36,7 +36,7 @@ async function getAllArticlesOrderedBy(orderColumn, orderDirection){
 async function getAllArticlesByDateDescending(){
     const db = await dbPromise;
 
-    const allArticlesByDateDescending = await db.get(SQL`
+    const allArticlesByDateDescending = await db.all(SQL`
         select *
         from articles
         order by publishDate desc
@@ -50,7 +50,7 @@ async function getAllArticlesByDateDescending(){
 async function getAllArticlesByDateAscending(){
     const db = await dbPromise;
 
-    const allArticlesByDateDescending = await db.get(SQL`
+    const allArticlesByDateDescending = await db.all(SQL`
         select *
         from articles
         order by publishDate asc

@@ -20,7 +20,7 @@ console.log("Test 1: Load article function called");
 // order/filter that is wanted to be displayed - this should be prepared before passing
 // to this function
 
-    const articleCardContainer = document.createElement("div");
+    const articleCardContainer = createElement("div");
 
     // Loop through array, to display first set of articles
     for (let i = 0; i < loadArticleCount+1; i++) {
