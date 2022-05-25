@@ -1,0 +1,39 @@
+<div class="container">
+    <h2>Sign up:</h2>
+    <form action="./createUser" method="POST">
+        {{#if error}}
+        <p>{{error}}</p>
+        {{/if}}
+        <label for="username">Username:</label>
+        <input type="text" name="username" required />
+        <label for="password">Password:</label>
+        <input type="password" name="password" required />
+        <label for="passwordCheck">Type your password again:</label>
+        <input type="password" name="passwordCheck" required />
+        <label for="fname">First Name:</label>
+        <input type="text" name="fname" required />
+        <label for="lname">Last Name:</label>
+        <input type="text" name="lname" required />
+        <label for="dob">Date of Birth:</label>
+        <input type="date" name="dob" required />
+        <label for="bio">Bio:</label>
+        <textarea name="bio" rows="4" cols="50"></textarea>
+        <label for="avatar">Avatar:</label>
+        <input type="radio" id="avatar1" name="avatar" value="../public/avatars/1.png" required>
+        <label for="avatar1"><img src="../public/avatars/1.png" class="avatar"></label>
+        <input type="radio" id="avatar2" name="avatar" value="../public/avatars/2.jpeg">
+        <label for="avatar2"><img src="../public/avatars/2.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar3" name="avatar" value="../public/avatars/3.jpeg">
+        <label for="avatar3"><img src="../public/avatars/3.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar4" name="avatar" value="../public/avatars/4.jpeg">
+        <label for="avatar4"><img src="../public/avatars/4.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar5" name="avatar" value="../public/avatars/5.jpeg">
+        <label for="avatar5"><img src="../public/avatars/5.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar6" name="avatar" value="../public/avatars/6.jpeg">
+        <label for="avatar6"><img src="../public/avatars/6.jpeg" class="avatar"></label>
+        <button type="submit">Sign up</button>
+    </form>
+
+    <br>
+</div>
+
