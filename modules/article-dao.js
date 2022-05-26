@@ -29,6 +29,24 @@ async function getAllArticlesOrderedBy(orderColumn, orderDirection){
 
 };
 
+async function getArticleCardInformationOrderedBy(orderColumn, orderDirection){
+
+    const db = await dbPromise;
+
+    // Removed SQL template string protection to allow the user of order by
+    // These variables are not editable from the user
+    const allArticlesOrderedBy = await db.all(`
+        select A.articleID, A.authorID, A.title, A.publishDate, A.numberOfComments,
+                A.numberOfLikes, U.userID, U.userName, U.fName, U.lName, U.avatarFilePath 
+        from articles as A, user as U
+        where A.authorID = U.userID
+        order by ${orderColumn} ${orderDirection}
+        `);
+
+    return allArticlesOrderedBy;
+
+};
+
 
 
 
@@ -65,5 +83,6 @@ module.exports = {
     getAllArticles,
     getAllArticlesOrderedBy,
     getAllArticlesByDateAscending,
-    getAllArticlesByDateDescending
+    getAllArticlesByDateDescending,
+    getArticleCardInformationOrderedBy
 };
