@@ -43,11 +43,11 @@ create table comments
 (
     commentID   integer   not null primary key,
     articleID   integer   not null,
-    authorID    integer   not null,
+    commentAuthorID    integer   not null,
     parentID    integer,
     content     text      not null,
     publishDate timestamp not null default CURRENT_TIMESTAMP,
-    foreign key (authorID) references user (userID),
+    foreign key (commentAuthorID) references user (userID),
     foreign key (articleID) references articles (articleID)
 
 );
@@ -135,7 +135,7 @@ insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
 (6, 'test1tn', './images/thumbnails/test1tn.jpg', 19, 0),
 (7, 'test5tn', './images/thumbnails/test5tn.jpg', 12, 0);
 
-insert into comments (commentID, articleID, authorID, parentID, content) values
+insert into comments (commentID, articleID, commentAuthorID, parentID, content) values
 (1, 1, 2, null, 'Great article!'),
 (2, 1, 3, null, 'Good insight.'),
 (3, 1, 1, 2, 'Thank you!'),

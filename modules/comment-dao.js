@@ -33,13 +33,26 @@ async function getCommentsByArticle(articleId) {
     return comments;
 }
 
-async function getCommentsByAuthor(authorId) {
+async function getCommentsByCommentAuthor(authorId) {
     const db = await dbPromise;
 
     const comments = await db.all(SQL`
         select *
         from comments
-        where authorID = ${authorId}
+        where commentAuthorID = ${authorId}
+    `);
+    return comments;
+}
+
+async function getCommentsByArticleAuthor(authorId) {
+    const db = await dbPromise;
+
+    const comments = await db.all(SQL`
+        select *
+        from comments join articles  
+            on comments.articleID = articles.articleID
+        where articles.authorID = ${authorId} 
+        order by comments.publishDate desc 
     `);
     return comments;
 }
@@ -55,12 +68,12 @@ async function getCommentsByParent(parentId) {
     return comments;
 }
 
-async function addComment(articleId, authorId, parentId, content) {
+async function addComment(articleId, commentAuthorID, parentId, content) {
     const db = await dbPromise;
 
     const comment = await db.run(SQL`
-        insert into comments (articleID, authorID, parentID, content)
-        values (${articleId}, ${authorId}), ${parentId}),${content})`);
+        insert into comments (articleID, commentAuthorID, parentID, content)
+        values (${articleId}, ${commentAuthorID}), ${parentId}),${content})`);
     return comment;
 }
 
@@ -80,10 +93,11 @@ module.exports = {
     getAllComments,
     getCommentsById,
     getCommentsByArticle,
-    getCommentsByAuthor,
+    getCommentsByCommentAuthor,
     getCommentsByParent,
     addComment,
-    removeComment
+    removeComment,
+    getCommentsByArticleAuthor
 };
 
 
