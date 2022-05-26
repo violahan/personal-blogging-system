@@ -33,6 +33,20 @@ async function getLikesByArticle(articleId) {
     return likes;
 }
 
+async function getLikesByArticleAuthor(authorId) {
+    const db = await dbPromise;
+
+    const likes = await db.all(SQL`
+        select *
+        from likes join articles  
+            on likes.articleID = articles.articleID
+        where articles.authorID = ${authorId} 
+        order by likes.publishDate desc 
+    `);
+    return likes;
+}
+
+
 async function addLike(articleId, userId) {
     const db = await dbPromise;
 
@@ -59,7 +73,8 @@ module.exports = {
     getLikesByUser,
     getLikesByArticle,
     addLike,
-    removeLike
+    removeLike,
+    getLikesByArticleAuthor
 };
 
 

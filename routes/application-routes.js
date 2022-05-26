@@ -9,7 +9,8 @@ const articleFunctions = require("../modules/display-articles");
 
 const userDao = require("../modules/user-dao.js");
 const subscribeDao = require("../modules/subscribe-dao.js");
-const commenteDao = require("../modules/comment-dao.js");
+const commentDao = require("../modules/comment-dao.js");
+const likeDao = require("../modules/like-dao.js");
 
 
 const bcrypt = require("../Helper/bcrypt-helper");
@@ -177,9 +178,11 @@ router.get("/analytics", async function (req, res) {
     let userId = req.query.userId;
     //Start with follower number
     let followersNumber = (await subscribeDao.getFollowerByAuthor(userId)).length;
-    let commentsNumber = (await commenteDao.getCommentsByArticleAuthor(userId)).length;
+    let commentsNumber = (await commentDao.getCommentsByArticleAuthor(userId)).length;
+    let likesNumber = (await likeDao.getLikesByArticleAuthor(userId)).length;
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
+    res.locals.likesNumber = likesNumber;
     // TODO: comment number, likes number, top3 articles, trends
     res.render("analytics");
 });
