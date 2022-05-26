@@ -7,6 +7,7 @@ async function addUserToLocals(req, res, next) {
 }
 
 function verifyAuthenticated(req, res, next) {
+
   //check if user exists
   if (res.locals.user) {
     next();
@@ -19,6 +20,7 @@ function verifyAuthenticated(req, res, next) {
       next();
     } else {
       res.redirect("./login");
+
     }
   }
 }
