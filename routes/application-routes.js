@@ -94,6 +94,8 @@ router.get("/sortedArticles", async function (req, res) {
 
 });
 
-
+router.get("/analytics", async function (req, res) {
+    res.render("analytics");
+});
 
 module.exports = router;
