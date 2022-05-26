@@ -32,3 +32,42 @@ form>* {
     flex-direction: row;
     width: 75%;
 }
+
+
+#analytics-header{
+    background-color: lightgray;
+    padding: 10px;
+}
+
+#analytics-body{
+    display:grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-gap: 20px;
+}
+
+.analytics-panel{
+    margin: 5px;
+    padding: 5px;
+}
+
+.analytics-card{
+    border: 1px solid lightgray;
+    margin: 10px;
+    padding: 10px;
+}
+
+.analytics-number{
+    font-size: 150%;
+    text-align: center;
+}
+
+/*#analytics-card-highlight{*/
+/*    background-color: thistle;*/
+/*}*/
+
+#analytics-card-highlight > span {
+    font-size: 600%;
+    font-weight: 600;
+    color: rgb(255, 99, 132);
+}
+
