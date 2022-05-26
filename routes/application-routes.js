@@ -8,7 +8,7 @@ const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
 
 const userDao = require("../modules/user-dao.js");
-const bcrypt = require("../middleware/bcrypt-hashing");
+const bcrypt = require("../Helper/bcrypt-helper");
 
 
 
@@ -37,7 +37,11 @@ router.get("/signup", async function (req, res) {
   res.render("signup");
 });
 
-router.post("/createUser", async function (req, res) {
+router.post("/signup", async function (req, res) {
+  if (req.body.password !== req.body.passwordCheck) {
+    res.locals.error = "Passwords are not match";
+    res.render("signup");
+  }
   //get user data
   const user = {
     username: req.body.username,
@@ -49,19 +53,12 @@ router.post("/createUser", async function (req, res) {
     avatarPath: req.body.avatar,
     isAdmin: false,
   };
-  //check if user type in the same password twice
-  if (user.password !== req.body.passwordCheck) {
-    res.locals.error = "Passwords are not match";
-    res.render("signup");
-  }
   //hash password
   user.password = await bcrypt.hashPassword(user.password);
   //save user, return the user_id we might need it later
   const userId = await userDao.createNewUser(user);
-
-  res.render("home");
+  res.redirect("/");
 });
-
 
 
 
