@@ -95,6 +95,11 @@ router.get("/sortedArticles", async function (req, res) {
 });
 
 router.get("/analytics", async function (req, res) {
+
+    let userId = req.query.userId;
+
+
+
     res.render("analytics");
 });
 
