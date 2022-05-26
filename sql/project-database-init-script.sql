@@ -143,9 +143,12 @@ insert into comments (commentID, articleID, authorID, parentID, content) values
 
 insert into likes (articleID, userID) values
 (1,2),
-(1,3);
+(1,3),
+(4,3);
+
 
 insert into subscribes (userSubscriberID, articleAuthorID) values
-(2,1);
+(2,1),
+(3,1);
 
 
