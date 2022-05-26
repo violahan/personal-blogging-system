@@ -6,9 +6,11 @@ const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
-
+const commentDao = require("../modules/comment-dao");
 const userDao = require("../modules/user-dao.js");
 const bcrypt = require("../Helper/bcrypt-helper");
+const likeDao = require("../modules/like-dao");
+const subscribeDao = require("../modules/subscribe-dao");
 
 
 
@@ -92,6 +94,39 @@ router.get("/sortedArticles", async function (req, res) {
   // Pass JSON of the ordered articles back to the client side
   res.json(orderedArticles)
 
+});
+
+router.get("/profile", verifyAuthenticated, async function (req, res) {
+  const userId = req.query.id;
+  let user;
+  if (userId == res.locals.user.userID) {
+    res.locals.isCurrentUser = true;
+    user = res.locals.user;
+  } else {
+    user = await userDao.getUserByID(userId);
+    const isSubscribed = await subscribeDao.getSubscribesByAuthorIdAndSubscriberId(user.userID, res.locals.user.userID);
+    if (isSubscribed) res.locals.isSubscribed = true;
+    else res.locals.isSubscribed = false;
+    res.locals.isCurrentUser = false;
+  }
+  const articles = await articleDAO.getArticlesByAuthorId(userId);
+  const comments = await commentDao.getCommentsAndArticleTitleByAuthorId(userId);
+  const likes = await likeDao.getLikesAndArticleTitleByUserId(userId);
+  const followers = await subscribeDao.getSubscribesByAuthorId(userId);
+  const following = await subscribeDao.getSubscribesBySubscriberId(userId);
+  const profileObj = {
+    name: user.fName + " " + user.lName,
+    avatarFilePath: user.avatarFilePath,
+    bio: user.description,
+    totalArticleNos: articles.length,
+    totalFollowerNos: followers.length,
+    totalFollowingNos: following.length,
+    articles: articles,
+    comments: comments,
+    likes: likes
+  }
+  res.locals.profileObj = profileObj;
+  res.render("user-profile");
 });
 
 
