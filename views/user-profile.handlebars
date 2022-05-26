@@ -1,0 +1,48 @@
+<div>
+    <h2>{{profileObj.name}}</h2>
+    <img class="avatar" src={{profileObj.avatarFilePath}} />
+    <p>{{profileObj.bio}}</p>
+</div>
+<div>
+    <h3>Summary</h3>
+     <div>
+         <p>Articles: {{profileObj.totalArticleNos}}</p>
+         <p>Followers: {{profileObj.totalFollowerNos}}</p>
+         <p>Following: {{profileObj.totalFollowingNos}}</p>
+     </div>
+</div>
+<div>
+    {{#if isCurrentUser}}
+        <button>Edit profile</button>
+    {{else}}
+        {{#if isSubscribed}}
+            <button>Unsubscribe</button>
+        {{else}}
+            <button>Subscribe</button>
+        {{/if}}
+    {{/if}}
+</div>
+ <div>
+     <h3>Articles</h3>
+     <ul>
+       {{#each profileObj.articles}}
+            <li>{{this.title}}  {{this.publishDate}}</li>
+       {{/each}}
+     </ul>
+    <h3>Comments</h3>
+    {{#each profileObj.comments}}
+        <div class="comment-card">
+            <p>article: {{this.title}}</p>
+            <p>Date: {{this.publishDate}}</p>
+            <p>{{this.content}}</p>
+        </div>
+    {{/each}}
+
+    <h3>Likes</h3>
+    {{#each profileObj.likes}}
+        <div class="like-card">
+            <p>article: {{this.title}}</p>
+            <p>Date: {{this.publishDate}}</p>
+        </div>
+    {{/each}}
+</div>
