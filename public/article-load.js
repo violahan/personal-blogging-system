@@ -1,38 +1,63 @@
 
 
-async function sortOptions(userID){
-
-    console.log(userID)
+async function allSortOptions(){
 
     // Obtain the selected option from the drop down menu - returns the value
-    let sortOption = document.getElementById('sortOption');
-    let sortOptionValue = sortOption.options[sortOption.selectedIndex].value;
+    let allSortOption = document.getElementById('allSortOption');
+    let allSortOptionValue = allSortOption.options[allSortOption.selectedIndex].value;
     
     // Obtain the sort order from the radio boxes - defauls to descending
-    let sortOrder = document.getElementsByName('sortOrder');
-    let sortOrderOption = "desc"
+    let allSortOrder = document.getElementsByName('allSortOrder');
+    let allSortOrderOption = "desc"
 
     // set the sort order based on which radio box is checked:
-    if(sortOrder[0].checked == false){
-        sortOrderOption = "asc"
-    } else if (sortOrder[0].checked == true){
-        sortOrderOption = "desc"
+    if(allSortOrder[0].checked == false){
+        allSortOrderOption = "asc"
+    } else if (allSortOrder[0].checked == true){
+        allSortOrderOption = "desc"
     }
 
     // Make get request to the server, providing the sort option and sort order
     // returns ordered article array
-    const response = await fetch(`./sortedArticles?value=${sortOptionValue}&order=${sortOrderOption}`)
+    const response = await fetch(`./sortedArticles?value=${allSortOptionValue}&order=${allSortOrderOption}`)
     const orderedArticleArray = await response.json();
-
+    
     let cardsToDisplay = createArticleCards(orderedArticleArray)
 
     // Call function to update the visible articles
     updateArticles(cardsToDisplay);
-    
 
+}
+
+async function userSortOptions(){
+
+    // Obtain the selected option from the drop down menu - returns the value
+    let userSortOption = document.getElementById('userSortOption');
+    let userSortOptionValue = userSortOption.options[userSortOption.selectedIndex].value;
     
-    
-   
+    // Obtain the sort order from the radio boxes - defauls to descending
+    let userSortOrder = document.getElementsByName('userSortOrder');
+    let userSortOrderOption = "desc"
+
+    // set the sort order based on which radio box is checked:
+    if(userSortOrder[0].checked == false){
+        userSortOrderOption = "asc"
+    } else if (userSortOrder[0].checked == true){
+        userSortOrderOption = "desc"
+    }
+
+
+    const userResponse = await fetch(`./sortedUserArticles?value=${userSortOptionValue}&order=${userSortOrderOption}`)
+    const orderedUserArticleArray = await userResponse.json();
+    if(orderedUserArticleArray == null){
+        // Do nothing
+
+    } else {
+        let userCardsToDisplay = createArticleCards(orderedUserArticleArray)
+        // Call function to update the visible articles
+        updateUserArticles(userCardsToDisplay);
+    }
+
 }
 
 function createArticleCards(orderedArticleArray){
@@ -71,11 +96,17 @@ function createArticleCards(orderedArticleArray){
         cardsToDisplay = cardsToDisplay+cardHTML;
     };
 
+    return cardsToDisplay;
+
 }
 
 
 function updateArticles(cardsToDisplay){
     document.getElementById('all-card-container').innerHTML = cardsToDisplay;
+}
+
+function updateUserArticles(userCardsToDisplay){
+    document.getElementById('user-card-container').innerHTML = userCardsToDisplay;
 }
 
 function displayAllArticles(){

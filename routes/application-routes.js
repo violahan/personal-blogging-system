@@ -15,7 +15,7 @@ const bcrypt = require("../Helper/bcrypt-helper");
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
-  console.log("test user:"+res.locals.user)
+
 
     const user = res.locals.user;
 
@@ -44,9 +44,7 @@ router.get("/", verifyAuthenticated, async function(req, res) {
 //Basic homepage showing all articles - but no user specific items
 router.get("/noUser", async function(req, res) {
 
-  console.log("test no user:"+res.locals.user)
-
-  // Get default article view - all articles in descending order from latest:
+    // Get default article view - all articles in descending order from latest:
   let orderColumn = "publishDate";
   let orderBy = "desc";
 
@@ -96,9 +94,9 @@ router.get("/sortedArticles", async function (req, res) {
   
   // Obtain the sort option, and the order option from the 
   // request generated on change of the filters in handlebars
-  let orderColumn = req.query.value;
+  const orderColumn = req.query.value;
   const orderBy = req.query.order;
-
+   
   // make database call for articles sorted by the required options. Include User fields to extract user name
   let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
   
@@ -123,6 +121,52 @@ router.get("/sortedArticles", async function (req, res) {
   res.json(orderedArticles)
 
 });
+
+// Route to allow AJAX request from clientside JS for ordered articles
+router.get("/sortedUserArticles", async function (req, res) {
+  
+
+  if(res.locals.user){
+    
+    
+    // Obtain the sort option, and the order option from the 
+    // request generated on change of the filters in handlebars
+    const orderColumn = req.query.value;
+    const orderBy = req.query.order;
+    
+    userID = res.locals.user.userID;
+
+    // make database call for articles sorted by the required options. Include User fields to extract user name
+    let orderedArticles = await articleDAO.getArticlesCardInformationByUserOrderedBy(userID, orderColumn, orderBy);
+    
+
+    // loop through articles and add thumbnail path
+    for (let i = 0; i < orderedArticles.length; i++) {
+      
+      let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(orderedArticles[i].articleID);
+          
+          let thumbnailImagePath = "";
+
+          if(thumbnailImage != ""){
+              thumbnailImagePath = await thumbnailImage[0].path; 
+          } else {
+              thumbnailImagePath = "";
+          }
+
+      orderedArticles[i].thumbnailImagePath = thumbnailImagePath;
+    }
+   
+     // Pass JSON of the ordered articles back to the client side
+      res.json(orderedArticles)
+    
+  } else {
+
+    res.json(null)
+
+  }
+
+});
+
 
 
 
