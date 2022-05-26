@@ -78,11 +78,20 @@ async function getAllArticlesByDateAscending(){
 
 };
 
+async function getArticlesByAuthorId(authorId) {
+    const db = await dbPromise;
+    const articles = await db.all(SQL`
+        select * from articles where authorID = ${authorId}
+    `);
+    return articles;
+}
+
 // Export functions.
 module.exports = {
     getAllArticles,
     getAllArticlesOrderedBy,
     getAllArticlesByDateAscending,
     getAllArticlesByDateDescending,
-    getArticleCardInformationOrderedBy
+    getArticleCardInformationOrderedBy,
+    getArticlesByAuthorId
 };
