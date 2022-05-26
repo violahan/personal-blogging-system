@@ -2,7 +2,7 @@ const { v4: uuid } = require("uuid");
 const express = require("express");
 const router = express.Router();
 const userDao = require("../modules/user-dao.js");
-const bcrypt = require("../middleware/bcrypt-hashing");
+const bcrypt = require("../Helper/bcrypt-helper");
 
 
 
@@ -69,5 +69,16 @@ router.post("/login", async function (req, res) {
     }
 
 });
+
+
+// Whenever we navigate to /logout, delete the authToken cookie.
+// redirect to "/login", supplying a "logged out successfully" message.
+router.get("/logout", function (req, res) {
+    res.clearCookie("authToken");
+    res.locals.user = null;
+  //  res.setToastMessage("Successfully logged out!");
+    res.redirect("./");
+});
+
 
 module.exports = router;
