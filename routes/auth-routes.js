@@ -2,7 +2,7 @@ const { v4: uuid } = require("uuid");
 const express = require("express");
 const router = express.Router();
 const userDao = require("../modules/user-dao.js");
-const bcrypt = require("../middleware/bcrypt-hashing");
+const bcrypt = require("../Helper/bcrypt-helper");
 
 
 
