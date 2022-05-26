@@ -64,12 +64,12 @@ router.post("/createUser", async function (req, res) {
 
 
 // Route to allow AJAX request from clientside JS for ordered articles
-route.get("/sortedArticles"){
+// route.get("/sortedArticles", async function (req, res){
 
-  const sortMethod = 
+//   const sortMethod = x
 
 
-}
+// });
 
 
 

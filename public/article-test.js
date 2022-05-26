@@ -6,9 +6,17 @@ async function sortOptions(){
     let sortOption = document.getElementById('sortOption');
     let sortOptionValue = sortOption.options[sortOption.selectedIndex].value;
     
-    let sortOrder = 
+    // Obtain the sort order from the radio boxes - defauls to descending
+    let sortOrder = document.getElementsByName('sortOrder');
+    let sortOrderOption = "desc"
 
-    const response = await fetch("./sortedArticles?value=sortOptionValue&order=")
+    if(sortOrder[0].checked == false){
+        sortOrderOption = "asc"
+    } else if (sortOrder[0].checked == true){
+        sortOrderOption = "desc"
+    }
+
+    // const response = await fetch("./sortedArticles?value=sortOptionValue&order=")
 
 
 
