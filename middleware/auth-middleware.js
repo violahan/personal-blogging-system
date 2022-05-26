@@ -19,7 +19,11 @@ function verifyAuthenticated(req, res, next) {
       res.locals.user = user;
       next();
     } else {
-      res.redirect("./login");
+      
+      // A user is able to see the home page if they are not logged in
+      // this redirects to home, rather than login
+      res.locals.user = null;
+      res.redirect("./noUser");
 
     }
   }
