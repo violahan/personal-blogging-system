@@ -66,3 +66,20 @@ function updateArticles(cardsToDisplay){
     document.getElementById('all-card-container').innerHTML = cardsToDisplay;
 }
 
+function displayAllArticles(){
+    document.getElementById('all-articles-home').style.display = "block"
+    document.getElementById('all-article-button').style.border = "2px solid #4CAF50";
+
+    document.getElementById('user-articles-home').style.display = "none"
+    document.getElementById('user-article-button').style.border = "";
+
+}
+
+function displayUserArticles(){
+    document.getElementById('all-articles-home').style.display = "none"
+    document.getElementById('all-article-button').style.border = "";
+
+
+    document.getElementById('user-articles-home').style.display = "block"
+    document.getElementById('user-article-button').style.border = "2px solid #4CAF50";
+}

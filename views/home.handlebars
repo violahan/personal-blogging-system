@@ -3,10 +3,12 @@
 {{!-- All articles / Your article headings will act as buttons to allow switching
 between viewing all articles and viewing your articles --}}
 <div>
-
-
-    <h1>All Articles</h2>
     
+    <div>
+        <button id="all-article-button" onclick="displayAllArticles()">All Articles</button>
+        <button id="user-article-button" onclick="displayUserArticles()">User Articles</button>
+    </div>
+
     <div class="Article-Sort">
         <form action="">
             <label for="sortOption">Sort articles by:</label>
@@ -22,14 +24,24 @@ between viewing all articles and viewing your articles --}}
         </form>
     </div>
 
-    <div>
-        <h2>Latest Articles</h2>
+    <div id="all-articles-home">
+        <h2>All Articles</h2>
+    
+        <div class="card-container" id="all-card-container">
+
+            {{{allArticleToDisplay}}}
+
+        </div>
     </div>
-    <div class="card-container" id="all-card-container">
+    <div id="user-articles-home">
+        <h2>{{user.userName}} Articles</h2>
+    
+        <div class="card-container" id="user-card-container">
 
-        {{{articleToDisplayTest}}}
+            {{{userAllArticlesToDisplay}}}
 
+        </div>
     </div>
 
 </div>
-<a href=""></a>
+

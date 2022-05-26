@@ -15,18 +15,26 @@ const bcrypt = require("../Helper/bcrypt-helper");
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
-    // Get default article view - articles in descending order from latest:
+    const user = res.locals.user;
+
+    // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
     let orderBy = "desc";
 
     let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
-    
     let totalArticles = orderedArticles.length;
 
     // This call can be adjusted (change total articles) to change the number of articles initially loaded
     let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
 
-    res.locals.articleToDisplayTest = cardsToDisplay;
+    res.locals.allArticleToDisplay = cardsToDisplay;
+
+    if(user != ""){
+      let userOrderedArticles = await articleDAO.getArticlesCardInformationByUserOrderedBy(user.userID, orderColumn, orderBy);
+      let totalUserArticles = userOrderedArticles.length;
+      let userCardsToDisplay = await articleFunctions.loadArticles(userOrderedArticles, totalUserArticles)
+      res.locals.userAllArticlesToDisplay = userCardsToDisplay;
+    }
 
     res.render("home");
 });
