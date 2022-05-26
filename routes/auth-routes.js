@@ -70,4 +70,15 @@ router.post("/login", async function (req, res) {
 
 });
 
+
+// Whenever we navigate to /logout, delete the authToken cookie.
+// redirect to "/login", supplying a "logged out successfully" message.
+router.get("/logout", function (req, res) {
+    res.clearCookie("authToken");
+    res.locals.user = null;
+  //  res.setToastMessage("Successfully logged out!");
+    res.redirect("./");
+});
+
+
 module.exports = router;
