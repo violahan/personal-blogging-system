@@ -3,24 +3,25 @@
 {{!-- All articles / Your article headings will act as buttons to allow switching
 between viewing all articles and viewing your articles --}}
 <div>
-    
+    {{#if user}}
     <div>
         <button id="all-article-button" onclick="displayAllArticles()">All Articles</button>
         <button id="user-article-button" onclick="displayUserArticles()">User Articles</button>
     </div>
+    {{/if}}
 
     <div class="Article-Sort">
         <form action="">
             <label for="sortOption">Sort articles by:</label>
-            <select id="sortOption" name="sortOption" onchange="sortOptions()">
+            <select id="sortOption" name="sortOption" onchange="sortOptions({{user.userID}})">
                 <option value="publishDate" selected>Date</option>
                 <option value="userName">Author username</option>
                 <option value="title">Article Title</option>
             </select>
             <label for="desc">Descending:</label>
-            <input type="radio" checked id="desc" name="sortOrder" value="desc" onclick="sortOptions()">
+            <input type="radio" checked id="desc" name="sortOrder" value="desc" onclick="sortOptions({{user.userID}})">
             <label for="asc">Ascending:</label>
-            <input type="radio" id="asc" name="sortOrder" value="asc" onclick="sortOptions()">
+            <input type="radio" id="asc" name="sortOrder" value="asc" onclick="sortOptions({{user.userID}})">
         </form>
     </div>
 
@@ -33,6 +34,7 @@ between viewing all articles and viewing your articles --}}
 
         </div>
     </div>
+    {{#if user}}
     <div id="user-articles-home">
         <h2>{{user.userName}} Articles</h2>
     
@@ -42,6 +44,7 @@ between viewing all articles and viewing your articles --}}
 
         </div>
     </div>
+    {{/if}}
 
 </div>
 

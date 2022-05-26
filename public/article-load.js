@@ -1,6 +1,8 @@
 
 
-async function sortOptions(){
+async function sortOptions(userID){
+
+    console.log(userID)
 
     // Obtain the selected option from the drop down menu - returns the value
     let sortOption = document.getElementById('sortOption');
@@ -21,7 +23,19 @@ async function sortOptions(){
     // returns ordered article array
     const response = await fetch(`./sortedArticles?value=${sortOptionValue}&order=${sortOrderOption}`)
     const orderedArticleArray = await response.json();
+
+    let cardsToDisplay = createArticleCards(orderedArticleArray)
+
+    // Call function to update the visible articles
+    updateArticles(cardsToDisplay);
     
+
+    
+    
+   
+}
+
+function createArticleCards(orderedArticleArray){
 
     // Loop to take the ordered array, extract the key information only,
     // format as HTML article cards to be displayed.
@@ -56,11 +70,9 @@ async function sortOptions(){
         
         cardsToDisplay = cardsToDisplay+cardHTML;
     };
-    
-    // Call function to update the visible articles
-    updateArticles(cardsToDisplay);
-   
+
 }
+
 
 function updateArticles(cardsToDisplay){
     document.getElementById('all-card-container').innerHTML = cardsToDisplay;
