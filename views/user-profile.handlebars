@@ -13,7 +13,9 @@
 </div>
 <div>
     {{#if isCurrentUser}}
-        <button>Edit profile</button>
+        <a href="./editprofile">Edit Profile</a>
+        <a href="./analytics">Analytics</a>
+        <a href="./deleteuser">Delete User</a>
     {{else}}
         {{#if isSubscribed}}
             <button>Unsubscribe</button>
