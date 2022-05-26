@@ -63,8 +63,13 @@ router.post("/createUser", async function (req, res) {
 });
 
 
+// Route to allow AJAX request from clientside JS for ordered articles
+route.get("/sortedArticles"){
+
+  const sortMethod = 
 
 
+}
 
 
 

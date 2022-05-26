@@ -54,6 +54,15 @@ let cardsToDisplay = "";
 }
 
 
+async function sortOptions(){
+
+    console.log("test - does this trigger")
+
+}
+
+
+
+
 
 // Receive an article as an object, display contents as a card
 async function displayArticleCard(articleObj){

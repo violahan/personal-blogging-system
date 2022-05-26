@@ -4,16 +4,24 @@
 between viewing all articles and viewing your articles --}}
 <div>
 
-Test - Not logged in - {{user.userName}}
-<br>
-Test - logged in - {{user.userName}}
-<br>
-Test - logged in - {{user}}
-<br>
-Test - logged in - {{test}}
-
 
     <h1>All Articles</h2>
+    
+    <div class="Article-Sort">
+        <form action="">
+            <label for="sortOption">Sort articles by:</label>
+            <select id="sortOption" name="sortOption" onchange="sortOptions()">
+                <option value="publishDate" selected>Date</option>
+                <option value="userName">Author username</option>
+                <option value="title">Article Title</option>
+            </select>
+            <label for="desc">Descending:</label>
+            <input type="radio" checked id="desc" name="sortOrder" value="desc" onclick="sortOptions()">
+            <label for="asc">Ascending:</label>
+            <input type="radio" id="asc" name="sortOrder" value="asc" onclick="sortOptions()">
+        </form>
+    </div>
+
     <div>
         <h2>Latest Articles</h2>
     </div>
