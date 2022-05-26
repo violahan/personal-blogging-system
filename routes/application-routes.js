@@ -17,20 +17,48 @@ const bcrypt = require("../Helper/bcrypt-helper");
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
-    // Get default article view - articles in descending order from latest:
+
+
+    const user = res.locals.user;
+
+    // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
     let orderBy = "desc";
 
     let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
-    
     let totalArticles = orderedArticles.length;
 
     // This call can be adjusted (change total articles) to change the number of articles initially loaded
     let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
 
-    res.locals.articleToDisplayTest = cardsToDisplay;
+    res.locals.allArticleToDisplay = cardsToDisplay;
+
+    if(user != ""){
+      let userOrderedArticles = await articleDAO.getArticlesCardInformationByUserOrderedBy(user.userID, orderColumn, orderBy);
+      let totalUserArticles = userOrderedArticles.length;
+      let userCardsToDisplay = await articleFunctions.loadArticles(userOrderedArticles, totalUserArticles)
+      res.locals.userAllArticlesToDisplay = userCardsToDisplay;
+    }
 
     res.render("home");
+});
+
+//Basic homepage showing all articles - but no user specific items
+router.get("/noUser", async function(req, res) {
+
+    // Get default article view - all articles in descending order from latest:
+  let orderColumn = "publishDate";
+  let orderBy = "desc";
+
+  let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
+  let totalArticles = orderedArticles.length;
+
+  // This call can be adjusted (change total articles) to change the number of articles initially loaded
+  let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
+
+  res.locals.allArticleToDisplay = cardsToDisplay;
+
+  res.render("home");
 });
 
 
@@ -68,9 +96,9 @@ router.get("/sortedArticles", async function (req, res) {
   
   // Obtain the sort option, and the order option from the 
   // request generated on change of the filters in handlebars
-  let orderColumn = req.query.value;
+  const orderColumn = req.query.value;
   const orderBy = req.query.order;
-
+   
   // make database call for articles sorted by the required options. Include User fields to extract user name
   let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
   
@@ -96,8 +124,54 @@ router.get("/sortedArticles", async function (req, res) {
 
 });
 
-router.get("/analytics", async function (req, res) {
 
+// Route to allow AJAX request from clientside JS for ordered articles
+router.get("/sortedUserArticles", async function (req, res) {
+  
+
+  if(res.locals.user){
+    
+    
+    // Obtain the sort option, and the order option from the 
+    // request generated on change of the filters in handlebars
+    const orderColumn = req.query.value;
+    const orderBy = req.query.order;
+    
+    userID = res.locals.user.userID;
+
+    // make database call for articles sorted by the required options. Include User fields to extract user name
+    let orderedArticles = await articleDAO.getArticlesCardInformationByUserOrderedBy(userID, orderColumn, orderBy);
+    
+
+    // loop through articles and add thumbnail path
+    for (let i = 0; i < orderedArticles.length; i++) {
+      
+      let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(orderedArticles[i].articleID);
+          
+          let thumbnailImagePath = "";
+
+          if(thumbnailImage != ""){
+              thumbnailImagePath = await thumbnailImage[0].path; 
+          } else {
+              thumbnailImagePath = "";
+          }
+
+      orderedArticles[i].thumbnailImagePath = thumbnailImagePath;
+    }
+   
+     // Pass JSON of the ordered articles back to the client side
+      res.json(orderedArticles)
+    
+  } else {
+
+    res.json(null)
+
+  }
+
+});
+
+
+router.get("/analytics", async function (req, res) {
     let userId = req.query.userId;
     //Start with follower number
     let totalFollowers = (await subscribeDao.getFollowerByAuthor(userId)).length;
