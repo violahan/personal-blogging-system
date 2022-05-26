@@ -3,6 +3,7 @@ const articleDAO = require("./article-dao.js");
 const userDAO = require("./user-dao");
 const imageDAO = require("./images-dao");
 
+
 // Initial function to load a number of articles
 async function loadArticles(orderedArticleArray, numberToLoad){
 
@@ -12,8 +13,7 @@ let cardsToDisplay = "";
         let articleID = orderedArticleArray[i].articleID;
         let title = orderedArticleArray[i].title;
         let authorID = orderedArticleArray[i].authorID;
-        let author = await userDAO.getUserByID(authorID)
-        let authorName = (author.fName + " " + author.lName);
+        let userName = orderedArticleArray[i].userName;
         let publishDate = orderedArticleArray[i].publishDate;
 
         let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleID);
@@ -37,7 +37,7 @@ let cardsToDisplay = "";
                             <h3>${title}</h3>
                         </a>
                         <a href="/userLoad">
-                            <h4>${authorName}</h4>
+                            <h4>${userName}</h4>
                         </a>
                             
                         <p>${publishDate}</p>
@@ -53,36 +53,6 @@ let cardsToDisplay = "";
      
 }
 
-
-
-// Receive an article as an object, display contents as a card
-async function displayArticleCard(articleObj){
-
-    const articleID = articleObj.articleID;
-    const authorID = articleObj.authorID;
-    const title = articleObj.title;
-    const publishDate = articleObj.authorID;
-    const content = articleObj.authorID;
-    const numComments = articleObj.numberOfComments;
-    const numLikes = articleObj.numberOfLikes;
-
-//    const authorName = await userDAO.getUserByID(authorID);
-//    const thumbnailImagePath = await imageDAO.getThumbnailImageByArticleID(articleID);
-
-
-
-    // Create an article card containing:
-    // Article Thumbnail
-    // Article Title
-    // Article Author
-    // Article Date
-    const articleCard = document.createElement("div");
-  //  articleCard.innerHTML =  
-
-    // Return card to be appended to another element from where it was called
- //   return articleCard;
-
-};
 
 // Export functions.
 module.exports = {
