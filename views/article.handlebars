@@ -1,0 +1,40 @@
+{{!-- Page to display an article --}}
+
+<div id="full-article-container">
+<p>Article ID: {{articleInfo.articleID}}</p>
+<h1>Title: {{articleInfo.title}}</h1>
+<h4>Author: {{articleInfo.userName}}</h4>
+<p>Date: {{articleInfo.publishDate}}</p>
+<h5>Image:</h5>
+<img src="{{articleInfo.path}}" alt="">
+<p>Article content:</p>
+<p>{{articleInfo.content}}</p>
+
+
+</div>
+
+{{!-- Comment text boxes - if user if loged in --}}
+{{#if user}}
+<div>
+
+</div>
+{{/if}}
+
+{{!-- Display comments on article here --}}
+<div>
+    <button id="hide-comments-button" onclick="hideComments()">Hide Comments</button>
+    <button id="show-comments-button" onclick="showComments()" style="display: none">Show Comments</button>
+    <h2>Comments</h2>
+    <p id="comments-message"></p>
+    <div id="comments-container">
+
+        <p>Test comment place holder</p>
+
+                <p>Test comment place holder</p>
+
+                        <p>Test comment place holder</p>
+
+                                <p>Test comment place holder</p>
+
+    </div>
+</div>
