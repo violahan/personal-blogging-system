@@ -1,0 +1,141 @@
+<div id="analytics-container">
+    <div id="analytics-header">
+        <h1 id="analytics-title"> Analytics</h1>
+    </div>
+
+    <div id="analytics-body">
+        <div id="analytics-body-left" class="analytics-panel">
+            <h1>Summary: </h1>
+            <div class="analytics-card" id="analytics-card-highlight">
+                <p>Followers: </p>
+                <span id="analytics-follower" class="analytics-number">{{totalFollowers}}</span>
+            </div>
+
+            <div class="analytics-card">
+                <p>Comments: </p>
+                <span id="analytics-comment" class="analytics-number">580</span>
+            </div>
+
+            <div class="analytics-card" >
+                <p>Likes: </p>
+                <span id="analytics-like" class="analytics-number">580</span>
+            </div>
+        </div>
+
+        <div id="analytics-body-middle" class="analytics-panel">
+            <h1>Top 3 popular articles: </h1>
+
+            <div class="analytics-card">
+                <div class="card-header">
+
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">PTX: The World Tour</h2>
+                    <p class="card-text">In celebration of their massive 'The World' tour, Grammy Award-winning a cappella
+                        maestros Pentatonix are heading down to NZ for a one-off, comeback concert at Auckland's Spark Arena
+                        this February 2020.</p>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-header">
+
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">PTX: The World Tour</h2>
+                    <p class="card-text">In celebration of their massive 'The World' tour, Grammy Award-winning a cappella
+                        maestros Pentatonix are heading down to NZ for a one-off, comeback concert at Auckland's Spark Arena
+                        this February 2020.</p>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-header">
+
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">PTX: The World Tour</h2>
+                    <p class="card-text">In celebration of their massive 'The World' tour, Grammy Award-winning a cappella
+                        maestros Pentatonix are heading down to NZ for a one-off, comeback concert at Auckland's Spark Arena
+                        this February 2020.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="analytics-body-right" class="analytics-panel">
+            <h1>Trending: </h1>
+            <div class="analytics-card">
+                <canvas id="commentChart" width="200" height="100"></canvas>
+            </div>
+
+            <div class="analytics-card">
+                <canvas id="myChart2" width="200" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    const ctx1 = document.getElementById('commentChart').getContext('2d');
+    const ctx2 = document.getElementById('myChart2').getContext('2d');
+
+
+    const myChart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['21,May', '22,May', '23,May', '24,May', '25,May', '26,May'],
+            datasets: [{
+                label: 'Number of comments',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    const data = {
+        labels: ['21,May', '22,May', '23,May', '24,May', '25,May', '26,May'],
+        datasets: [{
+            label: 'Total subscribers',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+
+    const myChart = new Chart(
+            document.getElementById('myChart2'),
+            config
+    );
+
+</script>

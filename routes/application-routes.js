@@ -8,6 +8,8 @@ const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
 
 const userDao = require("../modules/user-dao.js");
+const subscribeDao = require("../modules/subscribe-dao.js");
+
 const bcrypt = require("../Helper/bcrypt-helper");
 
 
@@ -122,6 +124,7 @@ router.get("/sortedArticles", async function (req, res) {
 
 });
 
+
 // Route to allow AJAX request from clientside JS for ordered articles
 router.get("/sortedUserArticles", async function (req, res) {
   
@@ -168,6 +171,13 @@ router.get("/sortedUserArticles", async function (req, res) {
 });
 
 
-
+router.get("/analytics", async function (req, res) {
+    let userId = req.query.userId;
+    //Start with follower number
+    let totalFollowers = (await subscribeDao.getFollowerByAuthor(userId)).length;
+    res.locals.totalFollowers = totalFollowers;
+    // TODO: comment number, likes number, top3 articles, trends
+    res.render("analytics");
+});
 
 module.exports = router;
