@@ -99,6 +99,18 @@ async function removeComment(commentId) {
     return comment;
 }
 
+async function getCommentsAndArticleTitleByAuthorId(authorId) {
+    const db = await dbPromise;
+
+    const results = await db.all(SQL`
+        select c.commentID, c.content, c.publishDate, a.title
+        from comments as c
+        join articles as a on c.articleID = a.articleID
+        where c.authorID = ${authorId}
+    `);
+
+    return results;
+}
 
 module.exports = {
     getAllComments,
@@ -109,7 +121,8 @@ module.exports = {
     addComment,
     removeComment,
     getDateOrderTopLevelCommentsByArticleId,
-    getDateOrderNestedCommentsByArticleId
+    getDateOrderNestedCommentsByArticleId,
+    getCommentsAndArticleTitleByAuthorId
 };
 
 

@@ -81,7 +81,7 @@ function createArticleCards(orderedArticleArray){
                     </div>
                     <div class="cardContent">
                         <p>ArticleID = ${articleID}</p>
-                        <a href="">
+                        <a href="./getArticle?articleID=${articleID}">
                             <h3>${title}</h3>
                         </a>
                         <a href="/userLoad">
