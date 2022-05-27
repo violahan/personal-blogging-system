@@ -6,6 +6,7 @@ const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
+const commentDAO = require("../modules/comment-dao.js");
 
 const userDao = require("../modules/user-dao.js");
 const subscribeDao = require("../modules/subscribe-dao.js");
@@ -179,5 +180,15 @@ router.get("/analytics", async function (req, res) {
     // TODO: comment number, likes number, top3 articles, trends
     res.render("analytics");
 });
+
+
+router.get("/articleComments", async function (req, res){
+
+  req.query.articleID = 
+
+
+  res.locals.commentsToDisplay = commentsToDisplay
+})
+
 
 module.exports = router;

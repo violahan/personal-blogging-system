@@ -1,5 +1,6 @@
 const res = require("express/lib/response");
 const articleDAO = require("./article-dao.js");
+const commentDAO = require("./comment-dao.js");
 const userDAO = require("./user-dao");
 const imageDAO = require("./images-dao");
 
@@ -53,8 +54,66 @@ let cardsToDisplay = "";
      
 }
 
+function nestedComments(topCommentsDBQuery, nestCommentDBQuery){
+
+    let topCommentArray = topCommentsDBQuery;
+    let nestCommentArray = nestCommentDBQuery;
+
+    //Update nested comments with relevant HTML to display
+    for (let i = 0; i < nestCommentArray.length; i++) {
+        for (let j = 0; j < nestCommentArray.length; j++) {
+            if(nestCommentArray[j].parentID == nestCommentArray[i].commentID){
+                nestCommentArray[i].nestedHTML = nestCommentArray[i].nestedHTML+
+                    `
+                        <div class="nest-level-2-comment">
+                            <p>${nestCommentArray[j].content}</p>
+                        </div>
+                    `
+            }   
+        }        
+    }
+
+    //Update Parent comments with nested HTML
+    for (let i = 0; i < topCommentArray.length; i++) {
+        
+        topCommentArray[i].displayHTML = 
+                `
+                <div class="top-level-comment">
+                    <p>${topCommentArray[i].content}</p>
+                </div>
+                `
+
+        for (let j = 0; j < nestCommentArray.length; j++) {
+            
+            if(nestCommentArray[j].parentID == topCommentArray[i].commentID){
+                topCommentArray[i].displayHTML = topCommentArray[i].displayHTML+
+                `
+                    <div class="nest-level-1-comment">
+                        ${nestCommentArray[j].nestedHTML}
+                    </div>
+                `
+            }
+            
+        }
+        
+    }
+
+    // Create full comment string HTML:
+    let commentHTMLtoDisplay = "";
+    for (let i = 0; i < topCommentArray.length; i++) {
+        
+        commentHTMLtoDisplay = commentHTMLtoDisplay+topCommentArray[i].displayHTML; 
+        
+    }
+
+    return commentHTMLtoDisplay;
+
+}
+
+
 
 // Export functions.
 module.exports = {
-    loadArticles
+    loadArticles,
+    nestedComments
 };

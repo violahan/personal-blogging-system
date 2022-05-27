@@ -15,8 +15,16 @@
 
 {{!-- Comment text boxes - if user if loged in --}}
 {{#if user}}
+{{!-- TODO Add button to allow another comment to be added if already added
+add onclick button to clear/reset the comment box
+add reply buttons for other comments to allow replying
+template the comments section to show up via handlebars? --}}
 <div>
-
+    <form action="./makeComment" method="POST">
+        <label for="comment">Enter Comment:</label>
+        <textarea name="comment" rows="4" cols="50"></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
 </div>
 {{/if}}
 
