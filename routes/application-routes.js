@@ -176,18 +176,20 @@ router.get("/sortedUserArticles", async function (req, res) {
 
 router.get("/analytics", async function (req, res) {
     let userId = req.query.userId;
-    //Start with follower number
+
     let followersNumber = (await subscribeDao.getFollowerByAuthor(userId)).length;
     let commentsNumber = (await commentDao.getCommentsByArticleAuthor(userId)).length;
     let likesNumber = (await likeDao.getLikesByArticleAuthor(userId)).length;
-
     let commentCountByDay = await commentDao.getCommentsCountPerDayByArticleAuthor(userId,5);
+    let subscribeCumulativeCount = await commentDao.getCumulativeSubscribeCountByArticleAuthor(userId);
+
     console.log(commentCountByDay);
 
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
     res.locals.likesNumber = likesNumber;
-    // TODO: comment number, likes number, top3 articles, trends
+    res.locals.commentCountByDay = commentCountByDay;
+    res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
     res.render("analytics");
 });
 
