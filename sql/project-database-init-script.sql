@@ -139,7 +139,7 @@ insert into comments (commentID, articleID, commentAuthorID, parentID, content, 
 (1, 1, 2, null, 'Great article!', '2022-05-24 23:33:57'),
 (2, 1, 3, null, 'Good insight.','2022-05-25 17:33:47'),
 (3, 1, 1, 2, 'Thank you!','2022-05-26 03:58:23'),
-(4, 2, 3, null, 'Interesting...','2022-05-27 12:30:31'),
+(4, 2, 3, null, 'Interesting...','2022-05-26 12:30:31'),
 (5, 2, 6, 3, 'test...','2022-05-28 22:26:45'),
 (6, 3, 8, null, 'test...','2022-05-29 19:30:52');
 

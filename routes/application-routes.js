@@ -180,6 +180,10 @@ router.get("/analytics", async function (req, res) {
     let followersNumber = (await subscribeDao.getFollowerByAuthor(userId)).length;
     let commentsNumber = (await commentDao.getCommentsByArticleAuthor(userId)).length;
     let likesNumber = (await likeDao.getLikesByArticleAuthor(userId)).length;
+
+    let commentCountByDay = await commentDao.getCommentsCountPerDayByArticleAuthor(userId,5);
+    console.log(commentCountByDay);
+
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
     res.locals.likesNumber = likesNumber;
