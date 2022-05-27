@@ -36,7 +36,41 @@ template the comments section to show up via handlebars? --}}
     <p id="comments-message"></p>
     <div id="comments-container" onload="getcomments()">
 
-        {{{commentsToDisplay}}}
+        {{!-- {{{commentsToDisplay}}} --}}
+
+        {{#if commentsToDisplay}}
+            {{#each commentsToDisplay}}
+            <div class="top-level-comment">
+                <p>Publishdate ={{this.publishDate}}</p>
+                <p>CommentID = {{this.commentID}}</p>
+                <p>Content = {{this.content}}</p>
+                <p>Username = {{this.userName}}</p>
+            </div>
+                {{#if this.children}}
+                    {{#each this.children}}
+                    <div class="level-1-comment">
+                        <p>Publishdate ={{this.publishDate}}</p>
+                        <p>CommentID = {{this.commentID}}</p>
+                        <p>Content = {{this.content}}</p>
+                        <p>Username = {{this.userName}}</p>
+                    </div>
+                    {{#if this.children}}
+                            {{#each this.children}}
+                            <div class="level-2-comment">
+                                <p>Publishdate ={{this.publishDate}}</p>
+                                <p>CommentID = {{this.commentID}}</p>
+                                <p>Content = {{this.content}}</p>4
+                                <p>Username = {{this.userName}}</p>
+                            </div>
+                            {{/each}}
+                        {{/if}}
+                    {{/each}}
+                {{/if}}
+            {{/each}}
+        {{else}}
+            <p>No comments on this article. Yet.</p>
+        {{/if}}
+
 
     </div>
 </div>

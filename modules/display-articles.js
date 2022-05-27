@@ -55,125 +55,72 @@ let cardsToDisplay = "";
 }
 
 
-async function getComments(articleID){
 
-  
-
-    const topLevelComments = await commentDAO.getDateOrderTopLevelCommentsByArticleID(articleID);
-
-    const nestedComments = await commentDAO.getDateOrderNestedCommentsByArticleID(articleID);
-  
-
-
-    const commentsToDisplay = makeNestedCommentsHTML(topLevelComments, nestedComments);
-
-
-    return commentsToDisplay;
-    
-  }
-
-
-
-function makeNestedCommentsHTML(topLevelCommentsByArticleByDate, nestedCommentsByArticleByDate){
-
-    let topCommentArray = topLevelCommentsByArticleByDate;
-    let nestCommentArray = nestedCommentsByArticleByDate;
-
-
-    // Make top level comment HTML
-    for (let i = 0; i < topCommentArray.length; i++) {
-        topCommentArray[i].displayHTML =
-            `
-            <div class="top-level-comment">
-                <p>Publishdate =${topCommentArray[i].publishDate} CommentID = ${topCommentArray[i].commentID} Content = ${topCommentArray[i].content}</p>
-            </div>
-            `
-    }
-    
-
-
-    // Make first level comment HTML
-    for (let i = 0; i < nestCommentArray.length; i++) {
-        
-        for (let j = 0; j < topCommentArray.length; j++) {
-            
-            if(nestCommentArray[i].parentID == topCommentArray[j].commentID){
-                nestCommentArray[i].displayHTML =
-                `
-                    <div class="level-1-comment">
-                        <p>Publishdate =${nestCommentArray[i].publishDate} CommentID = ${nestCommentArray[i].commentID} Content = ${nestCommentArray[i].content}</p>
-                    </div>
-                `
-            }
-        }
-    }
-
-
-
-    // Make second level comment HTML
-    for (let i = 0; i < nestCommentArray.length; i++) {
-        
-        for (let j = 0; j < nestCommentArray.length; j++) {
-            
-            if(nestCommentArray[i].parentID == nestCommentArray[j].commentID){
-                nestCommentArray[i].displayHTML =
-                `
-                    <div class="level-2-comment">
-                        <p>Publishdate =${nestCommentArray[i].publishDate} CommentID = ${nestCommentArray[i].commentID} Content = ${nestCommentArray[i].content}</p>
-                    </div>
-                `
-            }
-        }
-    }
-
-  
-
-    // Add second level comment HTML to first level comment HTML
-    for (let i = 0; i < nestCommentArray.length; i++) {
-        
-        for (let j = 0; j < nestCommentArray.length; j++) {
-            
-            if(nestCommentArray[i].commentID == nestCommentArray[j].parentID){
-
-                nestCommentArray[i].displayHTML = nestCommentArray[i].displayHTML+nestCommentArray[j].displayHTML;
-
-            }
-        }
-    }
-
-  
-
-    // Add first level comments to top level comments
-    for (let i = 0; i < topCommentArray.length; i++) {
-        
-        for (let j = 0; j < nestCommentArray.length; j++) {
-            
-            if(topCommentArray[i].commentID == nestCommentArray[j].parentID){
-
-                topCommentArray[i].displayHTML = topCommentArray[i].displayHTML+nestCommentArray[j].displayHTML
-
-            }
-        }
-    }
-
-
-    // Create full comment string HTML:
-    let commentHTMLtoDisplay = "";
-    for (let i = 0; i < topCommentArray.length; i++) {
-        
-        commentHTMLtoDisplay = commentHTMLtoDisplay+topCommentArray[i].displayHTML; 
-        
-    }
-
-    return commentHTMLtoDisplay;
-
+//Testing tree structure array
+//Testing tree structure array
+async function getAllCommentsByArticleIDOrdered(articleID){
+    const topLevelComments = await commentDAO.getAllCommentsByArticleIDOrdered(articleID);
+    const treeStructureComments = unflattenComments(topLevelComments) 
+   
+    return treeStructureComments;
 }
+
+
+// This is not a proper unflattening function, but works to make required two levels of comments
+function unflattenComments(flatArrayOfComments){
+
+    let treeArray = [];
+
+    // Add children placehodler array to each comment:
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        flatArrayOfComments[i].children = [];
+    }
+
+    // make top level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        if(flatArrayOfComments[i].parentID == null){
+            treeArray.push(flatArrayOfComments[i])
+        }
+    }
+
+    // add first level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            if(flatArrayOfComments[i].parentID == treeArray[j].commentID){
+                treeArray[j].children.push(flatArrayOfComments[i]);
+            }
+        }
+    }
+
+
+    // add second level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            for (let k = 0; k < treeArray[j].children.length; k++) {
+                if(flatArrayOfComments[i].parentID == treeArray[j].children[k].commentID){
+                    treeArray[j].children[k].children.push(flatArrayOfComments[i]);
+                }
+            }
+        }
+    }
+
+    return treeArray;
+}
+
+
+//Testing tree structure array
+//Testing tree structure array
+
+
+
+
 
 
 
 // Export functions.
 module.exports = {
     loadArticles,
-    getComments,
-    makeNestedCommentsHTML
+    getAllCommentsByArticleIDOrdered,
+    unflattenComments
+
 };

@@ -96,13 +96,12 @@ router.get("/getArticle", async function (req, res){
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
 
-  const commentsToDisplay = await articleFunctions.getComments(articleID)
-  
+  const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
+
   res.locals.articleInfo = articleInfo;
   res.locals.commentsToDisplay = commentsToDisplay;
 
   res.render("article")
-
 });
 
 

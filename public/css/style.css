@@ -71,3 +71,14 @@ form>* {
     color: rgb(255, 99, 132);
 }
 
+.top-level-comment{
+    border: 1px solid black;
+}
+.level-1-comment{
+    border: 1px solid blue;
+    margin-left: 15px;
+}
+.level-2-comment{
+    border: 1px solid green;
+    margin-left: 30px;
+}
