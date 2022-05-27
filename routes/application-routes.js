@@ -184,10 +184,13 @@ router.get("/analytics", async function (req, res) {
 
 router.get("/articleComments", async function (req, res){
 
-  req.query.articleID = 
+  const articleID = req.query.articleID;
+  const topLevelComments = await commentDAO.getDateOrderTopLevelCommentsByArticleID(articleID);
+  const nestedComments = await commentDAO.getDateOrderNestedCommentsByArticleID(articleID);
 
+  const commentsToDisplay = makeNestedCommentsHTML(topLevelComments, nestedComments);
 
-  res.locals.commentsToDisplay = commentsToDisplay
+  res.locals.commentsToDisplay = commentsToDisplay;
 })
 
 

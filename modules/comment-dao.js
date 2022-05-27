@@ -22,6 +22,30 @@ async function getCommentsById(commentId) {
     return comment;
 }
 
+async function getDateOrderTopLevelCommentsByArticleId(articleID) {
+    const db = await dbPromise;
+
+    const topLevelComments = await db.all(SQL`
+        select *
+        from comments
+        where articleID = ${articleID} and parentID = null
+        order by publishDate desc
+    `);
+    return topLevelComments;
+}
+
+async function getDateOrderNestedCommentsByArticleId(articleID) {
+    const db = await dbPromise;
+
+    const nestedComments = await db.all(SQL`
+        select *
+        from comments
+        where articleID = ${articleID} and parentID != null
+        order by publishDate desc
+    `);
+    return nestedComments;
+}
+
 async function getCommentsByArticle(articleId) {
     const db = await dbPromise;
 
@@ -83,7 +107,9 @@ module.exports = {
     getCommentsByAuthor,
     getCommentsByParent,
     addComment,
-    removeComment
+    removeComment,
+    getDateOrderTopLevelCommentsByArticleId,
+    getDateOrderNestedCommentsByArticleId
 };
 
 

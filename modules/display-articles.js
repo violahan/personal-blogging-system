@@ -54,10 +54,10 @@ let cardsToDisplay = "";
      
 }
 
-function nestedComments(topCommentsDBQuery, nestCommentDBQuery){
+function makeNestedCommentsHTML(topLevelCommentsByArticleByDate, nestedCommentsByArticleByDate){
 
     let topCommentArray = topCommentsDBQuery;
-    let nestCommentArray = nestCommentDBQuery;
+    let nestCommentArray = nestedCommentsByArticleByDate;
 
     //Update nested comments with relevant HTML to display
     for (let i = 0; i < nestCommentArray.length; i++) {
@@ -115,5 +115,5 @@ function nestedComments(topCommentsDBQuery, nestCommentDBQuery){
 // Export functions.
 module.exports = {
     loadArticles,
-    nestedComments
+    makeNestedCommentsHTML
 };
