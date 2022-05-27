@@ -19,8 +19,6 @@ const { route } = require("express/lib/application");
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
-
-
     const user = res.locals.user;
 
     // Get default article view - all articles in descending order from latest:
@@ -83,7 +81,7 @@ router.post("/signup", async function (req, res) {
     dob: req.body.dob,
     bio: req.body.bio,
     avatarPath: req.body.avatar,
-    isAdmin: false,
+    adminFlag: 0,
   };
   //hash password
   user.password = await bcrypt.hashPassword(user.password);
