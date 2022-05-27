@@ -13,6 +13,7 @@ const bcrypt = require("../Helper/bcrypt-helper");
 const likeDao = require("../modules/like-dao");
 const subscribeDao = require("../modules/subscribe-dao");
 const { route } = require("express/lib/application");
+const cookieParser = require("cookie-parser");
 
 
 
@@ -239,7 +240,21 @@ router.get("/analytics", async function (req, res) {
 });
 
 
+router.post("/makeComment", async function (req, res){
 
+  let commentAuthorID = res.locals.user.userID;
+  console.log("Test comment leaver ID: "+commentAuthorID)
+
+  let commentContent = req.body.comment;
+  console.log("Test comment content: "+commentContent);
+
+  let commentArticleID = req.query.articleID
+  console.log("Test comment article ID: "+commentArticleID);
+
+  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
+  console.log("Test new comment ID: "+commentID);
+
+})
 
 
 module.exports = router;

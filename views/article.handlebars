@@ -28,7 +28,7 @@ add onclick button to clear/reset the comment box
 add reply buttons for other comments to allow replying
 template the comments section to show up via handlebars? --}}
 <div>
-    <form action="./makeComment" method="POST">
+    <form action="./makeComment?articleID={{articleInfo.articleID}}" method="POST">
         <label for="comment">Enter Comment:</label>
         <textarea name="comment" rows="4" cols="50"></textarea>
         <button type="submit">Post Comment</button>

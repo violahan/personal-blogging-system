@@ -44,7 +44,7 @@ create table comments
     commentID   integer   not null primary key,
     articleID   integer   not null,
     authorID    integer   not null,
-    parentID    integer,
+    parentID    integer default null,
     content     text      not null,
     publishDate timestamp not null default CURRENT_TIMESTAMP,
     foreign key (authorID) references user (userID),

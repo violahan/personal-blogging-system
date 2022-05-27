@@ -71,12 +71,21 @@ async function getCommentsByParent(parentId) {
     return comments;
 }
 
-async function addComment(articleId, authorId, parentId, content) {
+async function addComment(articleId, authorId, content) {
+    const db = await dbPromise;
+
+    const comment = await db.run(SQL`
+        insert into comments (articleID, authorID, content)
+        values (${articleId}, ${authorId}, ${content})`);
+    return comment;
+}
+
+async function addReplyComment(articleId, authorId, parentID, content) {
     const db = await dbPromise;
 
     const comment = await db.run(SQL`
         insert into comments (articleID, authorID, parentID, content)
-        values (${articleId}, ${authorId}), ${parentId}),${content})`);
+        values (${articleId}, ${authorId}, ${parentID}, ${content})`);
     return comment;
 }
 
@@ -113,7 +122,8 @@ module.exports = {
     addComment,
     removeComment,
     getCommentsAndArticleTitleByAuthorId,
-    getAllCommentsByArticleIDOrdered
+    getAllCommentsByArticleIDOrdered,
+    addReplyComment
 };
 
 
