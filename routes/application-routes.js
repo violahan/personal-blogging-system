@@ -97,8 +97,11 @@ router.get("/getArticle", async function (req, res){
 
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
+
+  const commentsToDisplay = await articleFunctions.getComments(articleID)
   
-  res.locals.articleInfo = articleInfo
+  res.locals.articleInfo = articleInfo;
+  res.locals.commentsToDisplay = commentsToDisplay;
 
   res.render("article")
 
@@ -228,16 +231,7 @@ router.get("/analytics", async function (req, res) {
 });
 
 
-router.get("/articleComments", async function (req, res){
 
-  const articleID = req.query.articleID;
-  const topLevelComments = await commentDAO.getDateOrderTopLevelCommentsByArticleID(articleID);
-  const nestedComments = await commentDAO.getDateOrderNestedCommentsByArticleID(articleID);
-
-  const commentsToDisplay = makeNestedCommentsHTML(topLevelComments, nestedComments);
-
-  res.locals.commentsToDisplay = commentsToDisplay;
-})
 
 
 module.exports = router;

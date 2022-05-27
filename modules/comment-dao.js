@@ -22,25 +22,25 @@ async function getCommentsById(commentId) {
     return comment;
 }
 
-async function getDateOrderTopLevelCommentsByArticleId(articleID) {
+async function getDateOrderTopLevelCommentsByArticleID(articleID) {
     const db = await dbPromise;
 
     const topLevelComments = await db.all(SQL`
         select *
         from comments
-        where articleID = ${articleID} and parentID = null
+        where articleID = ${articleID} and parentID IS NULL
         order by publishDate desc
     `);
     return topLevelComments;
 }
 
-async function getDateOrderNestedCommentsByArticleId(articleID) {
+async function getDateOrderNestedCommentsByArticleID(articleID) {
     const db = await dbPromise;
 
     const nestedComments = await db.all(SQL`
         select *
         from comments
-        where articleID = ${articleID} and parentID != null
+        where articleID = ${articleID} and parentID IS NOT NULL
         order by publishDate desc
     `);
     return nestedComments;
@@ -120,8 +120,8 @@ module.exports = {
     getCommentsByParent,
     addComment,
     removeComment,
-    getDateOrderTopLevelCommentsByArticleId,
-    getDateOrderNestedCommentsByArticleId,
+    getDateOrderTopLevelCommentsByArticleID,
+    getDateOrderNestedCommentsByArticleID,
     getCommentsAndArticleTitleByAuthorId
 };
 

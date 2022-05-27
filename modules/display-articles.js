@@ -54,49 +54,108 @@ let cardsToDisplay = "";
      
 }
 
+
+async function getComments(articleID){
+
+  
+
+    const topLevelComments = await commentDAO.getDateOrderTopLevelCommentsByArticleID(articleID);
+
+    const nestedComments = await commentDAO.getDateOrderNestedCommentsByArticleID(articleID);
+  
+
+
+    const commentsToDisplay = makeNestedCommentsHTML(topLevelComments, nestedComments);
+
+
+    return commentsToDisplay;
+    
+  }
+
+
+
 function makeNestedCommentsHTML(topLevelCommentsByArticleByDate, nestedCommentsByArticleByDate){
 
-    let topCommentArray = topCommentsDBQuery;
+    let topCommentArray = topLevelCommentsByArticleByDate;
     let nestCommentArray = nestedCommentsByArticleByDate;
 
-    //Update nested comments with relevant HTML to display
-    for (let i = 0; i < nestCommentArray.length; i++) {
-        for (let j = 0; j < nestCommentArray.length; j++) {
-            if(nestCommentArray[j].parentID == nestCommentArray[i].commentID){
-                nestCommentArray[i].nestedHTML = nestCommentArray[i].nestedHTML+
-                    `
-                        <div class="nest-level-2-comment">
-                            <p>${nestCommentArray[j].content}</p>
-                        </div>
-                    `
-            }   
-        }        
-    }
 
-    //Update Parent comments with nested HTML
+    // Make top level comment HTML
     for (let i = 0; i < topCommentArray.length; i++) {
-        
-        topCommentArray[i].displayHTML = 
-                `
-                <div class="top-level-comment">
-                    <p>${topCommentArray[i].content}</p>
-                </div>
-                `
+        topCommentArray[i].displayHTML =
+            `
+            <div class="top-level-comment">
+                <p>Publishdate =${topCommentArray[i].publishDate} CommentID = ${topCommentArray[i].commentID} Content = ${topCommentArray[i].content}</p>
+            </div>
+            `
+    }
+    
 
-        for (let j = 0; j < nestCommentArray.length; j++) {
+
+    // Make first level comment HTML
+    for (let i = 0; i < nestCommentArray.length; i++) {
+        
+        for (let j = 0; j < topCommentArray.length; j++) {
             
-            if(nestCommentArray[j].parentID == topCommentArray[i].commentID){
-                topCommentArray[i].displayHTML = topCommentArray[i].displayHTML+
+            if(nestCommentArray[i].parentID == topCommentArray[j].commentID){
+                nestCommentArray[i].displayHTML =
                 `
-                    <div class="nest-level-1-comment">
-                        ${nestCommentArray[j].nestedHTML}
+                    <div class="level-1-comment">
+                        <p>Publishdate =${nestCommentArray[i].publishDate} CommentID = ${nestCommentArray[i].commentID} Content = ${nestCommentArray[i].content}</p>
                     </div>
                 `
             }
-            
         }
-        
     }
+
+
+
+    // Make second level comment HTML
+    for (let i = 0; i < nestCommentArray.length; i++) {
+        
+        for (let j = 0; j < nestCommentArray.length; j++) {
+            
+            if(nestCommentArray[i].parentID == nestCommentArray[j].commentID){
+                nestCommentArray[i].displayHTML =
+                `
+                    <div class="level-2-comment">
+                        <p>Publishdate =${nestCommentArray[i].publishDate} CommentID = ${nestCommentArray[i].commentID} Content = ${nestCommentArray[i].content}</p>
+                    </div>
+                `
+            }
+        }
+    }
+
+  
+
+    // Add second level comment HTML to first level comment HTML
+    for (let i = 0; i < nestCommentArray.length; i++) {
+        
+        for (let j = 0; j < nestCommentArray.length; j++) {
+            
+            if(nestCommentArray[i].commentID == nestCommentArray[j].parentID){
+
+                nestCommentArray[i].displayHTML = nestCommentArray[i].displayHTML+nestCommentArray[j].displayHTML;
+
+            }
+        }
+    }
+
+  
+
+    // Add first level comments to top level comments
+    for (let i = 0; i < topCommentArray.length; i++) {
+        
+        for (let j = 0; j < nestCommentArray.length; j++) {
+            
+            if(topCommentArray[i].commentID == nestCommentArray[j].parentID){
+
+                topCommentArray[i].displayHTML = topCommentArray[i].displayHTML+nestCommentArray[j].displayHTML
+
+            }
+        }
+    }
+
 
     // Create full comment string HTML:
     let commentHTMLtoDisplay = "";
@@ -115,5 +174,6 @@ function makeNestedCommentsHTML(topLevelCommentsByArticleByDate, nestedCommentsB
 // Export functions.
 module.exports = {
     loadArticles,
+    getComments,
     makeNestedCommentsHTML
 };
