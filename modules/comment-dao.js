@@ -142,7 +142,7 @@ async function getCommentsAndArticleTitleByAuthorId(authorId) {
         select c.commentID, c.content, c.publishDate, a.title
         from comments as c
         join articles as a on c.articleID = a.articleID
-        where c.authorID = ${authorId}
+        where c.commentAuthorID = ${authorId}
     `);
 
     return results;
@@ -155,10 +155,9 @@ module.exports = {
     getCommentsByCommentAuthor,
     getCommentsByParent,
     addComment,
-    removeComment,
     getCommentsByArticleAuthor,
     getCommentsCountPerDayByArticleAuthor,
-    getCumulativeSubscribeCountByArticleAuthor
+    getCumulativeSubscribeCountByArticleAuthor,
     removeComment,
     getCommentsAndArticleTitleByAuthorId
 };

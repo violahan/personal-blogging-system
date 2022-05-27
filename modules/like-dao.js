@@ -87,7 +87,7 @@ module.exports = {
     getLikesByArticle,
     addLike,
     removeLike,
-    getLikesAndArticleTitleByUserId
+    getLikesAndArticleTitleByUserId,
     getLikesByArticleAuthor
 };
 
