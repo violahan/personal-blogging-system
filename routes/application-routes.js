@@ -140,7 +140,10 @@ router.get("/sortedArticles", async function (req, res) {
 
 router.get("/profile", verifyAuthenticated, async function (req, res) {
   const userId = req.query.id;
+ 
   let user;
+
+
   if (userId == res.locals.user.userID) {
     res.locals.isCurrentUser = true;
     user = res.locals.user;

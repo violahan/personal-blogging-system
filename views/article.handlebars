@@ -3,7 +3,7 @@
 <div id="full-article-container">
 <p>Article ID: {{articleInfo.articleID}}</p>
 <h1>Title: {{articleInfo.title}}</h1>
-<h4>Author: {{articleInfo.userName}}</h4>
+<h4><a href="./profile?id={{articleInfo.authorID}}">Author: {{articleInfo.userName}}</a></h4>
 <p>Date: {{articleInfo.publishDate}}</p>
 <h5>Image:</h5>
 <img src="{{articleInfo.path}}" alt="">
@@ -44,7 +44,7 @@ template the comments section to show up via handlebars? --}}
                 <p>Publishdate ={{this.publishDate}}</p>
                 <p>CommentID = {{this.commentID}}</p>
                 <p>Content = {{this.content}}</p>
-                <p>Username = {{this.userName}}</p>
+                <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
             </div>
                 {{#if this.children}}
                     {{#each this.children}}
@@ -52,7 +52,7 @@ template the comments section to show up via handlebars? --}}
                         <p>Publishdate ={{this.publishDate}}</p>
                         <p>CommentID = {{this.commentID}}</p>
                         <p>Content = {{this.content}}</p>
-                        <p>Username = {{this.userName}}</p>
+                        <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
                     </div>
                     {{#if this.children}}
                             {{#each this.children}}
@@ -60,7 +60,7 @@ template the comments section to show up via handlebars? --}}
                                 <p>Publishdate ={{this.publishDate}}</p>
                                 <p>CommentID = {{this.commentID}}</p>
                                 <p>Content = {{this.content}}</p>4
-                                <p>Username = {{this.userName}}</p>
+                                <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
                             </div>
                             {{/each}}
                         {{/if}}
