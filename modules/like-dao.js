@@ -68,12 +68,26 @@ async function removeLike(articleId, userId) {
     return like;
 }
 
+async function getLikesAndArticleTitleByUserId(userId) {
+    const db = await dbPromise;
+
+    const results = await db.all(SQL`
+        select l.articleID, l.publishDate, a.title
+        from likes as l
+        join articles as a on l.articleID = a.articleID
+        where l.userID = ${userId}
+    `);
+
+    return results;
+}
+
 module.exports = {
     getAllLikes,
     getLikesByUser,
     getLikesByArticle,
     addLike,
     removeLike,
+    getLikesAndArticleTitleByUserId
     getLikesByArticleAuthor
 };
 
