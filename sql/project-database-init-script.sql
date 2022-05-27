@@ -135,11 +135,13 @@ insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
 (6, 'test1tn', './images/thumbnails/test1tn.jpg', 19, 0),
 (7, 'test5tn', './images/thumbnails/test5tn.jpg', 12, 0);
 
-insert into comments (commentID, articleID, commentAuthorID, parentID, content) values
-(1, 1, 2, null, 'Great article!'),
-(2, 1, 3, null, 'Good insight.'),
-(3, 1, 1, 2, 'Thank you!'),
-(4, 2, 3, null, 'Interesting...');
+insert into comments (commentID, articleID, commentAuthorID, parentID, content, publishDate) values
+(1, 1, 2, null, 'Great article!', '2022-05-24 23:33:57'),
+(2, 1, 3, null, 'Good insight.','2022-05-25 17:33:47'),
+(3, 1, 1, 2, 'Thank you!','2022-05-26 03:58:23'),
+(4, 2, 3, null, 'Interesting...','2022-05-27 12:30:31'),
+(5, 2, 6, 3, 'test...','2022-05-28 22:26:45'),
+(6, 3, 8, null, 'test...','2022-05-29 19:30:52');
 
 insert into likes (articleID, userID) values
 (1,2),
@@ -147,8 +149,8 @@ insert into likes (articleID, userID) values
 (4,3);
 
 
-insert into subscribes (userSubscriberID, articleAuthorID) values
-(2,1),
-(3,1);
+insert into subscribes (userSubscriberID, articleAuthorID, dateSubscribed) values
+(2, 1, '2022-05-24 23:33:57'),
+(3, 1, '2022-05-25 17:33:47');
 
 
