@@ -32,7 +32,7 @@ async function getAllCommentsByArticleIDOrdered(articleID) {
     const allOrderedComments = await db.all(SQL`
         select C.*, U.userID, U.userName, U.avatarFilePath
         from comments as C, user as U
-        where C.articleID = ${articleID} and U.userID = C.authorID
+        where C.articleID = ${articleID} and U.userID = C.commentAuthorID
         order by publishDate desc
     `);
     return allOrderedComments;
