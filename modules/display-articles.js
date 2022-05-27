@@ -108,8 +108,6 @@ function unflattenComments(flatArrayOfComments){
 }
 
 
-//Testing tree structure array
-//Testing tree structure array
 
 
 
