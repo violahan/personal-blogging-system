@@ -16,6 +16,7 @@ let cardsToDisplay = "";
         let authorID = orderedArticleArray[i].authorID;
         let userName = orderedArticleArray[i].userName;
         let publishDate = orderedArticleArray[i].publishDate;
+        let avatarFilePath = orderedArticleArray[i].avatarFilePath;
 
         let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleID);
         

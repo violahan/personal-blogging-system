@@ -96,9 +96,9 @@ create table notifications
 );
 
 insert into user (userID, userName, password, fName, lName, DOB, description, avatarFilePath, adminFlag) values
-(1, 'ccuerda0', '67jbtzeJaLbb', 'Carly', 'Cuerda', '13-09-1950', 'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.', 'http://dummyimage.com/119x100.png/cc0000/ffffff', 1),
-(2, 'tom0122', 'hkyw7902538', 'Tom', 'Lee', '29-06-1990', 'Welcome to my homepage.', 'public/avatars/1.png', 0),
-(3, 'alexc08', 'rtwergf8', 'Alex', 'Spence', '06-12-1993', '', 'public/avatars/3.png', 0);
+(1, 'ccuerda0', '67jbtzeJaLbb', 'Carly', 'Cuerda', '13-09-1950', 'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.', './avatars/5.jpeg', 1),
+(2, 'tom0122', 'hkyw7902538', 'Tom', 'Lee', '29-06-1990', 'Welcome to my homepage.', './avatars/1.png', 0),
+(3, 'alexc08', 'rtwergf8', 'Alex', 'Spence', '06-12-1993', '', './avatars/3.jpeg', 0);
 
 insert into articles (articleID, authorID, title, publishDate, content, numberOfComments, numberOfLikes) values (1, 1, 'Sed accumsan felis.', '2020-02-06 16:38:41', 'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh.', '0', '0');
 insert into articles (articleID, authorID, title, publishDate, content, numberOfComments, numberOfLikes) values (2, 1, 'Praesent blandit.', '2021-03-30 08:40:21', 'Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.', '0', '0');
@@ -128,12 +128,11 @@ insert into articles (articleID, authorID, title, publishDate, content, numberOf
 
 insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
 (1, 'test1tn', './images/thumbnails/test1tn.jpg', 5, 1),
-(2, 'test2tn', './images/thumbnails/test2tn.jpg', 5, 0),
-(3, 'test2tn', './images/thumbnails/test2tn.jpg', 15, 1),
-(4, 'test3tn', './images/thumbnails/test3tn.jpg', 20, 1),
-(5, 'test4tn', './images/thumbnails/test4tn.jpg', 19, 1),
-(6, 'test1tn', './images/thumbnails/test1tn.jpg', 19, 0),
-(7, 'test5tn', './images/thumbnails/test5tn.jpg', 12, 0);
+(2, 'test2tn', './images/thumbnails/test2tn.jpg', 15, 1),
+(3, 'test3tn', './images/thumbnails/test3tn.jpg', 20, 1),
+(4, 'test4tn', './images/thumbnails/test4tn.jpg', 19, 1),
+(5, 'test5tn', './images/thumbnails/test5tn.jpg', 12, 1),
+(6, 'test1tn', './images/thumbnails/test1tn.jpg', 1, 1);
 
 insert into comments (commentID, articleID, authorID, parentID, content) values
 (1, 1, 2, null, 'Great article!'),

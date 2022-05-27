@@ -4,7 +4,7 @@ const dbPromise = require("./database.js");
 async function getImageByArticleID(articleID){
     const db = await dbPromise;
 
-    const imagesByArticle = await db.all(SQL`
+    const imagesByArticle = await db.get(SQL`
         select *
         from images
         where articleID = ${articleID}
