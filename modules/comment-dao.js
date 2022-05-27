@@ -32,7 +32,7 @@ async function getAllCommentsByArticleIDOrdered(articleID) {
     const allOrderedComments = await db.all(SQL`
         select C.*, U.userID, U.userName, U.avatarFilePath
         from comments as C, user as U
-        where C.articleID = ${articleID} and U.userID = C.authorID
+        where C.articleID = ${articleID} and U.userID = C.commentAuthorID
         order by publishDate desc
     `);
     return allOrderedComments;
@@ -49,13 +49,26 @@ async function getCommentsByArticle(articleId) {
     return comments;
 }
 
-async function getCommentsByAuthor(authorId) {
+async function getCommentsByCommentAuthor(authorId) {
     const db = await dbPromise;
 
     const comments = await db.all(SQL`
         select *
         from comments
-        where authorID = ${authorId}
+        where commentAuthorID = ${authorId}
+    `);
+    return comments;
+}
+
+async function getCommentsByArticleAuthor(authorId) {
+    const db = await dbPromise;
+
+    const comments = await db.all(SQL`
+        select *
+        from comments join articles  
+            on comments.articleID = articles.articleID
+        where articles.authorID = ${authorId} 
+        order by comments.publishDate desc 
     `);
     return comments;
 }
@@ -71,12 +84,59 @@ async function getCommentsByParent(parentId) {
     return comments;
 }
 
-async function addComment(articleId, authorId, parentId, content) {
+async function getCommentsCountPerDayByArticleAuthor(authorId, dayNumber) {
+    const db = await dbPromise;
+
+    const commentStatistics = await db.all(SQL`
+        with commentByDay as (
+            select strftime('%Y-%m-%d', comments.publishDate) as date,
+                   count(*) as count
+            from
+                comments join articles on comments.articleID = articles.articleID
+            where
+                articles.authorID = ${authorId}
+            group by
+                strftime('%Y-%m-%d', comments.publishDate)
+            order by strftime('%Y-%m-%d', comments.publishDate) desc
+            limit ${dayNumber}
+        )
+        select *
+        from commentByDay
+        order by date;
+    `);
+    return commentStatistics;
+}
+
+async function getCumulativeSubscribeCountByArticleAuthor(authorId) {
+    const db = await dbPromise;
+
+    const subscribeStatistics = await db.all(SQL`
+        with SubscribeByDay as (
+            select
+                strftime('%Y-%m-%d', dateSubscribed) as date,
+                count(*) as count
+            from
+                subscribes
+            where
+                articleAuthorID = ${authorId}
+            group by
+                strftime('%Y-%m-%d', dateSubscribed)
+        )
+        select
+            date,
+            sum(count) over (order by date rows between unbounded preceding and current row) as cumulativeCount
+        from SubscribeByDay
+    `);
+    return subscribeStatistics
+}
+
+
+async function addComment(articleId, commentAuthorID, parentId, content) {
     const db = await dbPromise;
 
     const comment = await db.run(SQL`
-        insert into comments (articleID, authorID, parentID, content)
-        values (${articleId}, ${authorId}), ${parentId}),${content})`);
+        insert into comments (articleID, commentAuthorID, parentID, content)
+        values (${articleId}, ${commentAuthorID}), ${parentId}),${content})`);
     return comment;
 }
 
@@ -98,7 +158,7 @@ async function getCommentsAndArticleTitleByAuthorId(authorId) {
         select c.commentID, c.content, c.publishDate, a.title
         from comments as c
         join articles as a on c.articleID = a.articleID
-        where c.authorID = ${authorId}
+        where c.commentAuthorID = ${authorId}
     `);
 
     return results;
@@ -108,9 +168,12 @@ module.exports = {
     getAllComments,
     getCommentsById,
     getCommentsByArticle,
-    getCommentsByAuthor,
+    getCommentsByCommentAuthor,
     getCommentsByParent,
     addComment,
+    getCommentsByArticleAuthor,
+    getCommentsCountPerDayByArticleAuthor,
+    getCumulativeSubscribeCountByArticleAuthor,
     removeComment,
     getCommentsAndArticleTitleByAuthorId,
     getAllCommentsByArticleIDOrdered

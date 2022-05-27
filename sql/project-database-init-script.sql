@@ -43,11 +43,11 @@ create table comments
 (
     commentID   integer   not null primary key,
     articleID   integer   not null,
-    authorID    integer   not null,
+    commentAuthorID    integer   not null,
     parentID    integer,
     content     text      not null,
     publishDate timestamp not null default CURRENT_TIMESTAMP,
-    foreign key (authorID) references user (userID),
+    foreign key (commentAuthorID) references user (userID),
     foreign key (articleID) references articles (articleID)
 
 );
@@ -135,20 +135,25 @@ insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
 (6, 'test1tn', './images/thumbnails/test1tn.jpg', 19, 0),
 (7, 'test5tn', './images/thumbnails/test5tn.jpg', 12, 0);
 
-insert into comments (commentID, articleID, authorID, parentID, content) values
-(1, 1, 2, null, 'Great article!'),
-(2, 1, 3, null, 'Good insight.'),
-(3, 1, 1, 2, 'Thank you!'),
-(4, 2, 3, null, 'Interesting...'),
-(5, 5, 1, null, 'top level'),
-(6, 5, 2, 5, 'Level 1'),
-(7, 5, 3, 6, 'level 2'),
-(8, 5, 1, null, 'top level'),
-(9, 5, 2, null, 'top level'),
-(10, 5, 3, 8, 'level 1'),
-(11, 5, 2, 10, 'level 2'),
-(12, 5, 1, null, 'Top level'),
-(13, 5, 1, 12, 'Level 1');
+insert into comments (commentID, articleID, commentAuthorID, parentID, content, publishDate) values
+(1, 1, 2, null, 'Great article!', '2022-05-24 23:33:57'),
+(2, 1, 3, null, 'Good insight.','2022-05-25 17:33:47'),
+(3, 1, 1, 2, 'Thank you!','2022-05-26 03:58:23'),
+(4, 2, 3, null, 'Interesting...','2022-05-26 12:30:31'),
+(5, 5, 1, null, 'top level','2022-05-26 22:26:45'),
+(6, 5, 2, 5, 'Level 1','2022-05-26 19:30:52'),
+(7, 5, 3, 6, 'level 2','2022-05-27 19:30:52'),
+(8, 5, 1, null, 'top level','2022-05-27 19:30:52'),
+(9, 5, 2, null, 'top level','2022-05-27 19:30:52'),
+(10, 5, 3, 8, 'level 1','2022-05-28 19:30:52'),
+(11, 5, 2, 10, 'level 2','2022-05-28 19:30:52'),
+(12, 5, 1, null, 'Top level','2022-05-28 19:30:52'),
+(13, 5, 1, 12, 'Level 1','2022-05-29 19:30:52'),
+(14, 1, 3, null, 'Test','2022-05-26 12:30:31'),
+(15, 1, 2, null, 'Test','2022-05-27 12:30:31'),
+(16, 1, 2, null, 'Test','2022-05-28 12:30:31'),
+(17, 1, 2, null, 'Test','2022-05-28 12:30:31'),
+(18, 1, 2, null, 'Test','2022-05-29 12:30:31');
 
 insert into likes (articleID, userID) values
 (1,2),
@@ -156,8 +161,8 @@ insert into likes (articleID, userID) values
 (4,3);
 
 
-insert into subscribes (userSubscriberID, articleAuthorID) values
-(2,1),
-(3,1);
+insert into subscribes (userSubscriberID, articleAuthorID, dateSubscribed) values
+(2, 1, '2022-05-24 23:33:57'),
+(3, 1, '2022-05-25 17:33:47');
 
 

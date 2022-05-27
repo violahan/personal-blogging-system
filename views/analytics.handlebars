@@ -8,17 +8,17 @@
             <h1>Summary: </h1>
             <div class="analytics-card" id="analytics-card-highlight">
                 <p>Followers: </p>
-                <span id="analytics-follower" class="analytics-number">{{totalFollowers}}</span>
+                <span id="analytics-follower" class="analytics-number">{{followersNumber}}</span>
             </div>
 
             <div class="analytics-card">
                 <p>Comments: </p>
-                <span id="analytics-comment" class="analytics-number">580</span>
+                <span id="analytics-comment" class="analytics-number">{{commentsNumber}}</span>
             </div>
 
             <div class="analytics-card" >
                 <p>Likes: </p>
-                <span id="analytics-like" class="analytics-number">580</span>
+                <span id="analytics-like" class="analytics-number">{{likesNumber}}</span>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
             </div>
 
             <div class="analytics-card">
-                <canvas id="myChart2" width="200" height="100"></canvas>
+                <canvas id="subscribeChart" width="200" height="100"></canvas>
             </div>
         </div>
     </div>
@@ -77,17 +77,31 @@
 </div>
 
 <script>
-    const ctx1 = document.getElementById('commentChart').getContext('2d');
-    const ctx2 = document.getElementById('myChart2').getContext('2d');
+    const commentChart = document.getElementById('commentChart').getContext('2d');
+    const subscribeChart = document.getElementById('subscribeChart').getContext('2d');
+
+    const commentCanvasX = []
+    const commentCanvasY = []
+    {{#each commentCountByDay}}
+    commentCanvasX.push("{{this.date}}");
+    commentCanvasY.push({{this.count}});
+    {{/each}}
+
+    const subscribeCanvasX = []
+    const subscribeCanvasY = []
+    {{#each subscribeCumulativeCount}}
+    subscribeCanvasX.push("{{this.date}}");
+    subscribeCanvasY.push({{this.cumulativeCount}});
+    {{/each}}
 
 
-    const myChart1 = new Chart(ctx1, {
+    const myChart1 = new Chart(commentChart, {
         type: 'bar',
         data: {
-            labels: ['21,May', '22,May', '23,May', '24,May', '25,May', '26,May'],
+            labels: commentCanvasX,
             datasets: [{
                 label: 'Number of comments',
-                data: [12, 19, 3, 5, 2, 3],
+                data: commentCanvasY,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -116,26 +130,18 @@
         }
     });
 
-
-    const data = {
-        labels: ['21,May', '22,May', '23,May', '24,May', '25,May', '26,May'],
-        datasets: [{
-            label: 'Total subscribers',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
-
-    const config = {
+    const myChart = new Chart(subscribeChart, {
         type: 'line',
-        data: data,
-        options: {}
-    };
-
-    const myChart = new Chart(
-            document.getElementById('myChart2'),
-            config
+        data: {
+            labels: subscribeCanvasX,
+            datasets: [{
+                label: 'Total subscribers',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: subscribeCanvasY,
+            }]
+        },
+        options: {}}
     );
 
 </script>
