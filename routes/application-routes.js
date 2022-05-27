@@ -20,8 +20,6 @@ const { route } = require("express/lib/application");
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
-
-
     const user = res.locals.user;
 
     // Get default article view - all articles in descending order from latest:
@@ -84,7 +82,7 @@ router.post("/signup", async function (req, res) {
     dob: req.body.dob,
     bio: req.body.bio,
     avatarPath: req.body.avatar,
-    isAdmin: false,
+    adminFlag: 0,
   };
   //hash password
   user.password = await bcrypt.hashPassword(user.password);
@@ -101,8 +99,12 @@ router.get("/getArticle", async function (req, res){
 
   res.locals.articleInfo = articleInfo
 
-  res.render("article")
+  const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
+  res.locals.articleInfo = articleInfo;
+  res.locals.commentsToDisplay = commentsToDisplay;
+
+  res.render("article")
 });
 
 
@@ -235,5 +237,9 @@ router.get("/analytics", async function (req, res) {
     res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
     res.render("analytics");
 });
+
+
+
+
 
 module.exports = router;

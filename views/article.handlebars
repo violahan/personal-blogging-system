@@ -15,12 +15,62 @@
 
 {{!-- Comment text boxes - if user if loged in --}}
 {{#if user}}
+{{!-- TODO Add button to allow another comment to be added if already added
+add onclick button to clear/reset the comment box
+add reply buttons for other comments to allow replying
+template the comments section to show up via handlebars? --}}
 <div>
-
+    <form action="./makeComment" method="POST">
+        <label for="comment">Enter Comment:</label>
+        <textarea name="comment" rows="4" cols="50"></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
 </div>
 {{/if}}
 
 {{!-- Display comments on article here --}}
-<div id="comments-container">
+<div>
+    <button id="hide-comments-button" onclick="hideComments()">Hide Comments</button>
+    <button id="show-comments-button" onclick="showComments()" style="display: none">Show Comments</button>
+    <h2>Comments</h2>
+    <p id="comments-message"></p>
+    <div id="comments-container" onload="getcomments()">
 
+        {{!-- {{{commentsToDisplay}}} --}}
+
+        {{#if commentsToDisplay}}
+            {{#each commentsToDisplay}}
+            <div class="top-level-comment">
+                <p>Publishdate ={{this.publishDate}}</p>
+                <p>CommentID = {{this.commentID}}</p>
+                <p>Content = {{this.content}}</p>
+                <p>Username = {{this.userName}}</p>
+            </div>
+                {{#if this.children}}
+                    {{#each this.children}}
+                    <div class="level-1-comment">
+                        <p>Publishdate ={{this.publishDate}}</p>
+                        <p>CommentID = {{this.commentID}}</p>
+                        <p>Content = {{this.content}}</p>
+                        <p>Username = {{this.userName}}</p>
+                    </div>
+                    {{#if this.children}}
+                            {{#each this.children}}
+                            <div class="level-2-comment">
+                                <p>Publishdate ={{this.publishDate}}</p>
+                                <p>CommentID = {{this.commentID}}</p>
+                                <p>Content = {{this.content}}</p>4
+                                <p>Username = {{this.userName}}</p>
+                            </div>
+                            {{/each}}
+                        {{/if}}
+                    {{/each}}
+                {{/if}}
+            {{/each}}
+        {{else}}
+            <p>No comments on this article. Yet.</p>
+        {{/if}}
+
+
+    </div>
 </div>

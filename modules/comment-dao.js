@@ -22,6 +22,22 @@ async function getCommentsById(commentId) {
     return comment;
 }
 
+
+
+
+
+async function getAllCommentsByArticleIDOrdered(articleID) {
+    const db = await dbPromise;
+
+    const allOrderedComments = await db.all(SQL`
+        select C.*, U.userID, U.userName, U.avatarFilePath
+        from comments as C, user as U
+        where C.articleID = ${articleID} and U.userID = C.authorID
+        order by publishDate desc
+    `);
+    return allOrderedComments;
+}
+
 async function getCommentsByArticle(articleId) {
     const db = await dbPromise;
 
@@ -159,7 +175,8 @@ module.exports = {
     getCommentsCountPerDayByArticleAuthor,
     getCumulativeSubscribeCountByArticleAuthor,
     removeComment,
-    getCommentsAndArticleTitleByAuthorId
+    getCommentsAndArticleTitleByAuthorId,
+    getAllCommentsByArticleIDOrdered
 };
 
 
