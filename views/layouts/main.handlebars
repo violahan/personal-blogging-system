@@ -18,11 +18,11 @@
 <body>
     <p>Some place holder items/links for a nav bar to help testing</p>    
     <div id="navBar">
-
         {{#if user}}
             <a href="./">Home</a>
             <a href="">Profile (pending route)</a>
             <a href="./logout">Logout</a>
+            <a href="./profile?id={{user.userID}}">Profile</a>
             <a href="./analytics?userId=1">Analytics (userId=1)</a>
         {{else}}
             <a href="./">Home</a>
@@ -30,7 +30,6 @@
             <a href="./signup">Create Account</a>
             <a href="./analytics?userId=1">Analytics (userId=1)</a>
         {{/if}}
-
     </div>
 
     {{{body}}}
