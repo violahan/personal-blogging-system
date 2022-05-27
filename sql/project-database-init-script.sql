@@ -139,7 +139,16 @@ insert into comments (commentID, articleID, authorID, parentID, content) values
 (1, 1, 2, null, 'Great article!'),
 (2, 1, 3, null, 'Good insight.'),
 (3, 1, 1, 2, 'Thank you!'),
-(4, 2, 3, null, 'Interesting...');
+(4, 2, 3, null, 'Interesting...'),
+(5, 5, 1, null, 'top level'),
+(6, 5, 2, 5, 'Level 1'),
+(7, 5, 3, 6, 'level 2'),
+(8, 5, 1, null, 'top level'),
+(9, 5, 2, null, 'top level'),
+(10, 5, 3, 8, 'level 1'),
+(11, 5, 2, 10, 'level 2'),
+(12, 5, 1, null, 'Top level'),
+(13, 5, 1, 12, 'Level 1');
 
 insert into likes (articleID, userID) values
 (1,2),

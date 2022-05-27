@@ -1,5 +1,6 @@
 const res = require("express/lib/response");
 const articleDAO = require("./article-dao.js");
+const commentDAO = require("./comment-dao.js");
 const userDAO = require("./user-dao");
 const imageDAO = require("./images-dao");
 
@@ -54,7 +55,72 @@ let cardsToDisplay = "";
 }
 
 
+
+//Testing tree structure array
+//Testing tree structure array
+async function getAllCommentsByArticleIDOrdered(articleID){
+    const topLevelComments = await commentDAO.getAllCommentsByArticleIDOrdered(articleID);
+    const treeStructureComments = unflattenComments(topLevelComments) 
+   
+    return treeStructureComments;
+}
+
+
+// This is not a proper unflattening function, but works to make required two levels of comments
+function unflattenComments(flatArrayOfComments){
+
+    let treeArray = [];
+
+    // Add children placehodler array to each comment:
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        flatArrayOfComments[i].children = [];
+    }
+
+    // make top level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        if(flatArrayOfComments[i].parentID == null){
+            treeArray.push(flatArrayOfComments[i])
+        }
+    }
+
+    // add first level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            if(flatArrayOfComments[i].parentID == treeArray[j].commentID){
+                treeArray[j].children.push(flatArrayOfComments[i]);
+            }
+        }
+    }
+
+
+    // add second level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            for (let k = 0; k < treeArray[j].children.length; k++) {
+                if(flatArrayOfComments[i].parentID == treeArray[j].children[k].commentID){
+                    treeArray[j].children[k].children.push(flatArrayOfComments[i]);
+                }
+            }
+        }
+    }
+
+    return treeArray;
+}
+
+
+//Testing tree structure array
+//Testing tree structure array
+
+
+
+
+
+
+
 // Export functions.
 module.exports = {
-    loadArticles
+    loadArticles,
+    getAllCommentsByArticleIDOrdered,
+    unflattenComments
+
 };
