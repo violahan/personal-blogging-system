@@ -96,6 +96,22 @@ async function getAllArticlesByDateAscending(){
 
 };
 
+async function getArticleByID(articleID){
+    const db = await dbPromise;
+
+    const articleInfoByID = await db.get(SQL`
+        select A.*, U.userID, U.userName, U.fName, U.lName, U.avatarFilePath, I.imageID, I.path, I.articleID
+        from articles as A, user as U, images as I
+        where A.articleID = ${articleID} and A.authorID = U.userID and A.articleID = I.articleID
+        `);
+
+    return articleInfoByID;
+
+
+
+
+};
+
 // Export functions.
 module.exports = {
     getAllArticles,
@@ -103,5 +119,9 @@ module.exports = {
     getAllArticlesByDateAscending,
     getAllArticlesByDateDescending,
     getArticleCardInformationOrderedBy,
+
+    getArticleByID,
+
     getArticlesCardInformationByUserOrderedBy
+
 };

@@ -11,6 +11,7 @@ const userDao = require("../modules/user-dao.js");
 const subscribeDao = require("../modules/subscribe-dao.js");
 
 const bcrypt = require("../Helper/bcrypt-helper");
+const { route } = require("express/lib/application");
 
 
 
@@ -88,6 +89,18 @@ router.post("/signup", async function (req, res) {
   //save user, return the user_id we might need it later
   const userId = await userDao.createNewUser(user);
   res.redirect("/");
+});
+
+// load page to display a given article will require /getArticle?articleID=XXX in the URL
+router.get("/getArticle", async function (req, res){
+
+  const articleID = req.query.articleID;
+  const articleInfo = await articleDAO.getArticleByID(articleID);
+  
+  res.locals.articleInfo = articleInfo
+
+  res.render("article")
+
 });
 
 
