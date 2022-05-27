@@ -13,3 +13,4 @@ function showComments(){
 
     document.getElementById('hide-comments-button').style.display = "inline-block"
 }
+
