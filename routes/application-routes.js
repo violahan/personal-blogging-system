@@ -8,7 +8,6 @@ const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
 const commentDao = require("../modules/comment-dao");
 const userDao = require("../modules/user-dao.js");
-const subscribeDao = require("../modules/subscribe-dao.js");
 
 const bcrypt = require("../Helper/bcrypt-helper");
 const likeDao = require("../modules/like-dao");
