@@ -44,16 +44,29 @@ template the comments section to show up via handlebars? --}}
     <p id="comments-message"></p>
     <div id="comments-container" onload="getcomments()">
 
-        {{!-- {{{commentsToDisplay}}} --}}
-
         {{#if commentsToDisplay}}
             {{#each commentsToDisplay}}
-            <div class="top-level-comment">
+            <div class="top-level-comment">                
                 <img src="{{this.avatarFilePath}}" alt="" class="avatar">
                 <p>Publishdate ={{this.publishDate}}</p>
                 <p>CommentID = {{this.commentID}}</p>
                 <p>Content = {{this.content}}</p>
                 <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
+                
+                {{#if ../user}}
+                <div class="reply-box">
+                    <button id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
+                    <button id="cancel-reply-{{this.commentID}}" onclick="cancelReply({{this.commentID}})" style="display: none">Cancel Reply</button>
+                    
+                    <form id="reply-form-{{this.commentID}}" action="./makeReply?articleID={{../articleInfo.articleID}}&parentID={{this.commentID}}&commentAuthorID={{../user.userID}}" method="POST" style="display: none">
+                        <label for="reply">Enter Reply:</label>
+                        <textarea name="reply" rows="4" cols="50"></textarea>
+                        <button type="submit">Post Reply</button>
+                    </form>
+                    
+                </div>
+                {{/if}}
+
             </div>
                 {{#if this.children}}
                     {{#each this.children}}
@@ -63,6 +76,22 @@ template the comments section to show up via handlebars? --}}
                         <p>CommentID = {{this.commentID}}</p>
                         <p>Content = {{this.content}}</p>
                         <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
+                    
+                     {{#if ../../user}}
+                        <div class="reply-box">
+                            <button id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
+                            <button id="cancel-reply-{{this.commentID}}" onclick="cancelReply({{this.commentID}})" style="display: none">Cancel Reply</button>
+                            
+                            <form id="reply-form-{{this.commentID}}" action="./makeReply?articleID={{../../articleInfo.articleID}}&parentID={{this.commentID}}&commentAuthorID={{../../user.userID}}" method="POST" style="display: none">
+                                <label for="reply">Enter Reply:</label>
+                                <textarea name="reply" rows="4" cols="50"></textarea>
+                                <button type="submit">Post Reply</button>
+                            </form>
+                            
+                        </div>
+                    {{/if}}
+                    
+                    
                     </div>
                     {{#if this.children}}
                             {{#each this.children}}
