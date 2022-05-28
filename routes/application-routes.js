@@ -93,7 +93,7 @@ router.post("/signup", async function (req, res) {
 
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
 router.get("/getArticle", async function (req, res){
-
+ 
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
 
@@ -243,16 +243,23 @@ router.get("/analytics", async function (req, res) {
 router.post("/makeComment", async function (req, res){
 
   let commentAuthorID = res.locals.user.userID;
-  console.log("Test comment leaver ID: "+commentAuthorID)
-
   let commentContent = req.body.comment;
-  console.log("Test comment content: "+commentContent);
-
   let commentArticleID = req.query.articleID
-  console.log("Test comment article ID: "+commentArticleID);
-
   let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
-  console.log("Test new comment ID: "+commentID);
+
+  res.redirect("/getArticle?articleID="+commentArticleID)
+
+})
+
+router.post("/makeReply", async function (req, res){
+
+  let commentAuthorID = res.locals.user.userID;
+  let commentContent = req.body.reply;
+  let commentArticleID = req.query.articleID
+  let parentCommentID = req.query.parentID
+  let commentID = await commentDao.addReplyComment(commentArticleID, commentAuthorID, parentCommentID, commentContent)
+
+  res.redirect("/getArticle?articleID="+commentArticleID)
 
 })
 

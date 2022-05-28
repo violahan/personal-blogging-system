@@ -127,3 +127,27 @@ function displayUserArticles(){
     document.getElementById('user-articles-home').style.display = "block"
     document.getElementById('user-article-button').style.border = "2px solid #4CAF50";
 }
+
+function letReply(parentCommentID){
+    
+    let replyID = "let-reply-"+parentCommentID;
+    let cancelID = "cancel-reply-"+parentCommentID;
+    let replyFormID = "reply-form-"+parentCommentID;
+
+
+    document.getElementById(replyID).style.display = "none"
+    document.getElementById(cancelID).style.display = "inline-block"
+    document.getElementById(replyFormID).style.display = "block"
+}
+
+function cancelReply(parentCommentID){
+    
+    let replyID = "let-reply-"+parentCommentID;
+    let cancelID = "cancel-reply-"+parentCommentID;
+    let replyFormID = "reply-form-"+parentCommentID;
+    
+    document.getElementById(replyID).style.display = "inline-block"
+    document.getElementById(cancelID).style.display = "none"
+    document.getElementById(replyFormID).style.display = "none"
+
+}
