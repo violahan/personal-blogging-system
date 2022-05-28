@@ -84,6 +84,7 @@ async function getCommentsByParent(parentId) {
     return comments;
 }
 
+
 async function getCommentsCountPerDayByArticleAuthor(authorId, dayNumber) {
     const db = await dbPromise;
 
@@ -131,14 +132,26 @@ async function getCumulativeSubscribeCountByArticleAuthor(authorId) {
 }
 
 
-async function addComment(articleId, commentAuthorID, parentId, content) {
+async function addComment(articleId, authorId, content) {
     const db = await dbPromise;
 
     const comment = await db.run(SQL`
-        insert into comments (articleID, commentAuthorID, parentID, content)
-        values (${articleId}, ${commentAuthorID}), ${parentId}),${content})`);
+        insert into comments (articleID, authorID, content)
+        values (${articleId}, ${authorId}, ${content})`);
     return comment;
 }
+
+async function addReplyComment(articleId, authorId, parentID, content) {
+    const db = await dbPromise;
+
+    const comment = await db.run(SQL`
+        insert into comments (articleID, authorID, parentID, content)
+        values (${articleId}, ${authorId}, ${parentID}, ${content})`);
+  return comment;
+}
+
+
+
 
 async function removeComment(commentId) {
     const db = await dbPromise;
@@ -176,9 +189,6 @@ module.exports = {
     getCumulativeSubscribeCountByArticleAuthor,
     removeComment,
     getCommentsAndArticleTitleByAuthorId,
-    getAllCommentsByArticleIDOrdered
+    getAllCommentsByArticleIDOrdered,
+    addReplyComment
 };
-
-
-
-

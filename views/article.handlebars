@@ -1,15 +1,23 @@
 {{!-- Page to display an article --}}
 
 <div id="full-article-container">
-<p>Article ID: {{articleInfo.articleID}}</p>
-<h1>Title: {{articleInfo.title}}</h1>
-<h4>Author: {{articleInfo.userName}}</h4>
-<p>Date: {{articleInfo.publishDate}}</p>
-<h5>Image:</h5>
-<img src="{{articleInfo.path}}" alt="">
-<p>Article content:</p>
-<p>{{articleInfo.content}}</p>
+    <p>Article ID: {{articleInfo.articleID}}</p>
+    <h1>Title: {{articleInfo.title}}</h1>
+    
+    <h4><a href="./profile?id={{articleInfo.authorID}}">Author: {{articleInfo.userName}}</a></h4>
+    <img src="{{articleInfo.avatarFilePath}}" alt="" class="avatar">
 
+    <p>Date: {{articleInfo.publishDate}}</p>
+
+    <h5>Image:</h5>
+    {{#if articleImages}}
+        <img src="{{articleImages.path}}" alt="">
+    {{else}}
+        {{!-- NO IMAGE ON THIS ARTICLE --}}
+    {{/if}}
+
+    <p>Article content:</p>
+    <p>{{articleInfo.content}}</p>
 
 </div>
 
@@ -20,7 +28,7 @@ add onclick button to clear/reset the comment box
 add reply buttons for other comments to allow replying
 template the comments section to show up via handlebars? --}}
 <div>
-    <form action="./makeComment" method="POST">
+    <form action="./makeComment?articleID={{articleInfo.articleID}}" method="POST">
         <label for="comment">Enter Comment:</label>
         <textarea name="comment" rows="4" cols="50"></textarea>
         <button type="submit">Post Comment</button>
@@ -41,26 +49,29 @@ template the comments section to show up via handlebars? --}}
         {{#if commentsToDisplay}}
             {{#each commentsToDisplay}}
             <div class="top-level-comment">
+                <img src="{{this.avatarFilePath}}" alt="" class="avatar">
                 <p>Publishdate ={{this.publishDate}}</p>
                 <p>CommentID = {{this.commentID}}</p>
                 <p>Content = {{this.content}}</p>
-                <p>Username = {{this.userName}}</p>
+                <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
             </div>
                 {{#if this.children}}
                     {{#each this.children}}
                     <div class="level-1-comment">
+                        <img src="{{this.avatarFilePath}}" alt="" class="avatar">
                         <p>Publishdate ={{this.publishDate}}</p>
                         <p>CommentID = {{this.commentID}}</p>
                         <p>Content = {{this.content}}</p>
-                        <p>Username = {{this.userName}}</p>
+                        <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
                     </div>
                     {{#if this.children}}
                             {{#each this.children}}
                             <div class="level-2-comment">
+                                <img src="{{this.avatarFilePath}}" alt="" class="avatar">
                                 <p>Publishdate ={{this.publishDate}}</p>
                                 <p>CommentID = {{this.commentID}}</p>
                                 <p>Content = {{this.content}}</p>4
-                                <p>Username = {{this.userName}}</p>
+                                <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
                             </div>
                             {{/each}}
                         {{/if}}

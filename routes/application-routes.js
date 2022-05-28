@@ -14,6 +14,7 @@ const bcrypt = require("../Helper/bcrypt-helper");
 const likeDao = require("../modules/like-dao");
 const subscribeDao = require("../modules/subscribe-dao");
 const { route } = require("express/lib/application");
+const cookieParser = require("cookie-parser");
 
 
 
@@ -97,7 +98,15 @@ router.get("/getArticle", async function (req, res){
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
 
-  res.locals.articleInfo = articleInfo
+
+  const articleImages = await imageDAO.getImageByArticleID(articleID)
+ 
+  if(articleImages == "undefined"){
+    res.locals.articleImages = "";
+  } else {
+    res.locals.articleImages = articleImages;
+  }
+
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
@@ -143,7 +152,10 @@ router.get("/sortedArticles", async function (req, res) {
 
 router.get("/profile", verifyAuthenticated, async function (req, res) {
   const userId = req.query.id;
+ 
   let user;
+
+
   if (userId == res.locals.user.userID) {
     res.locals.isCurrentUser = true;
     user = res.locals.user;
@@ -239,7 +251,21 @@ router.get("/analytics", async function (req, res) {
 });
 
 
+router.post("/makeComment", async function (req, res){
 
+  let commentAuthorID = res.locals.user.userID;
+  console.log("Test comment leaver ID: "+commentAuthorID)
+
+  let commentContent = req.body.comment;
+  console.log("Test comment content: "+commentContent);
+
+  let commentArticleID = req.query.articleID
+  console.log("Test comment article ID: "+commentArticleID);
+
+  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
+  console.log("Test new comment ID: "+commentID);
+
+})
 
 
 module.exports = router;
