@@ -6,8 +6,9 @@ const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
-const commentDao = require("../modules/comment-dao");
 const userDao = require("../modules/user-dao.js");
+const commentDao = require("../modules/comment-dao.js");
+
 
 const bcrypt = require("../Helper/bcrypt-helper");
 const likeDao = require("../modules/like-dao");
@@ -104,6 +105,7 @@ router.get("/getArticle", async function (req, res){
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
 
+
   const articleImages = await imageDAO.getImageByArticleID(articleID)
  
   if(articleImages == "undefined"){
@@ -111,6 +113,7 @@ router.get("/getArticle", async function (req, res){
   } else {
     res.locals.articleImages = articleImages;
   }
+
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
@@ -239,10 +242,21 @@ router.get("/sortedUserArticles", async function (req, res) {
 
 router.get("/analytics", async function (req, res) {
     let userId = req.query.userId;
-    //Start with follower number
-    let totalFollowers = (await subscribeDao.getSubscribesByAuthorId(userId)).length;
-    res.locals.totalFollowers = totalFollowers;
-    // TODO: comment number, likes number, top3 articles, trends
+
+    let followersNumber = (await subscribeDao.getSubscribesByAuthorId(userId)).length;
+    let commentsNumber = (await commentDao.getCommentsByArticleAuthor(userId)).length;
+    let likesNumber = (await likeDao.getLikesByArticleAuthor(userId)).length;
+    let commentCountByDay = await commentDao.getCommentsCountPerDayByArticleAuthor(userId,5);
+    let subscribeCumulativeCount = await commentDao.getCumulativeSubscribeCountByArticleAuthor(userId);
+    let popularArticles = await  articleDAO.getArticleSortedByPopularity(userId, 3);
+
+    res.locals.followersNumber = followersNumber;
+    res.locals.commentsNumber = commentsNumber;
+    res.locals.likesNumber = likesNumber;
+    res.locals.commentCountByDay = commentCountByDay;
+    res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
+    res.locals.popularArticles = popularArticles;
+
     res.render("analytics");
 });
 

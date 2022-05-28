@@ -117,6 +117,37 @@ async function getArticleByID(articleID){
 
 };
 
+async function getArticleSortedByPopularity(authorId, articleNumber){
+    const db = await dbPromise;
+
+    const articles = await db.all(SQL`
+        with commentCount as (
+            select a.articleID as articleID, count(c.commentID) as commentCount
+            from articles a left join comments c on a.articleID = c.articleID
+            where a.authorID = ${authorId}
+            group by a.articleID
+        )
+        ,likeCount as (
+            select a.articleID as articleID, count(l.userID) as likeCount
+            from articles a left join likes l on a.articleID = l.articleID
+            where a.authorID = ${authorId}
+            group by a.articleID
+        )
+        select
+            a.articleID as articleID,
+            a.title as title,
+            a.publishDate as publishDate,
+            substring(a.content, 0, 250) || '......' as content,
+            2 * c.commentCount + l.likeCount as popularity
+        from commentCount c
+                 join likeCount l on c.articleID = l.articleID
+                 join articles a on l.articleID = a.articleID
+        order by popularity desc
+        limit ${articleNumber};
+    `);
+    return articles;
+}
+
 // Export functions.
 module.exports = {
     getAllArticles,
@@ -126,6 +157,6 @@ module.exports = {
     getArticleCardInformationOrderedBy,
     getArticlesByAuthorId,
     getArticleByID,
-    getArticlesCardInformationByUserOrderedBy
-
+    getArticlesCardInformationByUserOrderedBy,
+    getArticleSortedByPopularity
 };
