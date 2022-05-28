@@ -46,13 +46,19 @@ template the comments section to show up via handlebars? --}}
 
         {{#if commentsToDisplay}}
             {{#each commentsToDisplay}}
-            <div class="top-level-comment">                
+                <div class="top-level-comment">                
                 <img src="{{this.avatarFilePath}}" alt="" class="avatar">
                 <p>Publishdate ={{this.publishDate}}</p>
                 <p>CommentID = {{this.commentID}}</p>
                 <p>Content = {{this.content}}</p>
                 <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
                 
+                {{#ifCond ../user.userID '==' this.authorID}}
+                <div class="delete-comment-box">
+                    <button id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>                    
+                </div>
+                {{/ifCond}}
+
                 {{#if ../user}}
                 <div class="reply-box">
                     <button id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
@@ -77,6 +83,12 @@ template the comments section to show up via handlebars? --}}
                         <p>Content = {{this.content}}</p>
                         <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
                     
+                    {{#ifCond ../../user.userID '==' this.authorID}}
+                        <div class="delete-comment-box">
+                            <button id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>                    
+                        </div>
+                    {{/ifCond}}
+
                      {{#if ../../user}}
                         <div class="reply-box">
                             <button id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
@@ -101,6 +113,13 @@ template the comments section to show up via handlebars? --}}
                                 <p>CommentID = {{this.commentID}}</p>
                                 <p>Content = {{this.content}}</p>4
                                 <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
+                            
+                                {{#ifCond ../../../user.userID '==' this.authorID}}
+                                    <div class="delete-comment-box">
+                                        <button id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>                    
+                                    </div>
+                                {{/ifCond}}
+                            
                             </div>
                             {{/each}}
                         {{/if}}
