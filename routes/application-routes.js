@@ -94,6 +94,13 @@ router.post("/signup", async function (req, res) {
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
 router.get("/getArticle", async function (req, res){
  
+  
+
+  if(req.query.deleteMessage){
+    res.locals.deleteMessage = req.query.deleteMessage
+    console.log("Test - "+res.locals.deleteMessage)
+  }
+
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
 
@@ -262,6 +269,47 @@ router.post("/makeReply", async function (req, res){
   res.redirect("/getArticle?articleID="+commentArticleID)
 
 })
+
+router.get("/deleteComment", async function (req, res){
+
+  //As the deleting a comment is a get request, check that the 
+  // user is allowed to delete the comment - either they are the
+  // article author, or the comment author
+
+  const articleID = req.query.articleID;
+  const commentID = req.query.commentID;
+  const commentAuthorID = req.query.commentAuthorID;
+  const articleAuthorID = req.query.articleAuthorID;
+  const currentUserID = res.locals.user.userID
+
+  let deleteMessage;
+
+  //Check if the comment has any children - if it does overwrite the comment.
+  // If it doesnt, delete the comment entirely.
+  const childComments = await commentDao.getCommentsByParent(commentID);
+
+    if(commentAuthorID == currentUserID || articleAuthorID == currentUserID){
+      
+      if(childComments != ""){
+        
+        let updatedComment = await commentDao.deleteCommentByOverWriting(commentID);
+        deleteMessage = "Comment deleted"
+      } else {
+
+        deleteMessage = "Comment deleted"
+
+        await commentDao.removeComment(commentID)
+
+      }
+    } else {
+      deleteMessage = "Not authorised to delete comment"
+    }
+  
+
+  res.redirect("/getArticle?articleID="+articleID+"&deleteMessage="+deleteMessage)
+
+})
+
 
 
 module.exports = router;
