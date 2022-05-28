@@ -16,6 +16,7 @@ let cardsToDisplay = "";
         let authorID = orderedArticleArray[i].authorID;
         let userName = orderedArticleArray[i].userName;
         let publishDate = orderedArticleArray[i].publishDate;
+        let avatarFilePath = orderedArticleArray[i].avatarFilePath;
 
         let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleID);
         
@@ -37,7 +38,7 @@ let cardsToDisplay = "";
                         <a href="./getArticle?articleID=${articleID}">
                             <h3>${title}</h3>
                         </a>
-                        <a href="/userLoad">
+                        <a href="./profile?id=${authorID}">
                             <h4>${userName}</h4>
                         </a>
                             
@@ -108,8 +109,6 @@ function unflattenComments(flatArrayOfComments){
 }
 
 
-//Testing tree structure array
-//Testing tree structure array
 
 
 

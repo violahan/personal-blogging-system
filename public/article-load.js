@@ -70,6 +70,7 @@ function createArticleCards(orderedArticleArray){
     for (let i = 0; i < orderedArticleArray.length; i++) {
         let articleID = orderedArticleArray[i].articleID;
         let title = orderedArticleArray[i].title;
+        let authorID = orderedArticleArray[i].authorID;
         let userName = orderedArticleArray[i].userName;
         let publishDate = orderedArticleArray[i].publishDate;
         let thumbnailImagePath = orderedArticleArray[i].thumbnailImagePath;
@@ -84,7 +85,7 @@ function createArticleCards(orderedArticleArray){
                         <a href="./getArticle?articleID=${articleID}">
                             <h3>${title}</h3>
                         </a>
-                        <a href="/userLoad">
+                        <a href="./profile?id=${authorID}">
                             <h4>${userName}</h4>
                         </a>
                             
