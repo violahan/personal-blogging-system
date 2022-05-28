@@ -164,6 +164,17 @@ async function removeComment(commentId) {
     return comment;
 }
 
+async function deleteCommentByOverWriting(commentId) {
+    const db = await dbPromise;
+
+    const comment = await db.run(SQL`
+        update comments
+        set authorID = 1, content = 'Deleted comment' 
+        where commentID = ${commentId}
+    `);
+    return comment;
+}
+
 async function getCommentsAndArticleTitleByAuthorId(authorId) {
     const db = await dbPromise;
 
@@ -190,5 +201,6 @@ module.exports = {
     removeComment,
     getCommentsAndArticleTitleByAuthorId,
     getAllCommentsByArticleIDOrdered,
-    addReplyComment
+    addReplyComment,
+    deleteCommentByOverWriting
 };

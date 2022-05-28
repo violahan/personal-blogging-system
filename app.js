@@ -16,6 +16,21 @@ app.engine("handlebars", handlebars({
 }));
 app.set("view engine", "handlebars");
 
+//Register new handlebar helper to allow checking two variables are the same, and "or":
+const newHelpers = handlebars.create({})
+newHelpers.handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
+});
+
+
+
+
+
 // Setup body-parser
 app.use(express.urlencoded({ extended: false }));
 

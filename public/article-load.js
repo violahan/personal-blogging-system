@@ -101,7 +101,6 @@ function createArticleCards(orderedArticleArray){
 
 }
 
-
 function updateArticles(cardsToDisplay){
     document.getElementById('all-card-container').innerHTML = cardsToDisplay;
 }
@@ -110,44 +109,54 @@ function updateUserArticles(userCardsToDisplay){
     document.getElementById('user-card-container').innerHTML = userCardsToDisplay;
 }
 
-function displayAllArticles(){
-    document.getElementById('all-articles-home').style.display = "block"
-    document.getElementById('all-article-button').style.border = "2px solid #4CAF50";
+function switchDisplayedArticles(){
 
-    document.getElementById('user-articles-home').style.display = "none"
-    document.getElementById('user-article-button').style.border = "";
-
-}
-
-function displayUserArticles(){
-    document.getElementById('all-articles-home').style.display = "none"
-    document.getElementById('all-article-button').style.border = "";
-
-
-    document.getElementById('user-articles-home').style.display = "block"
-    document.getElementById('user-article-button').style.border = "2px solid #4CAF50";
+    if(document.getElementById('switch-article-button').innerText == "Show User Articles"){
+        document.getElementById('all-articles-home').style.display = "none"
+        document.getElementById('user-articles-home').style.display = "block"
+        document.getElementById('switch-article-button').innerText = "Show All Articles"
+    } else {
+        document.getElementById('all-articles-home').style.display = "block"
+        document.getElementById('user-articles-home').style.display = "none"
+        document.getElementById('switch-article-button').innerText = "Show User Articles"
+    }
+   
 }
 
 function letReply(parentCommentID){
     
     let replyID = "let-reply-"+parentCommentID;
-    let cancelID = "cancel-reply-"+parentCommentID;
     let replyFormID = "reply-form-"+parentCommentID;
 
-
-    document.getElementById(replyID).style.display = "none"
-    document.getElementById(cancelID).style.display = "inline-block"
-    document.getElementById(replyFormID).style.display = "block"
+    if (document.getElementById(replyID).innerText == "Reply"){
+        document.getElementById(replyID).innerText = "Cancel Reply"
+        document.getElementById(replyFormID).style.display = "block"
+    } else {
+        document.getElementById(replyID).innerText = "Reply"
+        document.getElementById(replyFormID).style.display = "none"
+    }
 }
 
-function cancelReply(parentCommentID){
-    
-    let replyID = "let-reply-"+parentCommentID;
-    let cancelID = "cancel-reply-"+parentCommentID;
-    let replyFormID = "reply-form-"+parentCommentID;
-    
-    document.getElementById(replyID).style.display = "inline-block"
-    document.getElementById(cancelID).style.display = "none"
-    document.getElementById(replyFormID).style.display = "none"
 
+function deleteComment(commentID){
+    
+    let deleteID = "delete-comment-"+commentID;
+    let confirmMessageID = "confirm-message-"+commentID;
+    let confirmDeleteID = "confirm-delete-"+commentID;
+
+    if (document.getElementById(deleteID).innerText == "Delete Comment"){
+        document.getElementById(confirmMessageID).innerText = "Are you sure you want to delete the comment?";        
+        document.getElementById(deleteID).innerText = "No, don't delete the comment";
+        document.getElementById(confirmDeleteID).style.display = "inline-block";
+    } else {
+        document.getElementById(confirmDeleteID).style.display = "none";
+        document.getElementById(deleteID).innerText = "Delete Comment";
+        document.getElementById(confirmMessageID).innerText = "";
+    }
+
+}
+
+function confirmDeleteComment(commentID){
+    
+    alert("Comment Deleted")
 }
