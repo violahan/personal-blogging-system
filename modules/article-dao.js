@@ -137,7 +137,7 @@ async function getArticleSortedByPopularity(authorId, articleNumber){
             a.articleID as articleID,
             a.title as title,
             a.publishDate as publishDate,
-            a.content as content,
+            substring(a.content, 0, 250) || '......' as content,
             2 * c.commentCount + l.likeCount as popularity
         from commentCount c
                  join likeCount l on c.articleID = l.articleID

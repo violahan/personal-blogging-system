@@ -21,59 +21,29 @@
                 <span id="analytics-like" class="analytics-number">{{likesNumber}}</span>
             </div>
         </div>
-
         <div id="analytics-body-middle" class="analytics-panel">
             <h1>Top 3 popular articles: </h1>
-
-            <div class="analytics-card">
-                <div class="card-header">
-
+            {{#each popularArticles}}
+                <div class="analytics-card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title">{{this.title}}</h2>
+                        <p class="card-text">{{this.content}}</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h2 class="card-title">PTX: The World Tour</h2>
-                    <p class="card-text">In celebration of their massive 'The World' tour, Grammy Award-winning a cappella
-                        maestros Pentatonix are heading down to NZ for a one-off, comeback concert at Auckland's Spark Arena
-                        this February 2020.</p>
-                </div>
-            </div>
-            <div class="analytics-card">
-                <div class="card-header">
-
-                </div>
-                <div class="card-body">
-                    <h2 class="card-title">PTX: The World Tour</h2>
-                    <p class="card-text">In celebration of their massive 'The World' tour, Grammy Award-winning a cappella
-                        maestros Pentatonix are heading down to NZ for a one-off, comeback concert at Auckland's Spark Arena
-                        this February 2020.</p>
-                </div>
-            </div>
-            <div class="analytics-card">
-                <div class="card-header">
-
-                </div>
-                <div class="card-body">
-                    <h2 class="card-title">PTX: The World Tour</h2>
-                    <p class="card-text">In celebration of their massive 'The World' tour, Grammy Award-winning a cappella
-                        maestros Pentatonix are heading down to NZ for a one-off, comeback concert at Auckland's Spark Arena
-                        this February 2020.</p>
-                </div>
-            </div>
-
+            {{/each}}
         </div>
-
         <div id="analytics-body-right" class="analytics-panel">
             <h1>Trending: </h1>
             <div class="analytics-card">
-                <canvas id="commentChart" width="200" height="100"></canvas>
+                <canvas id="commentChart" width="200" height="120"></canvas>
             </div>
-
             <div class="analytics-card">
-                <canvas id="subscribeChart" width="200" height="100"></canvas>
+                <canvas id="subscribeChart" width="200" height="120"></canvas>
             </div>
         </div>
     </div>
-
-
 </div>
 
 <script>

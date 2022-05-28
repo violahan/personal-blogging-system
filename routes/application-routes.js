@@ -241,12 +241,15 @@ router.get("/analytics", async function (req, res) {
     let likesNumber = (await likeDao.getLikesByArticleAuthor(userId)).length;
     let commentCountByDay = await commentDao.getCommentsCountPerDayByArticleAuthor(userId,5);
     let subscribeCumulativeCount = await commentDao.getCumulativeSubscribeCountByArticleAuthor(userId);
+    let popularArticles = await  articleDAO.getArticleSortedByPopularity(userId, 3);
 
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
     res.locals.likesNumber = likesNumber;
     res.locals.commentCountByDay = commentCountByDay;
     res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
+    res.locals.popularArticles = popularArticles;
+
     res.render("analytics");
 });
 
