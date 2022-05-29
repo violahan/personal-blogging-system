@@ -98,13 +98,12 @@ router.get("/getArticle", async function (req, res){
   const articleID = req.query.articleID;
   const articleInfo = await articleDAO.getArticleByID(articleID);
 
+  const articleImages = await imageDAO.getMainImageByArticleID(articleID)
 
-  const articleImages = await imageDAO.getImageByArticleID(articleID)
- 
   if(articleImages == "undefined"){
     res.locals.articleImages = "";
   } else {
-    res.locals.articleImages = articleImages;
+    res.locals.articleImages = articleImages[0];
   }
 
 

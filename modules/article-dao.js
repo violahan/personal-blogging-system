@@ -148,6 +148,18 @@ async function getArticleSortedByPopularity(authorId, articleNumber){
     return articles;
 }
 
+async function createNewArticle(authorId, articleTitle, articleContent){
+    const db = await dbPromise;
+
+    const newArticle = await db.run(SQL`
+            insert into articles (authorID, title, content)
+            values (${authorId}, ${articleTitle}, ${articleContent})
+        `);
+    return newArticle.lastID;
+}
+
+
+
 // Export functions.
 module.exports = {
     getAllArticles,
@@ -158,5 +170,6 @@ module.exports = {
     getArticlesByAuthorId,
     getArticleByID,
     getArticlesCardInformationByUserOrderedBy,
-    getArticleSortedByPopularity
+    getArticleSortedByPopularity,
+    createNewArticle
 };

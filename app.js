@@ -40,6 +40,9 @@ app.use(require("./routes/application-routes.js"));
 const authRouter = require("./routes/auth-routes.js");
 app.use(authRouter);
 
+const articleRouter = require("./routes/create-article-routes.js");
+app.use(articleRouter);
+
 // Start the server running.
 app.listen(port, function () {
     console.log(`App listening on port ${port}!`);

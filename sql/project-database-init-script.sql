@@ -127,12 +127,12 @@ insert into articles (articleID, authorID, title, publishDate, content, numberOf
 insert into articles (articleID, authorID, title, publishDate, content, numberOfComments, numberOfLikes) values (25, 1, 'Aenean lectus.', '2020-10-10 18:12:52', 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis. Sed ante. Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.', '0', '0');
 
 insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
-(1, 'test1tn', './images/thumbnails/test1tn.jpg', 5, 1),
-(2, 'test2tn', './images/thumbnails/test2tn.jpg', 15, 1),
-(3, 'test3tn', './images/thumbnails/test3tn.jpg', 20, 1),
-(4, 'test4tn', './images/thumbnails/test4tn.jpg', 19, 1),
-(5, 'test5tn', './images/thumbnails/test5tn.jpg', 12, 1),
-(6, 'test1tn', './images/thumbnails/test1tn.jpg', 1, 1);
+(1, 'test1tn', './article-images/article-thumbnails/test3tn.jpg', 5, 1),
+(2, 'test2tn', './article-images/article-thumbnails/test3tn.jpg', 15, 1),
+(3, 'test3tn', './article-images/article-thumbnails/test3tn.jpg', 20, 1),
+(4, 'test4tn', './article-images/article-thumbnails/test3tn.jpg', 19, 1),
+(5, 'test5tn', './article-images/article-thumbnails/test3tn.jpg', 12, 1),
+(6, 'test1tn', './article-images/article-thumbnails/test3tn.jpg', 1, 1);
 
 insert into comments (commentID, articleID, commentAuthorID, parentID, content, publishDate) values
 (1, 1, 2, null, 'Great article!', '2022-05-24 23:33:57'),
