@@ -1,5 +1,5 @@
 tinymce.init({
-  selector: 'textarea#mytextarea',
+  selector: 'textarea#articleContentTinyMCETextArea',
   height: 500,
   plugins: [
     'advlist', 'autolink', 'lists', 'preview',
