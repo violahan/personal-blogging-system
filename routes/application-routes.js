@@ -70,10 +70,6 @@ router.get("/signup", async function (req, res) {
 });
 
 router.post("/signup", async function (req, res) {
-  if (req.body.password !== req.body.passwordCheck) {
-    res.locals.error = "Passwords are not match";
-    res.render("signup");
-  }
   //get user data
   const user = {
     username: req.body.username,
@@ -321,6 +317,17 @@ router.get("/deleteComment", async function (req, res){
 
   res.redirect("/getArticle?articleID="+articleID+"&deleteMessage="+deleteMessage)
 
+})
+
+router.get("/getUserByUsername", async function (req, res) {
+  const userName = req.query.userName;
+  const user = await userDao.getUserByUserName(userName);
+  if (user) {
+    res.json(user);
+  } else {
+    res.json(null);
+  }
+  
 })
 
 
