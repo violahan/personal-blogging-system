@@ -14,3 +14,15 @@ function showComments(){
     document.getElementById('hide-comments-button').style.display = "inline-block"
 }
 
+function likeArticle(){
+    if(document.getElementById('like-button').innerText == "Like"){
+
+        document.getElementById('like-button').innerText = "Unlike"
+
+    } else {
+
+        document.getElementById('like-button').innerText = "Like"
+
+    }
+     
+}
