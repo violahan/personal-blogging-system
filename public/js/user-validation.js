@@ -13,7 +13,7 @@ window.addEventListener("load", function () {
             let errorPara = document.querySelector("#username-error");
             if (userObj) {
                 errorPara.removeAttribute("hidden");
-                errorPara.innerText += 'Username already exists, please type a new one';
+                errorPara.innerText = 'Username already exists, please type a new one';
                 submitBtn.disabled = true;
             } else {
                 errorPara.setAttribute("hidden", true);
@@ -26,13 +26,13 @@ window.addEventListener("load", function () {
 
     //check if re-enter password matches
     const passwordCheckInput = document.querySelector('#passwordCheck');
-    passwordCheckInput.addEventListener('blur', async (e) => {
+    passwordCheckInput.addEventListener('keyup', async (e) => {
         const psdCheck = e.target.value;
         const passwordInput = document.querySelector('#password');
         let errorPara = document.querySelector("#pwd-error");
         if (psdCheck !== passwordInput.value) {
             errorPara.removeAttribute("hidden");
-            errorPara.innerText += 'Passwords are not match';
+            errorPara.innerText = 'Passwords are not match';
             submitBtn.disabled = true;
         } else {
             errorPara.setAttribute("hidden", true);
