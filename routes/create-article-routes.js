@@ -69,7 +69,7 @@ router.post("/createArticle", upload.single("imageFileUpload"), async function (
             // Article will not have an image
             // Set default thumbnail image for article cards
             
-            thumbnailPath = 'public/article-images/article-thumbnails/default_thumbnail.png'
+            thumbnailPath = './article-images/article-thumbnails/default_thumbnail.png'
             thumbnailFileName = 'default_thumbnail.png'
 
             await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
@@ -119,12 +119,12 @@ async function createImages(articleID, imageFile){
    let imageInformaiton = [
             {
                 fileName: `image_article${articleID}${fileExtension}`,
-                filePath: `${articleImageNewFileName}`,
+                filePath: `./article-images/image_article${articleID}${fileExtension}`,
                 thumbnailFlag: "0"
             },
             {
                 fileName: `thumbnail_article${articleID}${fileExtension}`,
-                filePath: `${thumbnailImageNewFileName}`,
+                filePath: `./article-images/article-thumbnails/thumbnail_article${articleID}${fileExtension}`,
                 thumbnailFlag: "1"
             }   
         ]

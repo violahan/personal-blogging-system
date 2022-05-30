@@ -81,6 +81,16 @@ async function getLikesAndArticleTitleByUserId(userId) {
     return results;
 }
 
+async function deleteAllArticleLikes(articleID){
+    const db = await dbPromise;
+
+    const results = await db.run(SQL`
+        delete
+        from likes
+        where articleID = ${articleID};
+    `);
+}
+
 module.exports = {
     getAllLikes,
     getLikesByUser,
@@ -88,7 +98,8 @@ module.exports = {
     addLike,
     removeLike,
     getLikesAndArticleTitleByUserId,
-    getLikesByArticleAuthor
+    getLikesByArticleAuthor,
+    deleteAllArticleLikes
 };
 
 

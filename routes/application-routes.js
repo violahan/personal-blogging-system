@@ -16,12 +16,18 @@ const subscribeDao = require("../modules/subscribe-dao");
 const { route } = require("express/lib/application");
 const cookieParser = require("cookie-parser");
 
+// set up fs to allow renaming and moving uploaded files
+const fs = require("fs");
 
 
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
     const user = res.locals.user;
+
+    if(req.query.deleteMessage){
+      res.locals.deleteMessage = req.query.deleteMessage
+    }
 
     // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
@@ -95,7 +101,6 @@ router.get("/getArticle", async function (req, res){
 
   if(req.query.deleteMessage){
     res.locals.deleteMessage = req.query.deleteMessage
-    console.log("Test - "+res.locals.deleteMessage)
   }
 
   const articleID = req.query.articleID;
@@ -328,6 +333,63 @@ router.get("/getUserByUsername", async function (req, res) {
     res.json(null);
   }
   
+})
+
+
+router.get("/deleteArticle", async function (req, res){
+
+  //As the deleting an article is a get request, check that the 
+  // user is allowed to delete the article - either they are the
+  // article author
+
+  const articleID = req.query.articleID;
+  const articleAuthorID = req.query.articleAuthorID;
+  const currentUserID = res.locals.user.userID
+
+    if(articleAuthorID == currentUserID){
+      
+      // Allowed to delete the article
+      deleteMessage = "Article deleted"
+      
+      // Delete items in order to ensure no database issues:
+      
+      // Delete all comments on article
+      await commentDao.deleteAllArticleComments(articleID);
+      
+      // Delete all likes
+      await likeDao.deleteAllArticleLikes(articleID)
+
+      // Delete images
+      // Delete images from server
+      const articleImages = await imageDAO.getAllImageByArticleID(articleID)
+      
+      if(articleImages){
+        for (let i = 0; i < articleImages.length; i++) {
+          let imagePathToDelete = articleImages[i].path;
+          let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
+      
+          if(articleImages[i].fileName == "default_thumbnail.png"){
+            // Do not delete the default thumbnail image 
+          } else {
+            // Delete the image on the server
+            fs.unlinkSync(fullImageFilePath)
+          }
+        }
+      }
+    
+      // Delete images from Database
+      await imageDAO.deleteAllArticleImages(articleID)
+
+      // Delete the article from the Database
+      await articleDAO.deleteArticle(articleID)
+
+    } else {
+      deleteMessage = "Not authorised to delete comment"
+    }
+  
+
+  res.redirect("/?deleteMessage="+deleteMessage)
+
 })
 
 

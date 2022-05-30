@@ -3,6 +3,19 @@
 <h3>{{deleteMessage}}</h3>
 
 <div id="full-article-container">
+    
+    {{#ifCond user.userID '==' articleInfo.authorID}}
+              
+
+        <div class="delete-article-box">
+            <p id="confirm-message-{{articleInfo.articleID}}"></p>
+            <button id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>                    
+            <a href="./deleteArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="confirm-delete-{{articleInfo.articleID}}" style="display: none">Yes - Delete the article</button></a>
+        </div>
+    {{/ifCond}}
+
+
+
     <p>Article ID: {{articleInfo.articleID}}</p>
     <h1>Title: {{articleInfo.title}}</h1>
     

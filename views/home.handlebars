@@ -3,6 +3,10 @@
 {{!-- All articles / Your article headings will act as buttons to allow switching
 between viewing all articles and viewing your articles --}}
 <div>
+    
+    {{deleteMessage}}
+
+
     {{#if user}}
     <div>
         <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
