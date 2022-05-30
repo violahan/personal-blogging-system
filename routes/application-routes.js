@@ -331,7 +331,7 @@ router.post("/makeComment", async function (req, res){
       // If there are subscribers - create a notification:
           if(subscribers != ""){
               const notificationType = "newComment";
-              const notificaitonContent = commentAuthorID+" has made a new comment";
+              const notificaitonContent = res.locals.user.userName+" has made a new comment";
               const usersToBeNotified = subscribers;
               await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
           } else {
@@ -358,7 +358,7 @@ router.post("/makeReply", async function (req, res){
     // If there are subscribers - create a notification:
     if(subscribers  != ""){
       const notificationType = "newComment";
-      const notificaitonContent = commentAuthorID+" has made a new comment";
+      const notificaitonContent = res.locals.user.userName+" has made a new comment";
       const usersToBeNotified = subscribers;
       await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
     } else {

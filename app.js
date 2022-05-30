@@ -58,6 +58,10 @@ app.use(authRouter);
 const articleRouter = require("./routes/create-article-routes.js");
 app.use(articleRouter);
 
+const notificationRouter = require("./routes/notification-routes.js");
+app.use(notificationRouter);
+
+
 // Start the server running.
 app.listen(port, function () {
     console.log(`App listening on port ${port}!`);

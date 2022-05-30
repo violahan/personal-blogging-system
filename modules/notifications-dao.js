@@ -10,9 +10,20 @@ async function addNotification(typeOfNotificaiton, content, userToBeNotified) {
     return notification;
 }
 
+async function getNotificationsByUserID(userID){
+    const db = await dbPromise;
+
+    const notifications = await db.all(SQL`
+        select *
+        from notifications
+        where userToBeNotifiedID = ${userID}
+    `);
+    return notifications;
+}
 
 // Export functions.
 module.exports = {
-    addNotification
+    addNotification,
+    getNotificationsByUserID
     
 };
