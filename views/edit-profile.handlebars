@@ -1,0 +1,31 @@
+<div class="container">
+    <h2>Edit Profile:</h2>
+    <form action="./editProfile" method="POST">
+        <p>Username: {{userToEdit.userName}}</p>
+        <input type="hidden" name="userID" value="{{userToEdit.userID}}" />
+        <label for="fname">First Name:</label>
+        <input type="text" name="fname" value="{{userToEdit.fName}}" required />
+        <label for="lname">Last Name:</label>
+        <input type="text" name="lname" value="{{userToEdit.lName}}" required />
+        <label for="dob">Date of Birth:</label>
+        <input type="date" name="dob" value="{{userToEdit.DOB}}" required />
+        <label for="bio">Bio:</label>
+        <textarea name="bio" rows="4" cols="50" >{{userToEdit.description}}</textarea>
+        <label for="avatar">Avatar:</label>
+        <input type="radio" id="avatar1" name="avatar" value="./avatars/1.png" {{#ifCond userToEdit.avatarFilePath '==' './avatars/1.png'}} checked {{/ifCond}} required>
+        <label for="avatar1"><img src="./avatars/1.png" class="avatar"></label>
+        <input type="radio" id="avatar2" name="avatar" value="./avatars/2.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/2.jpeg'}} checked {{/ifCond}}>
+        <label for="avatar2"><img src="./avatars/2.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar3" name="avatar" value="./avatars/3.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/3.jpeg'}} checked {{/ifCond}}>
+        <label for="avatar3"><img src="./avatars/3.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar4" name="avatar" value="./avatars/4.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/4.jpeg'}} checked {{/ifCond}}>
+        <label for="avatar4"><img src="./avatars/4.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar5" name="avatar" value="./avatars/5.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/5.jpeg'}} checked {{/ifCond}}>
+        <label for="avatar5"><img src="./avatars/5.jpeg" class="avatar"></label>
+        <input type="radio" id="avatar6" name="avatar" value="./avatars/6.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/6.jpeg'}} checked {{/ifCond}}>
+        <label for="avatar6"><img src="./avatars/6.jpeg" class="avatar"></label>
+        <button type="submit">Save</button>
+    </form>
+
+    <br>
+</div>
