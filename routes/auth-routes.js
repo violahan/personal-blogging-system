@@ -15,6 +15,7 @@ router.get("/login", function (req, res) {
     }
 
     else {
+        res.locals.title = 'Login';
         res.render("login");
     }
 
