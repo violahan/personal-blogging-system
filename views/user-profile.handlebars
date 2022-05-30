@@ -18,9 +18,9 @@
         <a href="./deleteuser">Delete User</a>
     {{else}}
         {{#if isSubscribed}}
-            <button>Unsubscribe</button>
+            <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Unsubscribe</button>
         {{else}}
-            <button>Subscribe</button>
+            <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Subscribe</button>
         {{/if}}
     {{/if}}
 </div>

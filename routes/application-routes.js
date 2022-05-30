@@ -118,30 +118,56 @@ router.get("/getArticle", async function (req, res){
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
   // Check if user has liked the article
-  if (res.locals.user){
-    // There is a logged in user
+    if (res.locals.user){
+      // There is a logged in user
 
-    // Get details of all likes on article
-    const likesOnArticle = await likeDao.getLikesByArticle(articleID)
-    let userHasLiked = "";
-    for (let i = 0; i < likesOnArticle.length; i++) {
-      
-      if (res.locals.user.userID == likesOnArticle[i].userID){
-        userHasLiked = "true";
+      // Get details of all likes on article
+      const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+      let userHasLiked = "";
+      for (let i = 0; i < likesOnArticle.length; i++) {
+        
+        if (res.locals.user.userID == likesOnArticle[i].userID){
+          userHasLiked = "true";
+        }
+        
       }
       
+      res.locals.userHasLiked = userHasLiked;
+
+    } else {
+      
+      // There is no logged in user - user has not liked
+      res.locals.userHasLiked = ""
+
     }
-    
-    res.locals.userHasLiked = userHasLiked;
-
-  } else {
-    
-    // There is no logged in user - user has not liked
-    res.locals.userHasLiked = ""
-
-  }
 
 
+
+  // Check if user has subscribed to author
+    if (res.locals.user){
+      // There is a logged in user
+
+      // Get details of all subscribers to the author
+      const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(articleInfo.authorID)
+      
+      let userHasSubscribed = "";
+      for (let i = 0; i < subscribersToAuthor.length; i++) {
+        
+        if (res.locals.user.userID == subscribersToAuthor[i].userSubscriberID){
+          userHasSubscribed = "true";
+        }
+        
+      }
+      
+      res.locals.userHasSubscribed = userHasSubscribed;
+
+    } else {
+      
+      // There is no logged in user - user has not Subscribed
+      res.locals.userHasSubscribed = ""
+
+    }
+// 
 
 
   res.locals.articleInfo = articleInfo;
@@ -206,6 +232,7 @@ router.get("/profile", verifyAuthenticated, async function (req, res) {
   const followers = await subscribeDao.getSubscribesByAuthorId(userId);
   const following = await subscribeDao.getSubscribesBySubscriberId(userId);
   const profileObj = {
+    authorID: userId,
     name: user.fName + " " + user.lName,
     avatarFilePath: user.avatarFilePath,
     bio: user.description,
@@ -443,15 +470,53 @@ router.get("/likeArticle", async function (req, res){
     if (userHasLikedArticle == 1){
       //Remove like:
       await likeDao.removeLike(articleID, likeUserID);
+      res.json("Like")
     } else {
       // Add like:
       await likeDao.addLike(articleID, likeUserID);
+      res.json("Unlike")
     }
 
   } else {
     // No logged in user / user does not match user that hit like - do nothing.
   }
 
+})
+
+router.get("/subscribeToAuthor", async function (req, res){
+
+  const authorID = req.query.authorID;
+  const subscribeUserID = req.query.userID;
+  const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID)
+
+  // Check in place to ensure that the current user, is the user that hit like
+  // Required as this is a get request and URL could be entered by anyone.
+  if(res.locals.user.userID == subscribeUserID){
+
+    let userHasSubscribedToAuthor = 0
+    for (let i = 0; i < subscribersToAuthor.length; i++) {
+      
+      if(subscribeUserID == subscribersToAuthor[i].userSubscriberID){
+        // User has liked the article - Remove Like
+        userHasSubscribedToAuthor += 1
+      } else {
+        // User has not liked - do nothing here
+      }
+    }
+
+    if (userHasSubscribedToAuthor == 1){
+      //Remove subscriber:
+      await subscribeDao.removeFollow(subscribeUserID, authorID);
+      res.json("Subscribe")
+    } else {
+      // Add like:
+      await subscribeDao.addFollow(subscribeUserID, authorID);
+      res.json("Unsubscribe")
+    }
+
+  } else {
+    // No logged in user / user does not match user that hit like - do nothing.
+  }
 
 })
 

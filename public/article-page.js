@@ -14,15 +14,22 @@ function showComments(){
     document.getElementById('hide-comments-button').style.display = "inline-block"
 }
 
-function likeArticle(){
-    if(document.getElementById('like-button').innerText == "Like"){
+async function likeArticle(articleID, userID){
 
-        document.getElementById('like-button').innerText = "Unlike"
+    const like = await fetch(`./likeArticle?articleID=${articleID}&userID=${userID}`) 
+    const likeConfirmation = await like.json();
+    document.getElementById('like-button').innerText = likeConfirmation
 
-    } else {
+}
 
-        document.getElementById('like-button').innerText = "Like"
+async function subscribeAuthor(authorID, userID){
+    
+    console.log("Function Launched")
+    console.log("authorID: "+authorID)
+    console.log("userID: "+userID)
 
-    }
+    const subscribe = await fetch(`./subscribeToAuthor?authorID=${authorID}&userID=${userID}`) 
+    const subscriptionConfirmation = await subscribe.json();
+    document.getElementById('subscribe-button').innerText = subscriptionConfirmation
      
 }
