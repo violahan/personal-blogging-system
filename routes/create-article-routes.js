@@ -40,7 +40,7 @@ router.get("/createArticle", verifyAuthenticated, async function (req, res){
     
     res.locals.imageMaxWidth = articleImageMaxWidth;
     res.locals.imageMaxHeight = articleImageMaxHeight;
-
+    res.locals.title = 'Create Article';
     // If user is logged in (verifyAuthrnticated) will direct to create article page
     res.render("create-article")
 

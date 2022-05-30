@@ -47,7 +47,7 @@ router.get("/", verifyAuthenticated, async function(req, res) {
       let userCardsToDisplay = await articleFunctions.loadArticles(userOrderedArticles, totalUserArticles)
       res.locals.userAllArticlesToDisplay = userCardsToDisplay;
     }
-
+    res.locals.title = 'Home';
     res.render("home");
 });
 
@@ -65,7 +65,7 @@ router.get("/noUser", async function(req, res) {
   let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
 
   res.locals.allArticleToDisplay = cardsToDisplay;
-
+  res.locals.title = 'Home';
   res.render("home");
 });
 
@@ -244,6 +244,7 @@ router.get("/profile", verifyAuthenticated, async function (req, res) {
     likes: likes
   }
   res.locals.profileObj = profileObj;
+  res.locals.title = 'Profile';
   res.render("user-profile");
 });
 
@@ -310,6 +311,7 @@ router.get("/analytics", async function (req, res) {
     res.locals.commentCountByDay = commentCountByDay;
     res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
     res.locals.popularArticles = popularArticles;
+    res.locals.title = 'Analytics';
 
     res.render("analytics");
 });
