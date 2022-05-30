@@ -91,6 +91,7 @@ create table notifications
     content            varchar(255) not null,
     userToBeNotifiedID integer      not null,
     hasBeenViewed      varchar(255),
+    idForLink          integer
     foreign key (userToBeNotifiedID) references user (userID)
 
 );

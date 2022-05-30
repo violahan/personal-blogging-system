@@ -331,7 +331,8 @@ router.post("/makeComment", async function (req, res){
               const notificationType = "newComment";
               const notificaitonContent = res.locals.user.userName+" has made a new comment";
               const usersToBeNotified = subscribers;
-              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+              const idForLink = commentArticleID;
+              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
           } else {
               // No subscribers, no notifications made
           }
@@ -358,7 +359,8 @@ router.post("/makeReply", async function (req, res){
       const notificationType = "newComment";
       const notificaitonContent = res.locals.user.userName+" has made a new comment";
       const usersToBeNotified = subscribers;
-      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+      const idForLink = commentArticleID;
+      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
     } else {
       // No subscribers, no notifications made
     }
@@ -544,7 +546,8 @@ router.get("/subscribeToAuthor", async function (req, res){
         const notificationType = "newSubscriber";
         const notificaitonContent = subscriberUserName+" has subscribed to you!";
         const usersToBeNotified = [{userSubscriberID: authorID}];
-        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+        const idForLink = subscribeUserID;
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
       
 
       res.json("Unsubscribe")
