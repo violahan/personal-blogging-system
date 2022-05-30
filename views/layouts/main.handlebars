@@ -22,11 +22,11 @@
     <div id="navBar">
         {{#if user}}
             <a href="./">Home</a>
-            <a href="">Profile (pending route)</a>
-            <a href="./logout">Logout</a>
+
             <a href="./createArticle">Create Article</a>
             <a href="./profile?id={{user.userID}}">Profile</a>
             <a href="./analytics?userId={{user.userID}}">Analytics</a>
+            <a href="./logout">Logout</a>
         {{else}}
             <a href="./">Home</a>
             <a href="./login">Login</a>

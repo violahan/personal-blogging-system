@@ -8,6 +8,7 @@ const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
+const notificationFunctions = require("../modules/notification-functions.js");
 
 
 const bcrypt = require("../Helper/bcrypt-helper");
@@ -322,6 +323,22 @@ router.post("/makeComment", async function (req, res){
   let commentArticleID = req.query.articleID
   let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
 
+
+  // Create notificaiton related to this comment event:
+      // Check if any subscribers:
+      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
+
+      // If there are subscribers - create a notification:
+          if(subscribers != ""){
+              const notificationType = "newComment";
+              const notificaitonContent = commentAuthorID+" has made a new comment";
+              const usersToBeNotified = subscribers;
+              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+          } else {
+              // No subscribers, no notifications made
+          }
+
+
   res.redirect("/getArticle?articleID="+commentArticleID)
 
 })
@@ -333,6 +350,21 @@ router.post("/makeReply", async function (req, res){
   let commentArticleID = req.query.articleID
   let parentCommentID = req.query.parentID
   let commentID = await commentDao.addReplyComment(commentArticleID, commentAuthorID, parentCommentID, commentContent)
+
+   // Create notificaiton related to this comment event:
+      // Check if any subscribers:
+      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
+
+    // If there are subscribers - create a notification:
+    if(subscribers  != ""){
+      const notificationType = "newComment";
+      const notificaitonContent = commentAuthorID+" has made a new comment";
+      const usersToBeNotified = subscribers;
+      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+    } else {
+      // No subscribers, no notifications made
+    }
+
 
   res.redirect("/getArticle?articleID="+commentArticleID)
 
@@ -443,6 +475,7 @@ router.get("/deleteArticle", async function (req, res){
 router.get("/likeArticle", async function (req, res){
 
   const articleID = req.query.articleID;
+  const articleAuthorID = await articleDAO.getAuthorByArticleID(articleID)
   const likeUserID = req.query.userID;
   const likesOnArticle = await likeDao.getLikesByArticle(articleID)
 
@@ -481,8 +514,11 @@ router.get("/subscribeToAuthor", async function (req, res){
 
   const authorID = req.query.authorID;
   const subscribeUserID = req.query.userID;
-  const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID)
 
+  const subscriberDetails = await userDao.getUserByID(subscribeUserID);
+  const subscriberUserName = subscriberDetails.userName;
+  const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID);
+  
   // Check in place to ensure that the current user, is the user that hit like
   // Required as this is a get request and URL could be entered by anyone.
   if(res.locals.user.userID == subscribeUserID){
@@ -505,6 +541,14 @@ router.get("/subscribeToAuthor", async function (req, res){
     } else {
       // Add like:
       await subscribeDao.addFollow(subscribeUserID, authorID);
+
+      // Create notificaiton related to this new subscriber:
+        const notificationType = "newSubscriber";
+        const notificaitonContent = subscriberUserName+" has subscribed to you!";
+        const usersToBeNotified = [{userSubscriberID: authorID}];
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+      
+
       res.json("Unsubscribe")
     }
 
