@@ -19,6 +19,7 @@ const cookieParser = require("cookie-parser");
 
 // set up fs to allow renaming and moving uploaded files
 const fs = require("fs");
+const { resourceLimits } = require("worker_threads");
 
 
 // Display the home page with list of all articles
@@ -48,7 +49,7 @@ router.get("/", verifyAuthenticated, async function(req, res) {
       let userCardsToDisplay = await articleFunctions.loadArticles(userOrderedArticles, totalUserArticles)
       res.locals.userAllArticlesToDisplay = userCardsToDisplay;
     }
-
+    res.locals.title = 'Home';
     res.render("home");
 });
 
@@ -66,7 +67,7 @@ router.get("/noUser", async function(req, res) {
   let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
 
   res.locals.allArticleToDisplay = cardsToDisplay;
-
+  res.locals.title = 'Home';
   res.render("home");
 });
 
@@ -98,8 +99,6 @@ router.post("/signup", async function (req, res) {
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
 router.get("/getArticle", async function (req, res){
  
-  
-
   if(req.query.deleteMessage){
     res.locals.deleteMessage = req.query.deleteMessage
   }
@@ -114,7 +113,6 @@ router.get("/getArticle", async function (req, res){
   } else {
     res.locals.articleImages = articleImages[0];
   }
-
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
@@ -141,8 +139,6 @@ router.get("/getArticle", async function (req, res){
       res.locals.userHasLiked = ""
 
     }
-
-
 
   // Check if user has subscribed to author
     if (res.locals.user){
@@ -245,6 +241,7 @@ router.get("/profile", verifyAuthenticated, async function (req, res) {
     likes: likes
   }
   res.locals.profileObj = profileObj;
+  res.locals.title = 'Profile';
   res.render("user-profile");
 });
 
@@ -311,6 +308,7 @@ router.get("/analytics", async function (req, res) {
     res.locals.commentCountByDay = commentCountByDay;
     res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
     res.locals.popularArticles = popularArticles;
+    res.locals.title = 'Analytics';
 
     res.render("analytics");
 });
@@ -410,18 +408,12 @@ router.get("/deleteComment", async function (req, res){
 
 })
 
-router.get("/getUserByUsername", async function (req, res) {
-  const userName = req.query.userName;
-  const user = await userDao.getUserByUserName(userName);
-  if (user) {
-    res.json(user);
-  } else {
-    res.json(null);
-  }
-  
+
+router.get("/getAllUsernames", async function (req, res) {
+  const usernames = await userDao.getAllUsernames();
+  res.json(usernames);
 })
-
-
+  
 router.get("/deleteArticle", async function (req, res){
 
   //As the deleting an article is a get request, check that the 
@@ -520,10 +512,11 @@ router.get("/subscribeToAuthor", async function (req, res){
 
   const authorID = req.query.authorID;
   const subscribeUserID = req.query.userID;
+
   const subscriberDetails = await userDao.getUserByID(subscribeUserID);
   const subscriberUserName = subscriberDetails.userName;
   const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID);
-
+  
   // Check in place to ensure that the current user, is the user that hit like
   // Required as this is a get request and URL could be entered by anyone.
   if(res.locals.user.userID == subscribeUserID){
@@ -553,6 +546,7 @@ router.get("/subscribeToAuthor", async function (req, res){
         const usersToBeNotified = [{userSubscriberID: authorID}];
         await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
       
+
       res.json("Unsubscribe")
     }
 
@@ -560,6 +554,26 @@ router.get("/subscribeToAuthor", async function (req, res){
     // No logged in user / user does not match user that hit like - do nothing.
   }
 
+})
+
+router.get("/editProfile", verifyAuthenticated, async function (req, res) {
+  res.locals.title = "Edit Profile";
+  res.locals.userToEdit = res.locals.user;
+  res.render("edit-profile");
+});
+
+router.post("/editProfile", async function (req, res) {
+  const userToEdit = {
+    userID: req.body.userID,
+    fName: req.body.fname,
+    lName: req.body.lname,
+    DOB: req.body.dob,
+    description: req.body.bio,
+    avatarFilePath: req.body.avatar
+  };
+
+  await userDao.updateUser(userToEdit);
+  res.redirect("/profile?id="+userToEdit.userID)
 })
 
 module.exports = router;

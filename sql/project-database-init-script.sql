@@ -95,12 +95,16 @@ create table notifications
 
 );
 
+-- user 1 and 2 were set up as actual users - deletecomment password is password, admin password is admin
 insert into user (userID, userName, password, fName, lName, DOB, description, avatarFilePath, adminFlag) values
-(1, 'deleted comment', 'password', 'deleted', 'comment', '01-01-1900', 'deleted comments', './avatars/1.png', 1),
-(2, 'admin', 'admin', 'admin', 'admin', '01-01-1900', 'admin', './avatars/1.png', 1),
-(3, 'ccuerda0', '67jbtzeJaLbb', 'Carly', 'Cuerda', '13-09-1950', 'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.', './avatars/5.jpeg', 0),
-(4, 'tom0122', 'hkyw7902538', 'Tom', 'Lee', '29-06-1990', 'Welcome to my homepage.', './avatars/1.png', 0),
-(5, 'alexc08', 'rtwergf8', 'Alex', 'Spence', '06-12-1993', '', './avatars/3.jpeg', 0);
+(1, 'deletedcomment', '$2b$10$c4K6C1nTe5VJrSKbhE74Z.hNZCqZpZM788NwhCBa/.p.njBgE29pa', 'deleted', 'comment', '01-01-1900', 'deleted comments', './avatars/1.png', 1),
+(2, 'admin', '$2b$10$mzz3QNoe1Hpx/59S6YUZIub4FqsvGyXxYaFl87DiWAUu07ZgL6psa', 'admin', 'admin', '01-01-1900', 'admin user', './avatars/1.png', 1),
+(3, 'etowns0', 'Z21w1Ae6lC0', 'Eunice', 'Towns', '06-09-1919', 'Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', './avatars/1.png', 0),
+(4, 'zhendriksen1', 'QnJuDbX56', 'Zared', 'Hendriksen', '07-03-1944', 'Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy.', './avatars/2.jpeg', 0),
+(5, 'lbodycote2', 'KVpKkrKq5HAt', 'Lexie', 'Bodycote', '13-01-1900', 'In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt.', './avatars/3.jpeg', 0),
+(6, 'sderobertis3', 'IJEHbOjvk', 'Stu', 'De Robertis', '16-10-1904', 'Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.', './avatars/4.jpeg', 0),
+(7, 'cfouracres4', '58iZB2aY4', 'Cozmo', 'Fouracres', '18-08-1954', 'Suspendisse accumsan tortor quis turpis.', './avatars/5.jpeg', 0),
+(8, 'briglar5', '9M4EMoRIe8F', 'Boyd', 'Riglar', '23-09-1927', 'Nullam varius. Nulla facilisi.', './avatars/6.jpeg', 0);
 
 insert into articles (articleID, authorID, title, publishDate, content, numberOfComments, numberOfLikes) values (1, 3, 'Sed accumsan felis.', '2020-02-06 16:38:41', 'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh.', '0', '0');
 insert into articles (articleID, authorID, title, publishDate, content, numberOfComments, numberOfLikes) values (2, 4, 'Praesent blandit.', '2021-03-30 08:40:21', 'Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.', '0', '0');
@@ -129,45 +133,125 @@ insert into articles (articleID, authorID, title, publishDate, content, numberOf
 insert into articles (articleID, authorID, title, publishDate, content, numberOfComments, numberOfLikes) values (25, 4, 'Aenean lectus.', '2020-10-10 18:12:52', 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis. Sed ante. Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.', '0', '0');
 
 insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
-(1, 'test1tn', './article-images/article-thumbnails/test3tn.jpg', 5, 1),
-(2, 'test2tn', './article-images/article-thumbnails/test3tn.jpg', 15, 1),
-(3, 'test3tn', './article-images/article-thumbnails/test3tn.jpg', 20, 1),
-(4, 'test4tn', './article-images/article-thumbnails/test3tn.jpg', 19, 1),
-(5, 'test5tn', './article-images/article-thumbnails/test3tn.jpg', 12, 1),
-(6, 'test1tn', './article-images/article-thumbnails/test3tn.jpg', 1, 1);
-
+(1, 'test_image_article1', './article-images/test_image_article1.jpg', 1, 0),
+(2, 'test_thumbnail_article1', './article-images/article-thumbnails/test_thumbnail_article1.jpg', 1, 1),
+(3, 'test_image_article2', './article-images/test_image_article2.jpg', 2, 0),
+(4, 'test_thumbnail_article2', './article-images/article-thumbnails/test_thumbnail_article1.jpg', 2, 1),
+(5, 'test_image_article3', './article-images/test_image_article3.jpg', 3, 0),
+(6, 'test_thumbnail_article3', './article-images/article-thumbnails/test_thumbnail_article3.jpg', 3, 1),
+(7, 'test_image_article4', './article-images/test_image_article4.jpg', 4, 0),
+(8, 'test_thumbnail_article4', './article-images/article-thumbnails/test_thumbnail_article4.jpg', 4, 1),
+(9, 'test_image_article5', './article-images/test_image_article5.jpg', 5, 0),
+(10, 'test_thumbnail_article5', './article-images/article-thumbnails/test_thumbnail_article5.jpg', 5, 1),
+(11, 'test_image_article6', './article-images/test_image_article6.jpg', 6, 0),
+(12, 'test_thumbnail_article6', './article-images/article-thumbnails/test_thumbnail_article6.jpg', 6, 1),
+(13, 'test_image_article7', './article-images/test_image_article7.jpg', 7, 0),
+(14, 'test_thumbnail_article7', './article-images/article-thumbnails/test_thumbnail_article7.jpg', 7, 1),
+(15, 'test_image_article8', './article-images/test_image_article8.jpg', 8, 0),
+(16, 'test_thumbnail_article8', './article-images/article-thumbnails/test_thumbnail_article8.jpg', 8, 1),
+(17, 'test_image_article9', './article-images/test_image_article9.jpg', 9, 0),
+(18, 'test_thumbnail_article9', './article-images/article-thumbnails/test_thumbnail_article9.jpg', 9, 1),
+(19, 'test_image_article10', './article-images/test_image_article10.jpg', 10, 0),
+(20, 'test_thumbnail_article10', './article-images/article-thumbnails/test_thumbnail_article10.jpg', 10, 1),
+(21, 'test_image_article1', './article-images/test_image_article1.jpg', 11, 0),
+(22, 'test_thumbnail_article1', './article-images/article-thumbnails/test_thumbnail_article1.jpg', 11, 1),
+(23, 'test_image_article2', './article-images/test_image_article2.jpg', 12, 0),
+(24, 'test_thumbnail_article2', './article-images/article-thumbnails/test_thumbnail_article2.jpg', 12, 1),
+(25, 'test_image_article3', './article-images/test_image_article3.jpg', 13, 0),
+(26, 'test_thumbnail_article3', './article-images/article-thumbnails/test_thumbnail_article3.jpg', 13, 1),
+(27, 'test_image_article4', './article-images/test_image_article4.jpg', 14, 0),
+(28, 'test_thumbnail_article4', './article-images/article-thumbnails/test_thumbnail_article4.jpg', 14, 1),
+(29, 'test_image_article5', './article-images/test_image_article5.jpg', 15, 0),
+(30, 'test_thumbnail_article5', './article-images/article-thumbnails/test_thumbnail_article5.jpg', 15, 1),
+(31, 'test_image_article6', './article-images/test_image_article6.jpg', 16, 0),
+(32, 'test_thumbnail_article6', './article-images/article-thumbnails/test_thumbnail_article6.jpg', 16, 1),
+(33, 'test_image_article7', './article-images/test_image_article7.jpg', 17, 0),
+(34, 'test_thumbnail_article7', './article-images/article-thumbnails/test_thumbnail_article7.jpg', 17, 1),
+(35, 'test_image_article8', './article-images/test_image_article8.jpg', 18, 0),
+(36, 'test_thumbnail_article8', './article-images/article-thumbnails/test_thumbnail_article8.jpg', 18, 1),
+(37, 'test_image_article9', './article-images/test_image_article9.jpg', 19, 0),
+(38, 'test_thumbnail_article9', './article-images/article-thumbnails/test_thumbnail_article9.jpg', 19, 1),
+(39, 'test_image_article10', './article-images/test_image_article10.jpg', 20, 0),
+(40, 'test_thumbnail_article10', './article-images/article-thumbnails/test_thumbnail_article10.jpg', 20, 1),
+(41, 'test_image_article1', './article-images/test_image_article1.jpg', 21, 0),
+(42, 'test_thumbnail_article1', './article-images/article-thumbnails/test_thumbnail_article1.jpg', 21, 1),
+(43, 'test_image_article2', './article-images/test_image_article2.jpg', 22, 0),
+(44, 'test_thumbnail_article2', './article-images/article-thumbnails/test_thumbnail_article1.jpg', 22, 1),
+(45, 'test_image_article3', './article-images/test_image_article3.jpg', 23, 0),
+(46, 'test_thumbnail_article3', './article-images/article-thumbnails/test_thumbnail_article3.jpg', 23, 1),
+(47, 'test_image_article4', './article-images/test_image_article4.jpg', 24, 0),
+(48, 'test_thumbnail_article4', './article-images/article-thumbnails/test_thumbnail_article4.jpg', 24, 1),
+(49, 'test_image_article5', './article-images/test_image_article5.jpg', 25, 0),
+(50, 'test_thumbnail_article5', './article-images/article-thumbnails/test_thumbnail_article5.jpg', 5, 1);
 
 insert into comments (commentID, articleID, commentAuthorID, parentID, content, publishDate) values
-(1, 1, 3, null, 'Great article!', '2022-05-24 23:33:57'),
-(2, 1, 3, null, 'Good insight.','2022-05-25 17:33:47'),
-(3, 1, 4, 2, 'Thank you!','2022-05-26 03:58:23'),
-(4, 2, 3, null, 'Interesting...','2022-05-26 12:30:31'),
-(5, 5, 5, null, 'top level','2022-05-26 22:26:45'),
-(6, 5, 4, 5, 'Level 1','2022-05-26 19:30:52'),
-(7, 5, 3, 6, 'level 2','2022-05-27 19:30:52'),
-(8, 5, 5, null, 'top level','2022-05-27 19:30:52'),
-(9, 5, 4, null, 'top level','2022-05-27 19:30:52'),
-(10, 5, 3, 8, 'level 1','2022-05-28 19:30:52'),
-(11, 5, 4, 10, 'level 2','2022-05-28 19:30:52'),
-(12, 5, 3, null, 'Top level','2022-05-28 19:30:52'),
-(13, 5, 5, 12, 'Level 1','2022-05-29 19:30:52'),
-(14, 1, 3, null, 'Test','2022-05-26 12:30:31'),
-(15, 1, 3, null, 'Test','2022-05-27 12:30:31'),
-(16, 1, 4, null, 'Test','2022-05-28 12:30:31'),
-(17, 1, 5, null, 'Test','2022-05-28 12:30:31'),
-(18, 1, 3, null, 'Test','2022-05-29 12:30:31');
-
+(1, 1, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
+(2, 2, 3, null, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(3, 3, 6, null, 'Nulla facilisi.', '1965-01-29 09:57:40'),
+(4, 4, 7, null, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', '1964-12-23 17:39:01'),
+(5, 5, 6, null, 'Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.', '1975-01-27 18:14:10'),
+(6, 6, 7, null, 'Vivamus vel nulla eget eros elementum pellentesque.', '1993-11-10 21:54:46'),
+(7, 7, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
+(8, 8, 3, null, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(9, 9, 6, null, 'Nulla facilisi.', '1965-01-29 09:57:40'),
+(10, 10, 7, null, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', '1964-12-23 17:39:01'),
+(11, 11, 6, null, 'Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.', '1975-01-27 18:14:10'),
+(12, 12, 7, null, 'Vivamus vel nulla eget eros elementum pellentesque.', '1993-11-10 21:54:46'),
+(13, 13, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
+(14, 14, 3, null, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(15, 15, 6, null, 'Nulla facilisi.', '1965-01-29 09:57:40'),
+(16, 16, 7, null, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', '1964-12-23 17:39:01'),
+(17, 17, 6, null, 'Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.', '1975-01-27 18:14:10'),
+(18, 18, 7, null, 'Vivamus vel nulla eget eros elementum pellentesque.', '1993-11-10 21:54:46'),
+(19, 19, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
+(20, 20, 3, null, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(21, 21, 6, null, 'Nulla facilisi.', '1965-01-29 09:57:40'),
+(22, 22, 7, null, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', '1964-12-23 17:39:01'),
+(23, 23, 6, null, 'Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.', '1975-01-27 18:14:10'),
+(24, 24, 7, null, 'Vivamus vel nulla eget eros elementum pellentesque.', '1993-11-10 21:54:46'),
+(25, 25, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
+(26, 1, 3, null, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(27, 1, 6, 26, 'Nulla facilisi.', '1965-01-29 09:57:40'),
+(28, 1, 7, 27, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', '1964-12-23 17:39:01'),
+(29, 1, 6, 26, 'Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.', '1975-01-27 18:14:10'),
+(30, 2, 7, 2, 'Vivamus vel nulla eget eros elementum pellentesque.', '1993-11-10 21:54:46'),
+(31, 3, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
+(32, 4, 3, 4, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(33, 4, 3, 32, 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit.', '1977-05-06 15:07:42'),
+(34, 5, 6, null, 'Nulla facilisi.', '1965-01-29 09:57:40'),
+(35, 6, 7, null, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', '1964-12-23 17:39:01'),
+(36, 7, 6, null, 'Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.', '1975-01-27 18:14:10'),
+(37, 8, 7, 8, 'Vivamus vel nulla eget eros elementum pellentesque.', '1993-11-10 21:54:46');
 
 insert into likes (articleID, userID) values
-(1,5),
 (1,3),
-(4,4);
-
+(1,4),
+(2,3),
+(1,4),
+(3,6),
+(4,4),
+(5,5),
+(6,4),
+(7,7),
+(1,4),
+(15,8),
+(16,8),
+(17,8),
+(18,6),
+(19,7),
+(19,8),
+(21,5),
+(22,4),
+(23,3);
 
 
 insert into subscribes (userSubscriberID, articleAuthorID, dateSubscribed) values
-(2, 3, '2022-05-24 23:33:57'),
-(3, 4, '2022-05-25 17:33:47');
+(3, 4, '1935-02-08 19:11:27'),
+(8, 6, '2015-05-05 01:51:39'),
+(5, 3, '1922-06-21 03:38:47'),
+(4, 5, '1998-06-20 19:21:34'),
+(5, 6, '1902-03-28 12:14:02'),
+(8, 7, '1952-11-19 21:36:21');
 
 
 

@@ -58,10 +58,35 @@ async function giveAuthToken(user) {
         `);
 }
 
+async function getAllUsernames() {
+    const db = await dbPromise;
+
+    const usernames = await db.all(SQL`
+        select userName from user`);
+    
+    return usernames;
+}
+
+async function updateUser(user) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set fName = ${user.fName},
+            lName = ${user.lName},
+            DOB = ${user.DOB},
+            description = ${user.description},
+            avatarFilePath = ${user.avatarFilePath}
+            where userID = ${user.userID}
+        `);
+}
+
 module.exports = {
     createNewUser,
     getUserByUserName,
     getUserByID,
     retrieveUserWithAuthToken,
-    giveAuthToken
+    giveAuthToken,
+    getAllUsernames,
+    updateUser
 };
