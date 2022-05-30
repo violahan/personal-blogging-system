@@ -156,7 +156,25 @@ function deleteComment(commentID){
 
 }
 
-function confirmDeleteComment(commentID){
+// function confirmDeleteComment(commentID){
     
-    alert("Comment Deleted")
+//     alert("Comment Deleted")
+// }
+
+function deleteArticle(articleID){
+    
+    let deleteID = "delete-article-"+articleID;
+    let confirmMessageID = "confirm-message-"+articleID;
+    let confirmDeleteID = "confirm-delete-"+articleID;
+
+    if (document.getElementById(deleteID).innerText == "Delete Article"){
+        document.getElementById(confirmMessageID).innerText = "Are you sure you want to delete the article?";        
+        document.getElementById(deleteID).innerText = "No, don't delete the article";
+        document.getElementById(confirmDeleteID).style.display = "inline-block";
+    } else {
+        document.getElementById(confirmDeleteID).style.display = "none";
+        document.getElementById(deleteID).innerText = "Delete Article";
+        document.getElementById(confirmMessageID).innerText = "";
+    }
+
 }
