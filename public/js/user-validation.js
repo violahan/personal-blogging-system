@@ -1,17 +1,18 @@
-window.addEventListener("load", function () {
+window.addEventListener("load", async function () {
 
     //disable this button when needed
     const submitBtn = document.querySelector("#signup-submit-btn");
 
     //check if username exist, if yes display an error message
     const userNameInput = document.querySelector('#username-input');
-    userNameInput.addEventListener('blur', async (e) => {
+    const usernamesRes = await fetch(`/getAllUsernames`);
+    const allUsernames = await usernamesRes.json();
+    userNameInput.addEventListener('keyup', async (e) => {
         const userName = e.target.value;
         if (userName) {
-            let response = await fetch(`/getUserByUsername?userName=${userName}`);
-            let userObj = await response.json();
+            let exists = allUsernames.find(n => n.userName === userName);
             let errorPara = document.querySelector("#username-error");
-            if (userObj) {
+            if (exists) {
                 errorPara.removeAttribute("hidden");
                 errorPara.innerText = 'Username already exists, please type a new one';
                 submitBtn.disabled = true;
