@@ -514,10 +514,11 @@ router.get("/subscribeToAuthor", async function (req, res){
 
   const authorID = req.query.authorID;
   const subscribeUserID = req.query.userID;
+
   const subscriberDetails = await userDao.getUserByID(subscribeUserID);
   const subscriberUserName = subscriberDetails.userName;
   const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID);
-
+  
   // Check in place to ensure that the current user, is the user that hit like
   // Required as this is a get request and URL could be entered by anyone.
   if(res.locals.user.userID == subscribeUserID){
@@ -547,6 +548,7 @@ router.get("/subscribeToAuthor", async function (req, res){
         const usersToBeNotified = [{userSubscriberID: authorID}];
         await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
       
+
       res.json("Unsubscribe")
     }
 
