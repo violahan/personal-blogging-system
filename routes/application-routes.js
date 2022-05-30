@@ -8,6 +8,7 @@ const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
+const notificationFunctions = require("../modules/notification-functions.js");
 
 
 const bcrypt = require("../Helper/bcrypt-helper");
@@ -47,7 +48,7 @@ router.get("/", verifyAuthenticated, async function(req, res) {
       let userCardsToDisplay = await articleFunctions.loadArticles(userOrderedArticles, totalUserArticles)
       res.locals.userAllArticlesToDisplay = userCardsToDisplay;
     }
-
+    res.locals.title = 'Home';
     res.render("home");
 });
 
@@ -65,7 +66,7 @@ router.get("/noUser", async function(req, res) {
   let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
 
   res.locals.allArticleToDisplay = cardsToDisplay;
-
+  res.locals.title = 'Home';
   res.render("home");
 });
 
@@ -118,30 +119,56 @@ router.get("/getArticle", async function (req, res){
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
   // Check if user has liked the article
-  if (res.locals.user){
-    // There is a logged in user
+    if (res.locals.user){
+      // There is a logged in user
 
-    // Get details of all likes on article
-    const likesOnArticle = await likeDao.getLikesByArticle(articleID)
-    let userHasLiked = "";
-    for (let i = 0; i < likesOnArticle.length; i++) {
-      
-      if (res.locals.user.userID == likesOnArticle[i].userID){
-        userHasLiked = "true";
+      // Get details of all likes on article
+      const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+      let userHasLiked = "";
+      for (let i = 0; i < likesOnArticle.length; i++) {
+        
+        if (res.locals.user.userID == likesOnArticle[i].userID){
+          userHasLiked = "true";
+        }
+        
       }
       
+      res.locals.userHasLiked = userHasLiked;
+
+    } else {
+      
+      // There is no logged in user - user has not liked
+      res.locals.userHasLiked = ""
+
     }
-    
-    res.locals.userHasLiked = userHasLiked;
-
-  } else {
-    
-    // There is no logged in user - user has not liked
-    res.locals.userHasLiked = ""
-
-  }
 
 
+
+  // Check if user has subscribed to author
+    if (res.locals.user){
+      // There is a logged in user
+
+      // Get details of all subscribers to the author
+      const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(articleInfo.authorID)
+      
+      let userHasSubscribed = "";
+      for (let i = 0; i < subscribersToAuthor.length; i++) {
+        
+        if (res.locals.user.userID == subscribersToAuthor[i].userSubscriberID){
+          userHasSubscribed = "true";
+        }
+        
+      }
+      
+      res.locals.userHasSubscribed = userHasSubscribed;
+
+    } else {
+      
+      // There is no logged in user - user has not Subscribed
+      res.locals.userHasSubscribed = ""
+
+    }
+// 
 
 
   res.locals.articleInfo = articleInfo;
@@ -206,6 +233,7 @@ router.get("/profile", verifyAuthenticated, async function (req, res) {
   const followers = await subscribeDao.getSubscribesByAuthorId(userId);
   const following = await subscribeDao.getSubscribesBySubscriberId(userId);
   const profileObj = {
+    authorID: userId,
     name: user.fName + " " + user.lName,
     avatarFilePath: user.avatarFilePath,
     bio: user.description,
@@ -217,6 +245,7 @@ router.get("/profile", verifyAuthenticated, async function (req, res) {
     likes: likes
   }
   res.locals.profileObj = profileObj;
+  res.locals.title = 'Profile';
   res.render("user-profile");
 });
 
@@ -283,6 +312,7 @@ router.get("/analytics", async function (req, res) {
     res.locals.commentCountByDay = commentCountByDay;
     res.locals.subscribeCumulativeCount = subscribeCumulativeCount;
     res.locals.popularArticles = popularArticles;
+    res.locals.title = 'Analytics';
 
     res.render("analytics");
 });
@@ -295,6 +325,22 @@ router.post("/makeComment", async function (req, res){
   let commentArticleID = req.query.articleID
   let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
 
+
+  // Create notificaiton related to this comment event:
+      // Check if any subscribers:
+      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
+
+      // If there are subscribers - create a notification:
+          if(subscribers != ""){
+              const notificationType = "newComment";
+              const notificaitonContent = commentAuthorID+" has made a new comment";
+              const usersToBeNotified = subscribers;
+              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+          } else {
+              // No subscribers, no notifications made
+          }
+
+
   res.redirect("/getArticle?articleID="+commentArticleID)
 
 })
@@ -306,6 +352,21 @@ router.post("/makeReply", async function (req, res){
   let commentArticleID = req.query.articleID
   let parentCommentID = req.query.parentID
   let commentID = await commentDao.addReplyComment(commentArticleID, commentAuthorID, parentCommentID, commentContent)
+
+   // Create notificaiton related to this comment event:
+      // Check if any subscribers:
+      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
+
+    // If there are subscribers - create a notification:
+    if(subscribers  != ""){
+      const notificationType = "newComment";
+      const notificaitonContent = commentAuthorID+" has made a new comment";
+      const usersToBeNotified = subscribers;
+      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+    } else {
+      // No subscribers, no notifications made
+    }
+
 
   res.redirect("/getArticle?articleID="+commentArticleID)
 
@@ -351,18 +412,12 @@ router.get("/deleteComment", async function (req, res){
 
 })
 
-router.get("/getUserByUsername", async function (req, res) {
-  const userName = req.query.userName;
-  const user = await userDao.getUserByUserName(userName);
-  if (user) {
-    res.json(user);
-  } else {
-    res.json(null);
-  }
-  
+
+router.get("/getAllUsernames", async function (req, res) {
+  const usernames = await userDao.getAllUsernames();
+  res.json(usernames);
 })
-
-
+  
 router.get("/deleteArticle", async function (req, res){
 
   //As the deleting an article is a get request, check that the 
@@ -422,6 +477,7 @@ router.get("/deleteArticle", async function (req, res){
 router.get("/likeArticle", async function (req, res){
 
   const articleID = req.query.articleID;
+  const articleAuthorID = await articleDAO.getAuthorByArticleID(articleID)
   const likeUserID = req.query.userID;
   const likesOnArticle = await likeDao.getLikesByArticle(articleID)
 
@@ -443,15 +499,64 @@ router.get("/likeArticle", async function (req, res){
     if (userHasLikedArticle == 1){
       //Remove like:
       await likeDao.removeLike(articleID, likeUserID);
+      res.json("Like")
     } else {
       // Add like:
       await likeDao.addLike(articleID, likeUserID);
+      res.json("Unlike")
     }
 
   } else {
     // No logged in user / user does not match user that hit like - do nothing.
   }
 
+})
+
+router.get("/subscribeToAuthor", async function (req, res){
+
+  const authorID = req.query.authorID;
+  const subscribeUserID = req.query.userID;
+
+  const subscriberDetails = await userDao.getUserByID(subscribeUserID);
+  const subscriberUserName = subscriberDetails.userName;
+  const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID);
+  
+  // Check in place to ensure that the current user, is the user that hit like
+  // Required as this is a get request and URL could be entered by anyone.
+  if(res.locals.user.userID == subscribeUserID){
+
+    let userHasSubscribedToAuthor = 0
+    for (let i = 0; i < subscribersToAuthor.length; i++) {
+      
+      if(subscribeUserID == subscribersToAuthor[i].userSubscriberID){
+        // User has liked the article - Remove Like
+        userHasSubscribedToAuthor += 1
+      } else {
+        // User has not liked - do nothing here
+      }
+    }
+
+    if (userHasSubscribedToAuthor == 1){
+      //Remove subscriber:
+      await subscribeDao.removeFollow(subscribeUserID, authorID);
+      res.json("Subscribe")
+    } else {
+      // Add like:
+      await subscribeDao.addFollow(subscribeUserID, authorID);
+
+      // Create notificaiton related to this new subscriber:
+        const notificationType = "newSubscriber";
+        const notificaitonContent = subscriberUserName+" has subscribed to you!";
+        const usersToBeNotified = [{userSubscriberID: authorID}];
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+      
+
+      res.json("Unsubscribe")
+    }
+
+  } else {
+    // No logged in user / user does not match user that hit like - do nothing.
+  }
 
 })
 

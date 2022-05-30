@@ -20,6 +20,24 @@
     <h4><a href="./profile?id={{articleInfo.authorID}}">Author: {{articleInfo.userName}}</a></h4>
     <img src="{{articleInfo.avatarFilePath}}" alt="" class="avatar">
 
+{{!-- Subscribe to author function --}}
+{{#if user}}
+    {{#ifCond user.userID '==' articleInfo.authorID}}
+        {{!-- Do not display any buttons here as user is the author and cant subscribe to themself --}}
+    {{else}}
+        {{#if userHasSubscribed}}
+            <div>
+                <button id="subscribe-button" onclick="subscribeAuthor({{articleInfo.authorID}}, {{user.userID}})" >Unsubscribe</button>
+            </div>
+        {{else}}
+            <div>
+                <button id="subscribe-button" onclick="subscribeAuthor({{articleInfo.authorID}}, {{user.userID}})" >Subscribe</button>
+            </div>
+        {{/if}}
+    {{/ifCond}}
+{{/if}}
+
+
     <p>Date: {{articleInfo.publishDate}}</p>
 
     <h5>Image:</h5>
@@ -34,23 +52,15 @@
 
 </div>
 
+{{!-- Like Article Functions --}}
 {{#if user}}
-Test - there is a user
     {{#if userHasLiked}}
-        Test - the user has liked
-        Test = articleID = {{articleInfo.articleID}}
         <div>
-            <a href="./likeArticle?articleID={{articleInfo.articleID}}&userID={{user.userID}}"><button id="like-button" onclick="likeArticle()" >Unlike</button></a>
+            <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Unlike</button>
         </div>
-
-
-
-
     {{else}}
-        Test user has not liked
-                Test = articleID = {{articleInfo.articleID}}
         <div>
-            <a href="./likeArticle?articleID={{articleInfo.articleID}}&userID={{user.userID}}"><button id="like-button" onclick="likeArticle()" >Like</button></a>
+           <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Like</button>
         </div>
     {{/if}}
 {{/if}}
@@ -191,7 +201,7 @@ Test - there is a user
                                 <img src="{{this.avatarFilePath}}" alt="" class="avatar">
                                 <p>Publishdate ={{this.publishDate}}</p>
                                 <p>CommentID = {{this.commentID}}</p>
-                                <p>Content = {{this.content}}</p>4
+                                <p>Content = {{this.content}}</p>
                                 {{#ifCond this.authorID '==' 1}}
                                 {{!-- if the comment has been "deleted" - assigned to user 1 - do not show a user name or link to profile --}}
                                 {{else}}

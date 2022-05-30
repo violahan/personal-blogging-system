@@ -4,6 +4,9 @@ const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
 
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
+const notificationFunctions = require("../modules/notification-functions.js");
+const subscribeDAO = require("../modules/subscribe-dao.js")
+
 
 // Set up multer to allow file uploads and save files
 // to temp folder before being used
@@ -40,7 +43,7 @@ router.get("/createArticle", verifyAuthenticated, async function (req, res){
     
     res.locals.imageMaxWidth = articleImageMaxWidth;
     res.locals.imageMaxHeight = articleImageMaxHeight;
-
+    res.locals.title = 'Create Article';
     // If user is logged in (verifyAuthrnticated) will direct to create article page
     res.render("create-article")
 
@@ -88,6 +91,21 @@ router.post("/createArticle", upload.single("imageFileUpload"), async function (
             await imageDAO.createArticleImage(articleID, articleImageFileName, articleImagePath)
             await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
 
+        }
+
+
+    // Create notificaiton related to this article:
+    // Check if any subscribers:
+        const subscribers = await subscribeDAO.getSubscribesByAuthorId(author.userID);
+
+    // If there are subscribers - create a notification:
+        if(subscribers != ""){
+            const notificationType = "newArticle";
+            const notificaitonContent = author.userName+" has written a new article titled "+articleTitle;
+            const usersToBeNotified = subscribers;
+            await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+        } else {
+            // No subscribers, no notifications made
         }
 
     res.redirect(`./getArticle?articleID=${articleID}`)
