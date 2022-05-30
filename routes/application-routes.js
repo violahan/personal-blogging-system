@@ -19,6 +19,7 @@ const cookieParser = require("cookie-parser");
 
 // set up fs to allow renaming and moving uploaded files
 const fs = require("fs");
+const { resourceLimits } = require("worker_threads");
 
 
 // Display the home page with list of all articles
@@ -98,8 +99,6 @@ router.post("/signup", async function (req, res) {
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
 router.get("/getArticle", async function (req, res){
  
-  
-
   if(req.query.deleteMessage){
     res.locals.deleteMessage = req.query.deleteMessage
   }
@@ -114,7 +113,6 @@ router.get("/getArticle", async function (req, res){
   } else {
     res.locals.articleImages = articleImages[0];
   }
-
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
@@ -141,8 +139,6 @@ router.get("/getArticle", async function (req, res){
       res.locals.userHasLiked = ""
 
     }
-
-
 
   // Check if user has subscribed to author
     if (res.locals.user){
@@ -558,6 +554,26 @@ router.get("/subscribeToAuthor", async function (req, res){
     // No logged in user / user does not match user that hit like - do nothing.
   }
 
+})
+
+router.get("/editProfile", verifyAuthenticated, async function (req, res) {
+  res.locals.title = "Edit Profile";
+  res.locals.userToEdit = res.locals.user;
+  res.render("edit-profile");
+});
+
+router.post("/editProfile", async function (req, res) {
+  const userToEdit = {
+    userID: req.body.userID,
+    fName: req.body.fname,
+    lName: req.body.lname,
+    DOB: req.body.dob,
+    description: req.body.bio,
+    avatarFilePath: req.body.avatar
+  };
+
+  await userDao.updateUser(userToEdit);
+  res.redirect("/profile?id="+userToEdit.userID)
 })
 
 module.exports = router;
