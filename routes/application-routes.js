@@ -319,17 +319,10 @@ router.get("/deleteComment", async function (req, res){
 
 })
 
-router.get("/getUserByUsername", async function (req, res) {
-  const userName = req.query.userName;
-  const user = await userDao.getUserByUserName(userName);
-  if (user) {
-    res.json(user);
-  } else {
-    res.json(null);
-  }
-  
+
+router.get("/getAllUsernames", async function (req, res) {
+  const usernames = await userDao.getAllUsernames();
+  res.json(usernames);
 })
-
-
 
 module.exports = router;
