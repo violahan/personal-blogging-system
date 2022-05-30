@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/article-load.js"></script>
     <script src="./js/article-page.js"></script>
-    
+    <script src="https://kit.fontawesome.com/54f7366ee8.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     {{#if title}}
     <title>{{title}}</title>
@@ -18,23 +18,31 @@
 </head>
 
 <body>
-    <p>Some place holder items/links for a nav bar to help testing</p>    
-    <div id="navBar">
+    <div class="navbar">
+        <div id="nav-left">
+            <a href="./"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="./"><i class="fa-solid fa-book"></i> Articles</a>
+        </div>
+        <div id="nav-right">
         {{#if user}}
-            <a href="./">Home</a>
-
-            <a href="./createArticle">Create Article</a>
-            <a href="./profile?id={{user.userID}}">Profile</a>
-            <a href="./analytics?userId={{user.userID}}">Analytics</a>
-            <a href="./logout">Logout</a>
-        {{else}}
-            <a href="./">Home</a>
-            <a href="./login">Login</a>
-            <a href="./signup">Create Account</a>
-            <a href="./analytics?userId=1">Analytics (userId=1)</a>
+            <a href="./"><i class="fa-solid fa-bell"></i> Notification</a>
+            <a href="./createArticle"><i class="fa-solid fa-book-open"></i> Create Article</a>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fa-solid fa-user"></i> {{user.fName}}
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="./profile?id={{user.userID}}"><i class="fa-solid fa-user-astronaut"></i> Profile  </a>
+                    <a href="./analytics?userId={{user.userID}}"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+                    <a href="./logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                </div>
+            </div>
+            {{else}}
+            <a href="./login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Log In</a>
+            <a href="./signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
         {{/if}}
+        </div>
     </div>
-
     {{{body}}}
 </body>
 
