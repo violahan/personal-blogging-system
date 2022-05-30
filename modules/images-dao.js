@@ -55,11 +55,34 @@ async function createArticleThumbnail(articleID, fileName, filePath){
 
 }
 
+async function deleteAllArticleImages(articleID){
+    const db = await dbPromise;
+
+    const results = await db.run(SQL`
+        delete
+        from images
+        where articleID = ${articleID};
+    `);
+}
+
+async function getAllImageByArticleID(articleID){
+    const db = await dbPromise;
+
+    const imagesByArticle = await db.all(SQL`
+        select *
+        from images
+        where articleID = ${articleID}
+        `);
+
+    return imagesByArticle;
+};
 
 // Export functions.
 module.exports = {
     getMainImageByArticleID,
     getThumbnailImageByArticleID,
     createArticleImage,
-    createArticleThumbnail
+    createArticleThumbnail,
+    deleteAllArticleImages,
+    getAllImageByArticleID
 };

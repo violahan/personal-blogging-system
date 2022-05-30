@@ -20,10 +20,12 @@ let cardsToDisplay = "";
 
         let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleID);
         
+        
         let thumbnailImagePath = "";
 
         if(thumbnailImage != ""){
              thumbnailImagePath = await thumbnailImage[0].path; 
+         
          } else {
             thumbnailImagePath = "";
         }

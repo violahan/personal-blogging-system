@@ -16,12 +16,18 @@ const subscribeDao = require("../modules/subscribe-dao");
 const { route } = require("express/lib/application");
 const cookieParser = require("cookie-parser");
 
+// set up fs to allow renaming and moving uploaded files
+const fs = require("fs");
 
 
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
 
     const user = res.locals.user;
+
+    if(req.query.deleteMessage){
+      res.locals.deleteMessage = req.query.deleteMessage
+    }
 
     // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
@@ -95,7 +101,6 @@ router.get("/getArticle", async function (req, res){
 
   if(req.query.deleteMessage){
     res.locals.deleteMessage = req.query.deleteMessage
-    console.log("Test - "+res.locals.deleteMessage)
   }
 
   const articleID = req.query.articleID;
@@ -111,6 +116,33 @@ router.get("/getArticle", async function (req, res){
 
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
+
+  // Check if user has liked the article
+  if (res.locals.user){
+    // There is a logged in user
+
+    // Get details of all likes on article
+    const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+    let userHasLiked = "";
+    for (let i = 0; i < likesOnArticle.length; i++) {
+      
+      if (res.locals.user.userID == likesOnArticle[i].userID){
+        userHasLiked = "true";
+      }
+      
+    }
+    
+    res.locals.userHasLiked = userHasLiked;
+
+  } else {
+    
+    // There is no logged in user - user has not liked
+    res.locals.userHasLiked = ""
+
+  }
+
+
+
 
   res.locals.articleInfo = articleInfo;
   res.locals.commentsToDisplay = commentsToDisplay;
@@ -323,6 +355,98 @@ router.get("/deleteComment", async function (req, res){
 router.get("/getAllUsernames", async function (req, res) {
   const usernames = await userDao.getAllUsernames();
   res.json(usernames);
+})
+  
+router.get("/deleteArticle", async function (req, res){
+
+  //As the deleting an article is a get request, check that the 
+  // user is allowed to delete the article - either they are the
+  // article author
+
+  const articleID = req.query.articleID;
+  const articleAuthorID = req.query.articleAuthorID;
+  const currentUserID = res.locals.user.userID
+
+    if(articleAuthorID == currentUserID){
+      
+      // Allowed to delete the article
+      deleteMessage = "Article deleted"
+      
+      // Delete items in order to ensure no database issues:
+      
+      // Delete all comments on article
+      await commentDao.deleteAllArticleComments(articleID);
+      
+      // Delete all likes
+      await likeDao.deleteAllArticleLikes(articleID)
+
+      // Delete images
+      // Delete images from server
+      const articleImages = await imageDAO.getAllImageByArticleID(articleID)
+      
+      if(articleImages){
+        for (let i = 0; i < articleImages.length; i++) {
+          let imagePathToDelete = articleImages[i].path;
+          let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
+      
+          if(articleImages[i].fileName == "default_thumbnail.png"){
+            // Do not delete the default thumbnail image 
+          } else {
+            // Delete the image on the server
+            fs.unlinkSync(fullImageFilePath)
+          }
+        }
+      }
+    
+      // Delete images from Database
+      await imageDAO.deleteAllArticleImages(articleID)
+
+      // Delete the article from the Database
+      await articleDAO.deleteArticle(articleID)
+
+    } else {
+      deleteMessage = "Not authorised to delete comment"
+    }
+  
+
+  res.redirect("/?deleteMessage="+deleteMessage)
+
+})
+
+router.get("/likeArticle", async function (req, res){
+
+  const articleID = req.query.articleID;
+  const likeUserID = req.query.userID;
+  const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+
+  // Check in place to ensure that the current user, is the user that hit like
+  // Required as this is a get request and URL could be entered by anyone.
+  if(res.locals.user.userID == likeUserID){
+
+    let userHasLikedArticle = 0
+    for (let i = 0; i < likesOnArticle.length; i++) {
+      
+      if(likeUserID == likesOnArticle[i].userID){
+        // User has liked the article - Remove Like
+        userHasLikedArticle += 1
+      } else {
+        // User has not liked - do nothing here
+      }
+    }
+
+    if (userHasLikedArticle == 1){
+      //Remove like:
+      await likeDao.removeLike(articleID, likeUserID);
+    } else {
+      // Add like:
+      await likeDao.addLike(articleID, likeUserID);
+    }
+
+  } else {
+    // No logged in user / user does not match user that hit like - do nothing.
+  }
+
+
 })
 
 module.exports = router;
