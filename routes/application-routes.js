@@ -117,6 +117,33 @@ router.get("/getArticle", async function (req, res){
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
+  // Check if user has liked the article
+  if (res.locals.user){
+    // There is a logged in user
+
+    // Get details of all likes on article
+    const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+    let userHasLiked = "";
+    for (let i = 0; i < likesOnArticle.length; i++) {
+      
+      if (res.locals.user.userID == likesOnArticle[i].userID){
+        userHasLiked = "true";
+      }
+      
+    }
+    
+    res.locals.userHasLiked = userHasLiked;
+
+  } else {
+    
+    // There is no logged in user - user has not liked
+    res.locals.userHasLiked = ""
+
+  }
+
+
+
+
   res.locals.articleInfo = articleInfo;
   res.locals.commentsToDisplay = commentsToDisplay;
 
@@ -392,6 +419,40 @@ router.get("/deleteArticle", async function (req, res){
 
 })
 
+router.get("/likeArticle", async function (req, res){
 
+  const articleID = req.query.articleID;
+  const likeUserID = req.query.userID;
+  const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+
+  // Check in place to ensure that the current user, is the user that hit like
+  // Required as this is a get request and URL could be entered by anyone.
+  if(res.locals.user.userID == likeUserID){
+
+    let userHasLikedArticle = 0
+    for (let i = 0; i < likesOnArticle.length; i++) {
+      
+      if(likeUserID == likesOnArticle[i].userID){
+        // User has liked the article - Remove Like
+        userHasLikedArticle += 1
+      } else {
+        // User has not liked - do nothing here
+      }
+    }
+
+    if (userHasLikedArticle == 1){
+      //Remove like:
+      await likeDao.removeLike(articleID, likeUserID);
+    } else {
+      // Add like:
+      await likeDao.addLike(articleID, likeUserID);
+    }
+
+  } else {
+    // No logged in user / user does not match user that hit like - do nothing.
+  }
+
+
+})
 
 module.exports = router;
