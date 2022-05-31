@@ -7,8 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/article-load.js"></script>
     <script src="./js/article-page.js"></script>
-    <script type="text/javascript" src="./js/notification-management.js"></script>
     <script src="https://kit.fontawesome.com/54f7366ee8.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./js/notification-management.js"></script>
     <meta charset="UTF-8">
     {{#if title}}
     <title>{{title}}</title>
@@ -28,8 +28,8 @@
         {{#if user}}
             
             <div class="dropdown">
-                <iframe onload="getNumberOfNotifications({{user.userID}})" style="display: none"></iframe>
-                <button class="dropbtn"><i class="fa-solid fa-bell"></i>Notifications: <b id="number-of-notifications"></b> <i class="fa fa-caret-down"></i></button>
+                 <iframe onload="getNumberOfNotifications({{user.userID}})" style="display: none"></iframe>
+                <button onclick="getNumberOfNotifications({{user.userID}})" class="dropbtn"><i class="fa-solid fa-bell"></i>Notifications: <b id="number-of-notifications"></b> <i class="fa fa-caret-down"></i></button>
                 <div class="dropdown-content">
                     <div id="notification-details"></div>
                 </div>

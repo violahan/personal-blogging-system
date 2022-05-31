@@ -13,6 +13,28 @@ router.get("/getNumberOfNotifications", async function(req, res){
 
 });
 
+router.get("/removeNotification", async function (req, res){
 
+    // Check current user is the user that the notification belongs to
+    if(res.locals.user.userID == req.query.userID){
+        await notificationDAO.deleteNotificationByNotificationID(req.query.notificationID)
+        res.json("Notification deleted")
+    } else {
+        res.json("Not authorised to delete notification")
+    }
+
+})
+
+router.get("/removeAllNotifications", async function (req, res){
+
+    // Check current user is the user that the notification belongs to
+    if(res.locals.user.userID == req.query.userID){
+        await notificationDAO.deleteAllNotificationByUserID(req.query.userID)
+        res.json("All notifications deleted")
+    } else {
+        res.json("Not authorised to delete notification")
+    }
+
+})
 
 module.exports = router;
