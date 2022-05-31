@@ -89,10 +89,10 @@ form>* {
 /* Navbar container */
 .navbar {
     overflow: hidden;
-    background-color: grey;
+    background-color: #2A53C1;
     font-family: Arial;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
+    /*display:grid;*/
+    /*grid-template-columns: 1fr 1fr;*/
 }
 
 #nav-left{
@@ -101,17 +101,17 @@ form>* {
 }
 
 #nav-right{
-    margin-right: 30px;
+    margin-right: 200px;
     margin-left: auto;
 }
 
 /* Links inside the navbar */
-.navbar div a {
+.navbar a {
     float: left;
     font-size: 16px;
-    color: #212121;
+    color: #f9f9f9;
     text-align: center;
-    padding: 14px 16px;
+    padding: 20px 16px;
     text-decoration: none;
 }
 
@@ -126,15 +126,15 @@ form>* {
     font-size: 16px;
     border: none;
     outline: none;
-    color: #212121;
-    padding: 14px 16px;
+    color: #f9f9f9;
+    padding: 20px 16px;
     background-color: inherit;
     font-family: inherit; /* Important for vertical align on mobile phones */
     margin: 0; /* Important for vertical align on mobile phones */
 }
 
 /* Add a red background color to navbar links on hover */
-.navbar div a:hover, .dropdown:hover .dropbtn {
+.navbar a:hover, .dropdown:hover .dropbtn {
     color: #a19fa7;
 }
 
@@ -142,7 +142,7 @@ form>* {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #2A53C1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
@@ -169,6 +169,6 @@ form>* {
 }
 
 body {
-   background-color: #EEEAE3;
-
+    background-color: #EEEAE3;
+    margin: 0px;
 }
