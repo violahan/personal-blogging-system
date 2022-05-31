@@ -565,6 +565,7 @@ router.get("/editProfile", verifyAuthenticated, async function (req, res) {
 router.post("/editProfile", async function (req, res) {
   const userToEdit = {
     userID: req.body.userID,
+    userName: req.body.userName,
     fName: req.body.fname,
     lName: req.body.lname,
     DOB: req.body.dob,

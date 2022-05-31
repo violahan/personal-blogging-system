@@ -72,7 +72,8 @@ async function updateUser(user) {
 
     await db.run(SQL`
         update user
-            set fName = ${user.fName},
+            set userName = ${user.userName},
+            fName = ${user.fName},
             lName = ${user.lName},
             DOB = ${user.DOB},
             description = ${user.description},

@@ -1,8 +1,9 @@
 <div class="container">
     <h2>Edit Profile:</h2>
     <form action="./editProfile" method="POST">
-        <p>Username: {{userToEdit.userName}}</p>
         <input type="hidden" name="userID" value="{{userToEdit.userID}}" />
+        <label for="userName">Username:</label>
+        <input type="text" name="userName" value="{{userToEdit.userName}}" required />
         <label for="fname">First Name:</label>
         <input type="text" name="fname" value="{{userToEdit.fName}}" required />
         <label for="lname">Last Name:</label>
