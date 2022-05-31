@@ -3,58 +3,72 @@
     <div><span>Profile</span></div>
 </div>
 
-<div>
-    <div>
-        <h2>{{profileObj.name}}</h2>
-        <img class="avatar" src={{profileObj.avatarFilePath}} />
-        <p>{{profileObj.bio}}</p>
+<div class="profile-body">
+    <div class="profile-body-left">
+        <h1>About </h1>
+        <div class="profile-detail-card">
+            <img class="avatar" src={{profileObj.avatarFilePath}} />
+            <h1>{{profileObj.name}}</h1>
+            <p>{{profileObj.bio}}</p>
+        </div>
+
+        <div class="profile-detail-card">
+            <p>Articles: {{profileObj.totalArticleNos}}</p>
+            <p>Followers: {{profileObj.totalFollowerNos}}</p>
+            <p>Following: {{profileObj.totalFollowingNos}}</p>
+        </div>
+
+        <div class="profile-detail-card">
+            {{#if isCurrentUser}}
+                <a href="./editProfile">Edit Profile</a>
+                <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a>
+                <a href="./deleteuser?userId={{profileObj.authorID}}">Delete User</a>
+            {{else}}
+                {{#if isSubscribed}}
+                    <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Unsubscribe</button>
+                {{else}}
+                    <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Subscribe</button>
+                {{/if}}
+            {{/if}}
+        </div>
+
     </div>
 
-    <div>
-        <p>Articles: {{profileObj.totalArticleNos}}</p>
-        <p>Followers: {{profileObj.totalFollowerNos}}</p>
-        <p>Following: {{profileObj.totalFollowingNos}}</p>
+    <div class="profile-body-middle">
+        <h1>Articles</h1>
+        {{#each profileObj.articles}}
+            <div class="profile-article-card">
+                <div class="profile-article-card-body" >
+                    <h2> {{this.title}}</h2>
+                    <p>{{this.publishDate}}</p>
+                </div>
+                <div class="profile-article-card-bottom-line"></div>
+            </div>
+        {{/each}}
     </div>
 
 
-</div>
-
-
-
-<div>
-    {{#if isCurrentUser}}
-        <a href="./editProfile">Edit Profile</a>
-        <a href="./analytics?userID={{profileObj.authorID}}">Analytics</a>
-        <a href="./deleteuser?userID={{profileObj.authorID}}">Delete User</a> DELTE USER BUTTON LINK TO BE FIXED/CREATED
-    {{else}}
-        {{#if isSubscribed}}
-            <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Unsubscribe</button>
-        {{else}}
-            <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Subscribe</button>
-        {{/if}}
-    {{/if}}
-</div>
- <div>
-     <h3>Articles</h3>
-     <ul>
-       {{#each profileObj.articles}}
-            <li>{{this.title}}  {{this.publishDate}}</li>
-       {{/each}}
-     </ul>
-    <h3>Comments</h3>
-    {{#each profileObj.comments}}
-        <div class="comment-card">
-            <p>article: {{this.title}}</p>
-            <p>Date: {{this.publishDate}}</p>
-            <p>{{this.content}}</p>
+    <div class="profile-body-right">
+        <h1>Comments</h1>
+        <div class="profile-body-right-card">
+            {{#each profileObj.comments}}
+                <div class="profile-body-right-card-comment-card">
+                    <p>{{this.title}}</p>
+                    <p>{{this.publishDate}}</p>
+                    <p>{{this.content}}</p>
+                </div>
+            {{/each}}
         </div>
-    {{/each}}
 
-    <h3>Likes</h3>
-    {{#each profileObj.likes}}
-        <div class="like-card">
-            <p>article: {{this.title}}</p>
-            <p>Date: {{this.publishDate}}</p>
+        <h1>Likes</h1>
+        <div class="profile-body-right-card">
+            {{#each profileObj.likes}}
+                <div class="profile-body-right-card-like-card">
+                    <p>article: {{this.title}}</p>
+                    <p>Date: {{this.publishDate}}</p>
+                </div>
+            {{/each}}
         </div>
-    {{/each}}
+    </div>
 </div>
+
