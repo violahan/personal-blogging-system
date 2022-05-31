@@ -7,7 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/article-load.js"></script>
     <script src="./js/article-page.js"></script>
-    
+    <script src="https://kit.fontawesome.com/54f7366ee8.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./js/notification-management.js"></script>
     <meta charset="UTF-8">
     {{#if title}}
     <title>{{title}}</title>
@@ -18,24 +19,84 @@
 </head>
 
 <body>
-    <p>Some place holder items/links for a nav bar to help testing</p>    
-    <div id="navBar">
+    <div class="navbar">
+        <div id="nav-left">
+            <a href="./"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="./"><i class="fa-solid fa-book"></i> Articles</a>
+        </div>
+        <div id="nav-right">
         {{#if user}}
-            <a href="./">Home</a>
+            
+            <div class="dropdown">
+                 <iframe onload="getNumberOfNotifications({{user.userID}})" style="display: none"></iframe>
+                <button onclick="getNumberOfNotifications({{user.userID}})" class="dropbtn"><i class="fa-solid fa-bell"></i>Notifications: <b id="number-of-notifications"></b> <i class="fa fa-caret-down"></i></button>
+                <div class="dropdown-content">
+                    <div id="notification-details"></div>
+                </div>
+            </div>
 
-            <a href="./createArticle">Create Article</a>
-            <a href="./profile?id={{user.userID}}">Profile</a>
-            <a href="./analytics?userId={{user.userID}}">Analytics</a>
-            <a href="./logout">Logout</a>
-        {{else}}
-            <a href="./">Home</a>
-            <a href="./login">Login</a>
-            <a href="./signup">Create Account</a>
-            <a href="./analytics?userId=1">Analytics (userId=1)</a>
+
+            <a href="./createArticle"><i class="fa-solid fa-book-open"></i> Create Article</a>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fa-solid fa-user"></i> {{user.fName}}
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="./profile?id={{user.userID}}"><i class="fa-solid fa-user-astronaut"></i> Profile  </a>
+                    <a href="./analytics?userId={{user.userID}}"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+                    <a href="./logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                </div>
+            </div>
+            {{else}}
+            <a id="loginBtn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login / Sign Up</a>
         {{/if}}
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="header-left"><span>TheHours</span></div>
+        <div class="header-middle"></div>
+        <div class="header-right"><span>Insight &</span><br><span>Opinion</span><br><span>Blog</span></div>
+    </div>
+
+    <div id="loginModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="loginClose">&times;</span>
+            <h1>Login</h1>
+            <form action="./login" method="POST">
+                <div>
+                    <label for="txtUserName">Username:</label>
+                    <input type="text" name="userName" id="txtUserName" required>
+                </div>
+
+                <div>
+                    <label for="txtPassword">Password:</label>
+                    <input type="password" name="password" id="txtPassword" required>
+                </div>
+
+                <div>
+                    <button type="submit">Log in</button>
+                </div>
+            </form>
+
+            <p>Don't have an account? <a href="./signup">Create one here.</a></p>
+        </div>
+        <div>
+
+
+
+        </div>
+
     </div>
 
     {{{body}}}
+
+    <div class="footer">
+        <p>Created by Group 5</p>
+    </div>
 </body>
+<script src="./js/modal.js"></script>
 
 </html>

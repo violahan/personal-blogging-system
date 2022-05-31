@@ -299,8 +299,10 @@ router.get("/analytics", async function (req, res) {
     let commentsNumber = (await commentDao.getCommentsByArticleAuthor(userId)).length;
     let likesNumber = (await likeDao.getLikesByArticleAuthor(userId)).length;
     let commentCountByDay = await commentDao.getCommentsCountPerDayByArticleAuthor(userId,5);
-    let subscribeCumulativeCount = await commentDao.getCumulativeSubscribeCountByArticleAuthor(userId);
+    let subscribeCumulativeCount = await subscribeDao.getCumulativeSubscribeCountByArticleAuthor(userId);
     let popularArticles = await  articleDAO.getArticleSortedByPopularity(userId, 3);
+
+    console.log(subscribeCumulativeCount);
 
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
@@ -329,9 +331,10 @@ router.post("/makeComment", async function (req, res){
       // If there are subscribers - create a notification:
           if(subscribers != ""){
               const notificationType = "newComment";
-              const notificaitonContent = commentAuthorID+" has made a new comment";
+              const notificaitonContent = res.locals.user.userName+" has made a new comment";
               const usersToBeNotified = subscribers;
-              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+              const idForLink = commentArticleID;
+              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
           } else {
               // No subscribers, no notifications made
           }
@@ -356,9 +359,10 @@ router.post("/makeReply", async function (req, res){
     // If there are subscribers - create a notification:
     if(subscribers  != ""){
       const notificationType = "newComment";
-      const notificaitonContent = commentAuthorID+" has made a new comment";
+      const notificaitonContent = res.locals.user.userName+" has made a new comment";
       const usersToBeNotified = subscribers;
-      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+      const idForLink = commentArticleID;
+      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
     } else {
       // No subscribers, no notifications made
     }
@@ -544,7 +548,8 @@ router.get("/subscribeToAuthor", async function (req, res){
         const notificationType = "newSubscriber";
         const notificaitonContent = subscriberUserName+" has subscribed to you!";
         const usersToBeNotified = [{userSubscriberID: authorID}];
-        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+        const idForLink = subscribeUserID;
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
       
 
       res.json("Unsubscribe")

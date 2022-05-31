@@ -3,68 +3,76 @@
 {{!-- All articles / Your article headings will act as buttons to allow switching
 between viewing all articles and viewing your articles --}}
 <div>
-    
-    {{deleteMessage}}
-
-
-    {{#if user}}
-    <div>
-        <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
-    </div>
-    {{/if}}
-
-
-
-    <div id="all-articles-home">
-
-    <div class="all-article-Sort">
-        <form action="">
-            <label for="allSortOption">Sort articles by:</label>
-            <select id="allSortOption" name="allSortOption" onchange="allSortOptions()">
-                <option value="publishDate" selected>Date</option>
-                <option value="userName">Author username</option>
-                <option value="title">Article Title</option>
-            </select>
-            <label for="desc">Descending:</label>
-            <input type="radio" checked name="allSortOrder" value="desc" onclick="allSortOptions()">
-            <label for="asc">Ascending:</label>
-            <input type="radio" name="allSortOrder" value="asc" onclick="allSortOptions()">
-        </form>
+    <div class="header-image">
+        <img src="./images/articles.jpg" width=100%>
+        <div><span>Articles</span></div>
     </div>
 
-        <h2>All Articles</h2>
-    
-        <div class="card-container" id="all-card-container">
+    <div class="articles-body">
 
-            {{{allArticleToDisplay}}}
+        {{deleteMessage}}
 
+
+        {{#if user}}
+        <div>
+            <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
         </div>
-    </div>
-    {{#if user}}
-    <div id="user-articles-home" style="display: none">
-        <div class="user-article-Sort">
-        <form action="">
-            <label for="userSortOption">Sort articles by:</label>
-            <select id="userSortOption" name="userSortOption" onchange="userSortOptions()">
-                <option value="publishDate" selected>Date</option>
-                <option value="title">Article Title</option>
-            </select>
-            <label for="desc">Descending:</label>
-            <input type="radio" checked name="userSortOrder" value="desc" onclick="userSortOptions()">
-            <label for="asc">Ascending:</label>
-            <input type="radio" name="userSortOrder" value="asc" onclick="userSortOptions()">
-        </form>
-    </div>
+        {{/if}}
 
-        <h2>{{user.userName}} Articles</h2>
-    
-        <div class="card-container" id="user-card-container">
 
-            {{{userAllArticlesToDisplay}}}
 
+        <div id="all-articles-home">
+
+        <div class="all-article-Sort">
+            <form action="">
+                <label for="allSortOption">Sort articles by:</label>
+                <select id="allSortOption" name="allSortOption" onchange="allSortOptions()">
+                    <option value="publishDate" selected>Date</option>
+                    <option value="userName">Author username</option>
+                    <option value="title">Article Title</option>
+                </select>
+                <label for="desc">Descending:</label>
+                <input type="radio" checked name="allSortOrder" value="desc" onclick="allSortOptions()">
+                <label for="asc">Ascending:</label>
+                <input type="radio" name="allSortOrder" value="asc" onclick="allSortOptions()">
+            </form>
         </div>
+
+            <h2>All Articles</h2>
+
+            <div class="card-container" id="all-card-container">
+
+                {{{allArticleToDisplay}}}
+
+            </div>
+        </div>
+        {{#if user}}
+        <div id="user-articles-home" style="display: none">
+            <div class="user-article-Sort">
+            <form action="">
+                <label for="userSortOption">Sort articles by:</label>
+                <select id="userSortOption" name="userSortOption" onchange="userSortOptions()">
+                    <option value="publishDate" selected>Date</option>
+                    <option value="title">Article Title</option>
+                </select>
+                <label for="desc">Descending:</label>
+                <input type="radio" checked name="userSortOrder" value="desc" onclick="userSortOptions()">
+                <label for="asc">Ascending:</label>
+                <input type="radio" name="userSortOrder" value="asc" onclick="userSortOptions()">
+            </form>
+        </div>
+
+            <h2>{{user.userName}} Articles</h2>
+
+            <div class="card-container" id="user-card-container">
+
+                {{{userAllArticlesToDisplay}}}
+
+            </div>
+        </div>
+        {{/if}}
+
     </div>
-    {{/if}}
 
 </div>
 

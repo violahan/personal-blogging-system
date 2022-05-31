@@ -56,11 +56,35 @@ async function removeFollow(followerId, authorId) {
     return follow;
 }
 
+async function getCumulativeSubscribeCountByArticleAuthor(authorId) {
+    const db = await dbPromise;
+
+    const subscribeStatistics = await db.all(SQL`
+        with SubscribeByDay as (
+            select
+                strftime('%Y-%m-%d', dateSubscribed) as date,
+                count(*) as count
+            from
+                subscribes
+            where
+                articleAuthorID = ${authorId}
+            group by
+                strftime('%Y-%m-%d', dateSubscribed)
+        )
+        select
+            date,
+            sum(count) over (order by date rows between unbounded preceding and current row) as cumulativeCount
+        from SubscribeByDay
+    `);
+    return subscribeStatistics
+}
+
 module.exports = {
     getSubscribesBySubscriberId,
     getSubscribesByAuthorId,
     getSubscribesByAuthorIdAndSubscriberId,
     addFollow,
-    removeFollow
+    removeFollow,
+    getCumulativeSubscribeCountByArticleAuthor
 }
 
