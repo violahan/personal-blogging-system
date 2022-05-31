@@ -8,9 +8,8 @@ async function getNumberOfNotifications(userID){
 
     document.getElementById('number-of-notifications').innerText = numberOfNotifications;
 
-    
-
     let notificationWindow = document.createElement('div');
+    notificationWindow.setAttribute("id", "notification-window")
     
     for (let i = 0; i < notificationDetails.length; i++) {
         
@@ -19,14 +18,17 @@ async function getNumberOfNotifications(userID){
         notificationWindow.appendChild(notificationCard)
     }
 
-    let clearAllNotificationButton = document.createElement('button')
+    let clearAllNotificationButton = document.createElement('a')
+    clearAllNotificationButton.innerText = "Clear All Notifications"
+    clearAllNotificationButton.setAttribute("id", "clear-all-notifications")
+    clearAllNotificationButton.setAttribute("style", "font-weight: bold")
     clearAllNotificationButton.setAttribute("onclick", `clearAllNotifications(${userID})`)
+    
 
-  //  notificationWindow.appendChild(clearAllNotificationButton)
+    notificationWindow.appendChild(clearAllNotificationButton)
 
     document.getElementById('notification-details').appendChild(notificationWindow)
 
-    
 
 }
 
@@ -41,9 +43,15 @@ function makeNotificationCard(notificationDetails){
 
     let notificationCard = document.createElement('div')
         notificationCard.innerHTML = `
-            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID})">${notificationDetails.content}</a> <button onclick="notificationViewed(${notificationDetails.notificationID})">Clear</button>
+            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID})"><i class="fa fa-caret-right"></i> ${notificationDetails.content}</a> 
         `
-     
+
+    // let clearNotificationButton = document.createElement('button');
+    // clearNotificationButton.setAttribute("onclick", `notificationViewed(${notificationDetails.notificationID})`);
+    // clearNotificationButton.setAttribute("style", "display: inline");
+    // clearNotificationButton.innerText = "Clear";
+
+    // notificationCard.appendChild(clearNotificationButton)
 
     return notificationCard
 }
@@ -56,15 +64,14 @@ function clearAllNotifications(userID){
     console.log("All notification button clicked")
 }
 
-async function showNotifications(){
-    if (document.getElementById('show-notification-details').innerText == "Show notifications"){
-        document.getElementById('notification-details').style.display = "block"
-        document.getElementById('show-notification-details').innerText = "Hide notifications"
-    } else {
-        document.getElementById('notification-details').style.display = "none"
-        document.getElementById('show-notification-details').innerText = "Show notifications"    
-    }
-
-}
+// async function showNotifications(){
+//     if (document.getElementById('show-notification-details').innerText == "Show notifications"){
+//         document.getElementById('notification-details').style.display = "block"
+//         document.getElementById('show-notification-details').innerText = "Hide notifications"
+//     } else {
+//         document.getElementById('notification-details').style.display = "none"
+//         document.getElementById('show-notification-details').innerText = "Show notifications"    
+//     }
+// }
 
 
