@@ -14,15 +14,46 @@ async function getNumberOfNotifications(userID){
     
     for (let i = 0; i < notificationDetails.length; i++) {
         
-        let notificationCard = document.createElement('div')
-        notificationCard.innerHTML = `
-            ${notificationDetails[i].typeOfNotification}: ${notificationDetails[i].content}
-        `
+        let notificationCard = makeNotificationCard(notificationDetails[i])
+
         notificationWindow.appendChild(notificationCard)
     }
 
+    let clearAllNotificationButton = document.createElement('button')
+    clearAllNotificationButton.setAttribute("onclick", `clearAllNotifications(${userID})`)
+
+  //  notificationWindow.appendChild(clearAllNotificationButton)
+
     document.getElementById('notification-details').appendChild(notificationWindow)
 
+    
+
+}
+
+function makeNotificationCard(notificationDetails){
+
+    let notificationLinkURL;
+    if(notificationDetails.typeOfNotification == "newSubscriber"){
+        notificationLinkURL = `./profile?id=${notificationDetails.idForLink}`
+    } else {
+        notificationLinkURL = `./getArticle?articleID=${notificationDetails.idForLink}`
+    }
+
+    let notificationCard = document.createElement('div')
+        notificationCard.innerHTML = `
+            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID})">${notificationDetails.content}</a> <button onclick="notificationViewed(${notificationDetails.notificationID})">Clear</button>
+        `
+     
+
+    return notificationCard
+}
+
+function notificationViewed(notificationID){
+    console.log("Notification viewed for notificationID: "+notificationID)
+}
+
+function clearAllNotifications(userID){
+    console.log("All notification button clicked")
 }
 
 async function showNotifications(){

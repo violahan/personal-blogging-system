@@ -25,6 +25,5 @@ async function likeArticle(articleID, userID){
 async function subscribeAuthor(authorID, userID){
     const subscribe = await fetch(`./subscribeToAuthor?authorID=${authorID}&userID=${userID}`) 
     const subscriptionConfirmation = await subscribe.json();
-    document.getElementById('subscribe-button').innerText = subscriptionConfirmation
-     
+    document.getElementById('subscribe-button').innerText = subscriptionConfirmation;
 }

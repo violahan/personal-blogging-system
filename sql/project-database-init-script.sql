@@ -91,7 +91,7 @@ create table notifications
     content            varchar(255) not null,
     userToBeNotifiedID integer      not null,
     hasBeenViewed      varchar(255),
-    idForLink          integer
+    idForLink          integer      not null,
     foreign key (userToBeNotifiedID) references user (userID)
 
 );
@@ -183,7 +183,7 @@ insert into images (imageID, fileName, path, articleID, thumbnailFlag) values
 (47, 'test_image_article4', './article-images/test_image_article4.jpg', 24, 0),
 (48, 'test_thumbnail_article4', './article-images/article-thumbnails/test_thumbnail_article4.jpg', 24, 1),
 (49, 'test_image_article5', './article-images/test_image_article5.jpg', 25, 0),
-(50, 'test_thumbnail_article5', './article-images/article-thumbnails/test_thumbnail_article5.jpg', 5, 1);
+(50, 'test_thumbnail_article5', './article-images/article-thumbnails/test_thumbnail_article5.jpg', 25, 1);
 
 insert into comments (commentID, articleID, commentAuthorID, parentID, content, publishDate) values
 (1, 1, 6, null, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque.', '1955-01-18 01:28:12'),
