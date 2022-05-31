@@ -48,12 +48,55 @@
                 </div>
             </div>
             {{else}}
-            <a href="./login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Log In</a>
-            <a href="./signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+            <a id="loginBtn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login / Sign Up</a>
         {{/if}}
         </div>
     </div>
+
+    <div class="header">
+        <div class="header-left"><span>TheHours</span></div>
+        <div class="header-middle"></div>
+        <div class="header-right"><span>Insight &</span><br><span>Opinion</span><br><span>Blog</span></div>
+    </div>
+
+    <div id="loginModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="loginClose">&times;</span>
+            <h1>Login</h1>
+            <form action="./login" method="POST">
+                <div>
+                    <label for="txtUserName">Username:</label>
+                    <input type="text" name="userName" id="txtUserName" required>
+                </div>
+
+                <div>
+                    <label for="txtPassword">Password:</label>
+                    <input type="password" name="password" id="txtPassword" required>
+                </div>
+
+                <div>
+                    <button type="submit">Log in</button>
+                </div>
+            </form>
+
+            <p>Don't have an account? <a href="./signup">Create one here.</a></p>
+        </div>
+        <div>
+
+
+
+        </div>
+
+    </div>
+
     {{{body}}}
+
+    <div class="footer">
+        <p>Created by Group 5</p>
+    </div>
 </body>
+<script src="./js/modal.js"></script>
 
 </html>

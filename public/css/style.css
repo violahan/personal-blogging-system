@@ -1,3 +1,67 @@
+/*Header*/
+.header{
+    display: flex;
+    margin: 0 20px;
+    align-items: center;
+    color: #0E1C40;
+}
+
+.header-left{
+    font-size: 160px;
+    font-family: "Arial Black";
+    margin: 0 20px;
+    float: left;
+}
+
+.header-middle{
+    width: 5px;
+    height: 140px;
+    background-color: #0E1C40;
+}
+
+.header-right{
+    font-size: 22px;
+    font-family: "Arial Black";
+    margin: 0 20px;
+}
+
+.header-image{
+    width: 95%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-image div{
+    font-size: 25px;
+    font-family: "Arial Black";
+    position: absolute;
+    background-color: #2A53C1;
+    color: #f9f9f9;
+    width: 90%;
+    height: 60px;
+    line-height: 60px;
+    text-align: left;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.header-image div span{
+    margin-left: 5%;
+}
+
+/*Footer*/
+.footer{
+    height: 100px;
+    background-color: #0E1C40;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 50px;
+}
+
+
+
 .avatar {
     width: 40px;
     height: auto;
@@ -33,45 +97,148 @@ form>* {
     width: 75%;
 }
 
-
-#analytics-header{
-    background-color: lightgray;
-    padding: 10px;
+/* Navbar page */
+.navbar {
+    overflow: hidden;
+    background-color: #2A53C1;
+    font-family: Arial;
 }
 
-#analytics-body{
-    display:grid;
-    grid-template-columns: 1fr 2fr 2fr;
-    grid-gap: 20px;
-    width: 80%;
-    margin-left: auto;
+#nav-left{
+    margin-left: 0;
     margin-right: auto;
 }
 
-.analytics-panel{
-    margin: 5px;
-    padding: 5px;
+#nav-right{
+    float: right;
+    margin-right: 50px;
 }
 
-.analytics-card{
-    border: 1px solid lightgray;
-    margin: 10px;
-    padding: 10px;
+.navbar a {
+    float: left;
+    font-family: "Arial Black";
+    font-size: 16px;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 30px 20px;
+    text-decoration: none;
 }
 
-.analytics-number{
-    font-size: 150%;
+.dropdown {
+    float: left;
+    overflow: hidden;
+    font-family: "Arial Black";
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: #f9f9f9;
+    padding: 30px 20px;
+    background-color: inherit;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+    color: #a19fa7;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2A53C1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: #f9f9f9;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+body {
+    background-color: white;
+    margin: 0px;
+}
+
+
+/*analytics page*/
+
+.analytics-body{
+    width: 80%;
+    display:grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-gap: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+.analytics-body h1{
+    font-family: "Arial Black";
+    font-size: 25px;
+    color: #0E1C40;
     text-align: center;
 }
 
-/*#analytics-card-highlight{*/
-/*    background-color: thistle;*/
-/*}*/
+.analytics-number-card{
+    border: 3px solid lightgray;
+    border-radius: 5%;
+    margin: 20px 0;
+    padding: 10px 20px;
+    text-align: center;
+}
 
-#analytics-card-highlight > span {
-    font-size: 600%;
+.analytics-number-card span{
+    font-size: 400%;
     font-weight: 600;
-    color: rgb(255, 99, 132);
+    color:#2A53C1;
+}
+
+.analytics-number-card p{
+    color: grey;
+    margin: 5px;
+}
+
+
+.analytics-article-card{
+    border: 1px solid grey;
+    margin: 20px 0;
+}
+
+.analytics-article-card-body{
+    margin: 20px 20px 40px 20px;
+}
+
+.analytics-article-card-body h2{
+    font-family: "Arial";
+    color: #2A53C1;
+}
+
+.analytics-article-card-bottom-line{
+    background-color: #2A53C1;
+    height: 2px;
+}
+
+.analytics-graph-card{
+    border: 1px solid grey;
+    margin: 20px 0 40px 0;
+    padding: 10px;
 }
 
 .top-level-comment{
@@ -86,89 +253,99 @@ form>* {
     margin-left: 30px;
 }
 
-/* Navbar container */
-.navbar {
-    overflow: hidden;
-    background-color: grey;
-    font-family: Arial;
+/*profile page*/
+.profile-body{
+    width: 80%;
     display:grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-#nav-left{
-    margin-left: 0;
-    margin-right: auto;
-}
-
-#nav-right{
-    margin-right: 30px;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-gap: 5%;
     margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
 }
 
-/* Links inside the navbar */
-.navbar div a {
-    float: left;
-    font-size: 16px;
-    color: #212121;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-/* The dropdown container */
-.dropdown {
-    float: left;
-    overflow: hidden;
-}
-
-/* Dropdown button */
-.dropdown .dropbtn {
-    font-size: 16px;
-    border: none;
-    outline: none;
-    color: #212121;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit; /* Important for vertical align on mobile phones */
-    margin: 0; /* Important for vertical align on mobile phones */
-}
-
-/* Add a red background color to navbar links on hover */
-.navbar div a:hover, .dropdown:hover .dropbtn {
-    color: #a19fa7;
-}
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+.profile-body h1{
+    font-family: "Arial Black";
+    font-size: 25px;
+    color: #0E1C40;
     text-align: left;
 }
 
-/* Add a grey background color to dropdown links on hover */
-.dropdown-content a:hover {
-    background-color: #ddd;
+.profile-body-left{
+    border: 3px solid lightgray;
+    margin: 20px 0;
+    padding: 10px 20px;
+    height: auto;
 }
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-    display: block;
+.profile-article-card{
+    border: 1px solid grey;
+    margin: 20px 0;
 }
 
-body {
-   background-color: #EEEAE3;
-
+.profile-article-card-body{
+    margin: 20px 20px 40px 20px;
 }
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.profile-article-card-body h2{
+    font-family: "Arial";
+    color: #0E1C40;
+}
+
+.profile-article-card-bottom-line{
+    background-color: #2A53C1;
+    height: 2px;
+}
+
+.profile-body-right-card{
+    border: 1px solid grey;
+    margin: 20px 0;
+}
+
+
+.articles-body{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+
