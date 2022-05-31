@@ -10,25 +10,27 @@ async function getNumberOfNotifications(userID){
 
     let notificationWindow = document.createElement('div');
     notificationWindow.setAttribute("id", "notification-window")
-    
-    for (let i = 0; i < notificationDetails.length; i++) {
+
+    if(notificationDetails.length > 0){
         
-        let notificationCard = makeNotificationCard(notificationDetails[i])
+        for (let i = 0; i < notificationDetails.length; i++) {
+            
+            let notificationCard = makeNotificationCard(notificationDetails[i])
 
-        notificationWindow.appendChild(notificationCard)
-    }
+            notificationWindow.appendChild(notificationCard)
+        }
 
-    let clearAllNotificationButton = document.createElement('a')
-    clearAllNotificationButton.innerText = "Clear All Notifications"
-    clearAllNotificationButton.setAttribute("id", "clear-all-notifications")
-    clearAllNotificationButton.setAttribute("style", "font-weight: bold")
-    clearAllNotificationButton.setAttribute("onclick", `clearAllNotifications(${userID})`)
-    
+        let clearAllNotificationButton = document.createElement('a')
+        clearAllNotificationButton.innerText = "Clear All Notifications"
+        clearAllNotificationButton.setAttribute("id", "clear-all-notifications")
+        clearAllNotificationButton.setAttribute("style", "font-weight: bold")
+        clearAllNotificationButton.setAttribute("onclick", `clearAllNotifications(${userID})`)
+        
 
-    notificationWindow.appendChild(clearAllNotificationButton)
+        notificationWindow.appendChild(clearAllNotificationButton)
 
-    document.getElementById('notification-details').appendChild(notificationWindow)
-
+        document.getElementById('notification-details').appendChild(notificationWindow)
+    }    
 
 }
 
@@ -42,36 +44,33 @@ function makeNotificationCard(notificationDetails){
     }
 
     let notificationCard = document.createElement('div')
+    notificationCard.setAttribute("id", `notification-${notificationDetails.notificationID}-display-card`)
         notificationCard.innerHTML = `
-            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID})"><i class="fa fa-caret-right"></i> ${notificationDetails.content}</a> 
+            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID}, ${notificationDetails.userToBeNotifiedID})"><i class="fa fa-caret-right"></i> ${notificationDetails.content}</a> 
         `
 
-    // let clearNotificationButton = document.createElement('button');
-    // clearNotificationButton.setAttribute("onclick", `notificationViewed(${notificationDetails.notificationID})`);
-    // clearNotificationButton.setAttribute("style", "display: inline");
-    // clearNotificationButton.innerText = "Clear";
-
-    // notificationCard.appendChild(clearNotificationButton)
 
     return notificationCard
 }
 
-function notificationViewed(notificationID){
-    console.log("Notification viewed for notificationID: "+notificationID)
+async function notificationViewed(notificationID, userToBeNotifiedID){
+
+    // When a notificaiton link is cleared, delete the notificaiton from the database
+    let response = await fetch(`./removeNotification?userID=${userToBeNotifiedID}&notificationID=${notificationID}`)
+    let json = await response.json();
+
 }
 
-function clearAllNotifications(userID){
-    console.log("All notification button clicked")
+async function clearAllNotifications(userID){
+     // When clear all button is clicked remove all notifications
+     let response = await fetch(`./removeAllNotifications?userID=${userID}`)
+     let json = await response.json();
+
+   document.getElementById('notification-details').innerHTML = "" 
+
+   getNumberOfNotifications(userID);
 }
 
-// async function showNotifications(){
-//     if (document.getElementById('show-notification-details').innerText == "Show notifications"){
-//         document.getElementById('notification-details').style.display = "block"
-//         document.getElementById('show-notification-details').innerText = "Hide notifications"
-//     } else {
-//         document.getElementById('notification-details').style.display = "none"
-//         document.getElementById('show-notification-details').innerText = "Show notifications"    
-//     }
-// }
+
 
 
