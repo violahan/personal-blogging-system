@@ -91,8 +91,6 @@ form>* {
     overflow: hidden;
     background-color: #2A53C1;
     font-family: Arial;
-    /*display:grid;*/
-    /*grid-template-columns: 1fr 1fr;*/
 }
 
 #nav-left{
@@ -101,8 +99,8 @@ form>* {
 }
 
 #nav-right{
-    margin-right: 200px;
-    margin-left: auto;
+    float: right;
+    margin-right: 50px;
 }
 
 /* Links inside the navbar */
