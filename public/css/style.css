@@ -97,7 +97,7 @@ form>* {
     width: 75%;
 }
 
-/* Navbar container */
+/* Navbar page */
 .navbar {
     overflow: hidden;
     background-color: #2A53C1;
@@ -114,7 +114,6 @@ form>* {
     margin-right: 50px;
 }
 
-/* Links inside the navbar */
 .navbar a {
     float: left;
     font-family: "Arial Black";
@@ -125,14 +124,12 @@ form>* {
     text-decoration: none;
 }
 
-/* The dropdown container */
 .dropdown {
     float: left;
     overflow: hidden;
     font-family: "Arial Black";
 }
 
-/* Dropdown button */
 .dropdown .dropbtn {
     font-size: 16px;
     border: none;
@@ -144,12 +141,10 @@ form>* {
     margin: 0; /* Important for vertical align on mobile phones */
 }
 
-/* Add a gray background color to navbar links on hover */
 .navbar a:hover, .dropdown:hover .dropbtn {
     color: #a19fa7;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -159,7 +154,6 @@ form>* {
     z-index: 1;
 }
 
-/* Links inside the dropdown */
 .dropdown-content a {
     float: none;
     color: #f9f9f9;
@@ -169,12 +163,10 @@ form>* {
     text-align: left;
 }
 
-/* Add a grey background color to dropdown links on hover */
 .dropdown-content a:hover {
     background-color: #ddd;
 }
 
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
     display: block;
 }
@@ -249,8 +241,6 @@ body {
     padding: 10px;
 }
 
-
-
 .top-level-comment{
     border: 1px solid black;
 }
@@ -262,6 +252,9 @@ body {
     border: 1px solid green;
     margin-left: 30px;
 }
+
+/*profile page*/
+
 
 
 

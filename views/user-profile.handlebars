@@ -1,16 +1,26 @@
-<div>
-    <h2>{{profileObj.name}}</h2>
-    <img class="avatar" src={{profileObj.avatarFilePath}} />
-    <p>{{profileObj.bio}}</p>
+<div class="header-image">
+    <img src="./images/profile.jpg" width=100%>
+    <div><span>Profile</span></div>
 </div>
+
 <div>
-    <h3>Summary</h3>
-     <div>
-         <p>Articles: {{profileObj.totalArticleNos}}</p>
-         <p>Followers: {{profileObj.totalFollowerNos}}</p>
-         <p>Following: {{profileObj.totalFollowingNos}}</p>
-     </div>
+    <div>
+        <h2>{{profileObj.name}}</h2>
+        <img class="avatar" src={{profileObj.avatarFilePath}} />
+        <p>{{profileObj.bio}}</p>
+    </div>
+
+    <div>
+        <p>Articles: {{profileObj.totalArticleNos}}</p>
+        <p>Followers: {{profileObj.totalFollowerNos}}</p>
+        <p>Following: {{profileObj.totalFollowingNos}}</p>
+    </div>
+
+
 </div>
+
+
+
 <div>
     {{#if isCurrentUser}}
         <a href="./editProfile">Edit Profile</a>
