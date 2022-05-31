@@ -1,45 +1,43 @@
-<div id="analytics-container">
-    <div id="analytics-header">
-        <h1 id="analytics-title"> Analytics</h1>
+<div>
+    <div class="header-image">
+        <img src="./images/analytics.jpg" width=100%>
+        <div><span>Analytic</span></div>
     </div>
 
-    <div id="analytics-body">
-        <div id="analytics-body-left" class="analytics-panel">
-            <h1>Summary: </h1>
-            <div class="analytics-card" id="analytics-card-highlight">
-                <p>Followers: </p>
-                <span id="analytics-follower" class="analytics-number">{{followersNumber}}</span>
+    <div class="analytics-body">
+        <div class="analytics-body-left">
+            <h1>Summary </h1>
+            <div class="analytics-number-card">
+                <span>{{followersNumber}}</span>
+                <p>Followers</p>
             </div>
-
-            <div class="analytics-card">
-                <p>Comments: </p>
-                <span id="analytics-comment" class="analytics-number">{{commentsNumber}}</span>
+            <div class="analytics-number-card">
+                <span>{{commentsNumber}}</span>
+                <p>Comments</p>
             </div>
-
-            <div class="analytics-card" >
-                <p>Likes: </p>
-                <span id="analytics-like" class="analytics-number">{{likesNumber}}</span>
+            <div class="analytics-number-card">
+                <span>{{likesNumber}}</span>
+                <p>Likes</p>
             </div>
         </div>
-        <div id="analytics-body-middle" class="analytics-panel">
-            <h1>Top 3 popular articles: </h1>
+        <div class="analytics-body-middle">
+            <h1>Top 3 popular articles </h1>
             {{#each popularArticles}}
-                <div class="analytics-card">
-                    <div class="card-header">
+                <div class="analytics-article-card">
+                    <div class="analytics-article-card-body">
+                        <h2>{{this.title}}</h2>
+                        <p>{{this.content}}</p>
                     </div>
-                    <div class="card-body">
-                        <h2 class="card-title">{{this.title}}</h2>
-                        <p class="card-text">{{this.content}}</p>
-                    </div>
+                    <div class="analytics-article-card-bottom-line"></div>
                 </div>
             {{/each}}
         </div>
-        <div id="analytics-body-right" class="analytics-panel">
-            <h1>Trending: </h1>
-            <div class="analytics-card">
+        <div class="analytics-body-right">
+            <h1>Trending </h1>
+            <div class="analytics-graph-card">
                 <canvas id="commentChart" width="200" height="120"></canvas>
             </div>
-            <div class="analytics-card">
+            <div class="analytics-graph-card">
                 <canvas id="subscribeChart" width="200" height="120"></canvas>
             </div>
         </div>

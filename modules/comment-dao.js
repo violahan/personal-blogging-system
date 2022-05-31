@@ -108,29 +108,6 @@ async function getCommentsCountPerDayByArticleAuthor(authorId, dayNumber) {
     return commentStatistics;
 }
 
-async function getCumulativeSubscribeCountByArticleAuthor(authorId) {
-    const db = await dbPromise;
-
-    const subscribeStatistics = await db.all(SQL`
-        with SubscribeByDay as (
-            select
-                strftime('%Y-%m-%d', dateSubscribed) as date,
-                count(*) as count
-            from
-                subscribes
-            where
-                articleAuthorID = ${authorId}
-            group by
-                strftime('%Y-%m-%d', dateSubscribed)
-        )
-        select
-            date,
-            sum(count) over (order by date rows between unbounded preceding and current row) as cumulativeCount
-        from SubscribeByDay
-    `);
-    return subscribeStatistics
-}
-
 
 async function addComment(articleId, authorId, content) {
     const db = await dbPromise;
@@ -209,7 +186,6 @@ module.exports = {
     addComment,
     getCommentsByArticleAuthor,
     getCommentsCountPerDayByArticleAuthor,
-    getCumulativeSubscribeCountByArticleAuthor,
     removeComment,
     getCommentsAndArticleTitleByAuthorId,
     getAllCommentsByArticleIDOrdered,

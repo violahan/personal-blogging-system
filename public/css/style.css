@@ -1,3 +1,65 @@
+/*Header*/
+.header{
+    display: flex;
+    margin: 0 20px;
+    align-items: center;
+    color: #0E1C40;
+}
+
+.header-left{
+    font-size: 160px;
+    font-family: "Arial Black";
+    margin: 0 20px;
+    float: left;
+}
+
+.header-middle{
+    width: 5px;
+    height: 140px;
+    background-color: #0E1C40;
+}
+
+.header-right{
+    font-size: 22px;
+    font-family: "Arial Black";
+    margin: 0 20px;
+}
+
+.header-image{
+    width: 95%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-image div{
+    font-size: 25px;
+    font-family: "Arial Black";
+    position: absolute;
+    background-color: #2A53C1;
+    color: #f9f9f9;
+    width: 90%;
+    height: 60px;
+    line-height: 60px;
+    text-align: left;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.header-image div span{
+    margin-left: 5%;
+}
+
+/*Footer*/
+.footer{
+    height: 100px;
+    background-color: #0E1C40;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 50px;
+}
+
 
 
 .avatar {
@@ -124,41 +186,70 @@ body {
 
 
 /*analytics page*/
-#analytics-header{
-    background-color: lightgray;
-    padding: 10px;
-}
 
-#analytics-body{
+.analytics-body{
+    width: 80%;
     display:grid;
     grid-template-columns: 1fr 2fr 2fr;
-    grid-gap: 20px;
-    width: 80%;
+    grid-gap: 5%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 40px;
 }
 
-.analytics-panel{
-    margin: 5px;
-    padding: 5px;
-}
-
-.analytics-card{
-    border: 1px solid lightgray;
-    margin: 10px;
-    padding: 10px;
-}
-
-.analytics-number{
-    font-size: 150%;
+.analytics-body h1{
+    font-family: "Arial Black";
+    font-size: 25px;
+    color: #0E1C40;
     text-align: center;
 }
 
-#analytics-card-highlight > span {
-    font-size: 600%;
-    font-weight: 600;
-    color: rgb(255, 99, 132);
+.analytics-number-card{
+    border: 3px solid lightgray;
+    border-radius: 5%;
+    margin: 20px 0;
+    padding: 10px 20px;
+    text-align: center;
 }
+
+.analytics-number-card span{
+    font-size: 400%;
+    font-weight: 600;
+    color:#2A53C1;
+}
+
+.analytics-number-card p{
+    color: grey;
+    margin: 5px;
+}
+
+
+.analytics-article-card{
+    border: 1px solid grey;
+    margin: 20px 0;
+}
+
+.analytics-article-card-body{
+    margin: 20px 20px 40px 20px;
+}
+
+.analytics-article-card-body h2{
+    font-family: "Arial";
+    color: #2A53C1;
+}
+
+.analytics-article-card-bottom-line{
+    background-color: #2A53C1;
+    height: 2px;
+}
+
+.analytics-graph-card{
+    border: 1px solid grey;
+    margin: 20px 0 40px 0;
+    padding: 10px;
+}
+
+
 
 .top-level-comment{
     border: 1px solid black;
@@ -172,44 +263,6 @@ body {
     margin-left: 30px;
 }
 
-/*profile page*/
-.header{
-    display: flex;
-    margin: 0 20px;
-    align-items: center;
-    color: #0E1C40;
-}
 
-/*.header-container{*/
-/*    height: auto;*/
-/*    color: #0E1C40;*/
-/*}*/
-
-.header-left{
-    font-size: 160px;
-    font-family: "Arial Black";
-    margin: 0 20px;
-    float: left;
-}
-
-.header-middle{
-    width: 5px;
-    height: 140px;
-    background-color: #0E1C40;
-}
-
-.header-right{
-    font-size: 22px;
-    font-family: "Arial Black";
-    margin: 0 20px;
-}
-
-.footer{
-    height: 100px;
-    background-color: #0E1C40;
-    color: #f9f9f9;
-    text-align: center;
-    padding: 50px;
-}
 
 
