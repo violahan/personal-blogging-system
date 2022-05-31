@@ -103,7 +103,8 @@ router.post("/createArticle", upload.single("imageFileUpload"), async function (
             const notificationType = "newArticle";
             const notificaitonContent = author.userName+" has written a new article titled "+articleTitle;
             const usersToBeNotified = subscribers;
-            await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified);
+            const idForLink = articleID;
+            await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
         } else {
             // No subscribers, no notifications made
         }

@@ -7,12 +7,12 @@ const notificationDAO = require("../modules/notifications-dao.js")
 // newComment
 // newSubscriber
 
-async function createNewNotification(typeOfNotificaiton, content, usersToBeNotified){
+async function createNewNotification(typeOfNotificaiton, content, usersToBeNotified, idForLink){
 
     // Add notifications to the DB based on the information provided:
     for (let i = 0; i < usersToBeNotified.length; i++) {
         
-        await notificationDAO.addNotification(typeOfNotificaiton, content, usersToBeNotified[i].userSubscriberID)
+        await notificationDAO.addNotification(typeOfNotificaiton, content, usersToBeNotified[i].userSubscriberID, idForLink)
         
     }
 
