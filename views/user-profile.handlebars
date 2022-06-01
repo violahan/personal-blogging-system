@@ -22,6 +22,7 @@
             {{#if isCurrentUser}}
                 <a href="./editProfile">Edit Profile</a>
                 <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a>
+                <a href="./changePassword">Change Password</a>
                 <a href="./deleteuser?userId={{profileObj.authorID}}">Delete User</a>
             {{else}}
                 {{#if isSubscribed}}
