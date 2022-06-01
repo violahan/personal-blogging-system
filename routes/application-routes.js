@@ -20,7 +20,7 @@ const cookieParser = require("cookie-parser");
 
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
-
+    
     const user = res.locals.user;
 
     // Get default article view - all articles in descending order from latest:

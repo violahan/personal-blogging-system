@@ -58,6 +58,9 @@ app.use(authRouter);
 const articleRouter = require("./routes/create-article-routes.js");
 app.use(articleRouter);
 
+const apiRoutes = require("./routes/api-routes.js");
+app.use(apiRoutes);
+
 // Start the server running.
 app.listen(port, function () {
     console.log(`App listening on port ${port}!`);
