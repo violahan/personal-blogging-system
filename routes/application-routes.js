@@ -319,35 +319,7 @@ router.get("/analytics", async function (req, res) {
 });
 
 
-router.post("/makeComment", async function (req, res){
 
-  let commentAuthorID = res.locals.user.userID;
-  let commentContentFromUser = req.body.comment;
-  let commentContent = commentContentFromUser.replace(/(\r\n|\n|\r)/gm," ");
-  let commentArticleID = req.query.articleID;
-  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent);
-
-
-  // Create notificaiton related to this comment event:
-      // Check if any subscribers:
-      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
-
-      // If there are subscribers - create a notification:
-          if(subscribers != ""){
-              const notificationType = "newComment";
-              const notificaitonContent = res.locals.user.userName+" has made a new comment";
-              const usersToBeNotified = subscribers;
-              const idForLink = commentID;
-              const articleIDForLink = commentArticleID;
-              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
-          } else {
-              // No subscribers, no notifications made
-          }
-
-
-  res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card"+commentID)
-
-})
 
 router.post("/makeReply", async function (req, res){
 

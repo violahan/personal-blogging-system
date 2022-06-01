@@ -109,22 +109,27 @@ async function makeReplyButtons(commentDetails){
     let response = await fetch("./getUserID");
     let userIDjson = await response.json();
 
-    let replyBox = document.createElement('div');
-    replyBox.setAttribute("class", "reply-box");
+    // Check if the comment author is "deletedcomment" in which case dont make a reply card
+    if(commentDetails.commentAuthorID == 1){
+        return document.createElement('div')
+    } else{
 
-    let replyButton = document.createElement('button');
-    replyButton.setAttribute("id", `let-reply-${commentDetails.commentID}`)
-    replyButton.setAttribute("onclick", `letReply(${commentDetails.commentID}, ${commentDetails.articleID}, ${userIDjson})`)
-    replyButton.innerText = "Reply";
-    
-    let replyFormContainer = document.createElement('div');
-    replyFormContainer.setAttribute("id", `reply-form-container-${commentDetails.commentID}`)
+        let replyBox = document.createElement('div');
+        replyBox.setAttribute("class", "reply-box");
 
-    replyBox.appendChild(replyButton)
-    replyBox.appendChild(replyFormContainer)
+        let replyButton = document.createElement('button');
+        replyButton.setAttribute("id", `let-reply-${commentDetails.commentID}`)
+        replyButton.setAttribute("onclick", `letReply(${commentDetails.commentID}, ${commentDetails.articleID}, ${userIDjson})`)
+        replyButton.innerText = "Reply";
+        
+        let replyFormContainer = document.createElement('div');
+        replyFormContainer.setAttribute("id", `reply-form-container-${commentDetails.commentID}`)
 
-    return replyBox;
+        replyBox.appendChild(replyButton)
+        replyBox.appendChild(replyFormContainer)
 
+        return replyBox;
+    }
 }
 
 
