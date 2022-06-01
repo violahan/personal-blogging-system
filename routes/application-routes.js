@@ -116,12 +116,16 @@ router.get("/getArticle", async function (req, res){
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
+// Get details of all likes on article
+  const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+
+  res.locals.numberOfLikes = likesOnArticle.length
+
   // Check if user has liked the article
     if (res.locals.user){
       // There is a logged in user
 
-      // Get details of all likes on article
-      const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+      
       let userHasLiked = "";
       for (let i = 0; i < likesOnArticle.length; i++) {
         
@@ -620,5 +624,18 @@ router.get("/getCurrentUser", async function (req, res) {
     res.json(null);
   }
 });
+
+
+router.get("/getLikes", async function (req, res){
+
+  const likesOnArticle = await likeDao.getLikesByArticle(req.query.articleID)
+
+  res.json(likesOnArticle.length)
+  
+
+})
+
+
+
 
 module.exports = router;

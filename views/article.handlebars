@@ -54,18 +54,20 @@
 </div>
 
 {{!-- Like Article Functions --}}
-{{#if user}}
-    {{#if userHasLiked}}
-        <div>
-            <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Unlike</button>
-        </div>
-    {{else}}
-        <div>
-           <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Like</button>
-        </div>
+<div id="likes-container">
+    <b id="likes-heading">Total likes:</b><b id="total-likes-count">{{numberOfLikes}}</b>
+    {{#if user}}
+        {{#if userHasLiked}}
+            <div>
+                <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Unlike</button>
+            </div>
+        {{else}}
+            <div>
+            <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Like</button>
+            </div>
+        {{/if}}
     {{/if}}
-{{/if}}
-
+</div>
 
 
 {{!-- Comment text boxes - if user if loged in --}}
