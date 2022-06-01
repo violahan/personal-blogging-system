@@ -123,19 +123,42 @@ function switchDisplayedArticles(){
    
 }
 
-function letReply(parentCommentID){
+function letReply(parentCommentID, articleID, commentAuthorID){
     
     let replyID = "let-reply-"+parentCommentID;
     let replyFormID = "reply-form-"+parentCommentID;
 
+    // If the button clicked was a "Reply" button
     if (document.getElementById(replyID).innerText == "Reply"){
+        // Change button to be cancel
         document.getElementById(replyID).innerText = "Cancel Reply"
+
+        // Make templated HTML for the reply form:
+        makeReplyForm(parentCommentID, articleID, commentAuthorID);
+
         document.getElementById(replyFormID).style.display = "block"
+
     } else {
         document.getElementById(replyID).innerText = "Reply"
         document.getElementById(replyFormID).style.display = "none"
     }
 }
+
+
+// makeReplyForm builds a form to allow a reply, populated with appropraite comment/user data for the database:
+function makeReplyForm(parentCommentID, articleID, commentAuthorID){
+    let replyFormContainer = document.getElementById(`reply-form-container-${parentCommentID}`)
+    replyFormContainer.innerHTML = `
+        <form id="reply-form-${parentCommentID}" action="./makeReply?articleID=${articleID}&parentID=${parentCommentID}&commentAuthorID=${commentAuthorID}" method="POST" style="display: none">
+            <label for="reply">Enter Reply:</label>
+            <textarea id="reply-to-comment-${parentCommentID}-text-box" onkeyup="checkReplyHasContent(${parentCommentID})" name="reply" rows="4" cols="50"></textarea>
+            <button id="submit-reply-to-comment-${parentCommentID}-button" type="submit">Post Reply</button>
+            <iframe onload="checkReplyHasContent(${parentCommentID})" style="display: none"></iframe>
+        </form>
+    `
+}
+
+
 
 
 function deleteComment(commentID){

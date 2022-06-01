@@ -116,12 +116,16 @@ router.get("/getArticle", async function (req, res){
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
+// Get details of all likes on article
+  const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+
+  res.locals.numberOfLikes = likesOnArticle.length
+
   // Check if user has liked the article
     if (res.locals.user){
       // There is a logged in user
 
-      // Get details of all likes on article
-      const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+      
       let userHasLiked = "";
       for (let i = 0; i < likesOnArticle.length; i++) {
         
@@ -318,9 +322,10 @@ router.get("/analytics", async function (req, res) {
 router.post("/makeComment", async function (req, res){
 
   let commentAuthorID = res.locals.user.userID;
-  let commentContent = req.body.comment;
-  let commentArticleID = req.query.articleID
-  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
+  let commentContentFromUser = req.body.comment;
+  let commentContent = commentContentFromUser.replace(/(\r\n|\n|\r)/gm," ");
+  let commentArticleID = req.query.articleID;
+  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent);
 
 
   // Create notificaiton related to this comment event:
@@ -619,5 +624,18 @@ router.get("/getCurrentUser", async function (req, res) {
     res.json(null);
   }
 });
+
+
+router.get("/getLikes", async function (req, res){
+
+  const likesOnArticle = await likeDao.getLikesByArticle(req.query.articleID)
+
+  res.json(likesOnArticle.length)
+  
+
+})
+
+
+
 
 module.exports = router;
