@@ -1,8 +1,11 @@
+<script type="text/javascript" src="./js/user-validation.js"></script>
 <div class="container">
     <h2>Edit Profile:</h2>
     <form action="./editProfile" method="POST">
-        <p>Username: {{userToEdit.userName}}</p>
         <input type="hidden" name="userID" value="{{userToEdit.userID}}" />
+        <p id="username-error" hidden></p>
+        <label for="userName">Username:</label>
+        <input type="text" name="userName" id="username-input" value="{{userToEdit.userName}}" required />
         <label for="fname">First Name:</label>
         <input type="text" name="fname" value="{{userToEdit.fName}}" required />
         <label for="lname">Last Name:</label>
@@ -24,7 +27,7 @@
         <label for="avatar5"><img src="./avatars/5.jpeg" class="avatar"></label>
         <input type="radio" id="avatar6" name="avatar" value="./avatars/6.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/6.jpeg'}} checked {{/ifCond}}>
         <label for="avatar6"><img src="./avatars/6.jpeg" class="avatar"></label>
-        <button type="submit">Save</button>
+        <button type="submit" id="save-user-btn">Save</button>
     </form>
 
     <br>

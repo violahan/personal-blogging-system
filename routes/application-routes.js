@@ -93,7 +93,7 @@ router.post("/signup", async function (req, res) {
   user.password = await bcrypt.hashPassword(user.password);
   //save user, return the user_id we might need it later
   const userId = await userDao.createNewUser(user);
-  res.redirect("/");
+  res.redirect("/login");
 });
 
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
@@ -302,7 +302,6 @@ router.get("/analytics", async function (req, res) {
     let subscribeCumulativeCount = await subscribeDao.getCumulativeSubscribeCountByArticleAuthor(userId);
     let popularArticles = await  articleDAO.getArticleSortedByPopularity(userId, 3);
 
-    console.log(subscribeCumulativeCount);
 
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
@@ -571,6 +570,7 @@ router.get("/editProfile", verifyAuthenticated, async function (req, res) {
 router.post("/editProfile", async function (req, res) {
   const userToEdit = {
     userID: req.body.userID,
+    userName: req.body.userName,
     fName: req.body.fname,
     lName: req.body.lname,
     DOB: req.body.dob,
@@ -581,5 +581,44 @@ router.post("/editProfile", async function (req, res) {
   await userDao.updateUser(userToEdit);
   res.redirect("/profile?id="+userToEdit.userID)
 })
+
+router.get("/changePassword", verifyAuthenticated, async function (req, res) {
+  res.locals.title = "Change password";
+  res.locals.userID = res.locals.user.userID;
+  res.render("change-password");
+});
+
+router.post("/changePassword", async function (req, res) {
+
+  const user = await userDao.getUserByID(req.body.userID);
+  if (user) {
+    const currentPassword = req.body.currentPassword;
+    const validPassword = await bcrypt.comparePassword(currentPassword, user.password);
+    if (validPassword) {
+      let newPassword = req.body.password;
+      newPassword= await bcrypt.hashPassword(newPassword);
+      await userDao.changePassword(user.userID, newPassword);
+      //re-login after user change password successfully
+      res.clearCookie("authToken");
+      res.locals.user = null;
+      res.redirect("./login");
+    } else {
+      res.locals.error = 'Wrong current password';
+      res.render("change-password");
+    }
+  } else {
+    res.locals.error = 'User not exists';
+    res.render("change-password");
+  }
+})
+
+
+router.get("/getCurrentUser", async function (req, res) {
+  if (res.locals.user) {
+    res.json(res.locals.user);
+  } else {
+    res.json(null);
+  }
+});
 
 module.exports = router;

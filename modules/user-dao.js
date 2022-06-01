@@ -72,12 +72,23 @@ async function updateUser(user) {
 
     await db.run(SQL`
         update user
-            set fName = ${user.fName},
+            set userName = ${user.userName},
+            fName = ${user.fName},
             lName = ${user.lName},
             DOB = ${user.DOB},
             description = ${user.description},
             avatarFilePath = ${user.avatarFilePath}
             where userID = ${user.userID}
+        `);
+}
+
+async function changePassword(userID, newPassword) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set password = ${newPassword}
+            where userID = ${userID}
         `);
 }
 
@@ -88,5 +99,6 @@ module.exports = {
     retrieveUserWithAuthToken,
     giveAuthToken,
     getAllUsernames,
-    updateUser
+    updateUser,
+    changePassword
 };
