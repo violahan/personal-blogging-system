@@ -302,7 +302,6 @@ router.get("/analytics", async function (req, res) {
     let subscribeCumulativeCount = await subscribeDao.getCumulativeSubscribeCountByArticleAuthor(userId);
     let popularArticles = await  articleDAO.getArticleSortedByPopularity(userId, 3);
 
-    console.log(subscribeCumulativeCount);
 
     res.locals.followersNumber = followersNumber;
     res.locals.commentsNumber = commentsNumber;
@@ -593,9 +592,7 @@ router.post("/changePassword", async function (req, res) {
   const user = await userDao.getUserByID(req.body.userID);
   if (user) {
     const currentPassword = req.body.currentPassword;
-    console.log(user)
     const validPassword = await bcrypt.comparePassword(currentPassword, user.password);
-    console.log(validPassword)
     if (validPassword) {
       let newPassword = req.body.password;
       newPassword= await bcrypt.hashPassword(newPassword);
