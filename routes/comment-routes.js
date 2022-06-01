@@ -18,8 +18,11 @@ router.get("/getArticleComments", async function (req, res){
 
 router.get("/getUserID", function (req, res){
 
-    res.json(res.locals.user.userID)
-
+    if(res.locals.user){
+       res.json(res.locals.user.userID)
+    } else {
+        res.json("")
+    }
 })
 
 router.get("/getArticleAuthorID", async function (req, res){

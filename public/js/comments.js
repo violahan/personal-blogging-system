@@ -110,7 +110,7 @@ async function makeReplyButtons(commentDetails){
     let userIDjson = await response.json();
 
     // Check if the comment author is "deletedcomment" in which case dont make a reply card
-    if(commentDetails.commentAuthorID == 1){
+    if(commentDetails.commentAuthorID == 1 || userIDjson == ""){
         return document.createElement('div')
     } else{
 
