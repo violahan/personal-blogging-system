@@ -203,6 +203,12 @@ body {
     color:#2A53C1;
 }
 
+#followNum{
+    font-size: 400%;
+    font-weight: 600;
+    color: lightcoral;
+}
+
 .analytics-number-card p{
     color: grey;
     margin: 5px;
@@ -278,11 +284,8 @@ body {
     text-align: left;
 }
 
-.profile-body-left{
-    /*border: 3px solid lightgray;*/
-    margin: 20px 0;
-    padding: 10px 20px;
-    height: auto;
+#profile-name{
+    color: #2A53C1;
 }
 
 .avatar {
@@ -290,9 +293,50 @@ body {
     height: auto;
 }
 
+#subscribe-button{
+    font-family: "Arial";
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f24691;
+    color: white;
+    border: 1px solid white;
+}
+
+#subscribe-button:hover {
+    background-color: white; /* Green */
+    color: #f24691;
+    border: 1px solid #f24691;
+}
+
+#HR{
+    border: 1px solid lightgray;
+}
+
 .profile-article-card{
     border: 1px solid grey;
     margin: 10px 0;
+}
+
+.profile-detail-card{
+    margin: 30px 0;
+}
+
+.profile-detail-card-left{
+    font-family: "Arial Black";
+    font-size: 15px;
+    color: #f24691;
+}
+
+.profile-detail-span-right{
+    font-family: "Arial";
+    font-size: 15px;
+    color: #0E1C40;
+    float:right;
+}
+
+a:hover {
+    color: #f24691;
 }
 
 .profile-article-card-body{

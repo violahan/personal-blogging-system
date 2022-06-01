@@ -8,27 +8,37 @@
         <h1>About</h1>
         <div class="profile-detail-card">
             <img class="avatar" src={{profileObj.avatarFilePath}} />
-            <h1>{{profileObj.name}}</h1>
-            <p>{{profileObj.bio}}</p>
-        </div>
-
-        <div class="profile-detail-card">
-            <p>Articles: {{profileObj.totalArticleNos}}</p>
-            <p>Followers: {{profileObj.totalFollowerNos}}</p>
-            <p>Following: {{profileObj.totalFollowingNos}}</p>
-        </div>
-
-        <div class="profile-detail-card">
             {{#if isCurrentUser}}
-                <a href="./editProfile">Edit Profile</a>
-                <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a>
-                <a href="./deleteuser?userId={{profileObj.authorID}}">Delete User</a>
             {{else}}
                 {{#if isSubscribed}}
                     <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Unsubscribe</button>
                 {{else}}
                     <button id="subscribe-button" onclick="subscribeAuthor({{profileObj.authorID}}, {{user.userID}})" >Subscribe</button>
                 {{/if}}
+            {{/if}}
+            <h1 id="profile-name">{{profileObj.name}}</h1>
+            <p>{{profileObj.bio}}</p>
+        </div>
+        <HR id="HR">
+
+        <div class="profile-detail-card">
+            <div>
+                <span class="profile-detail-card-left"><i class="fa-solid fa-book-open"></i> ARTICLES: </span> <span class="profile-detail-span-right">{{profileObj.totalArticleNos}}</span>
+            </div>
+            <div>
+                <span class="profile-detail-card-left"><i class="fa-solid fa-user-group"></i> FOLLOWERS: </span> <span class="profile-detail-span-right" >{{profileObj.totalFollowerNos}}</span>
+            </div>
+            <div>
+                <span class="profile-detail-card-left"><i class="fa-solid fa-glasses"></i> FOLLOWING: </span> <span class="profile-detail-span-right">{{profileObj.totalFollowingNos}}</span>
+            </div>
+        </div>
+        <HR id="HR">
+
+        <div class="profile-detail-card">
+            {{#if isCurrentUser}}
+                <a href="./editProfile">Edit Profile</a><br>
+                <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a><br>
+                <a href="./deleteuser?userId={{profileObj.authorID}}">Delete User</a>
             {{/if}}
         </div>
 
@@ -49,24 +59,26 @@
 
 
     <div class="profile-body-right">
-        <h1>Comments</h1>
+        <h1><i class="fa-solid fa-pen-to-square"></i> Comments</h1>
             {{#each profileObj.comments}}
             <div class="profile-body-right-card">
                 <div class="profile-body-comment-card">
                     <h2>{{this.title}}</h2>
                     <p>{{this.content}}</p>
                     <p class="publishDate">{{this.publishDate}}</p>
+                    <HR id="HR">
                 </div>
             </div>
             {{/each}}
 
 
-        <h1>Likes</h1>
+        <h1><i class="fa-solid fa-heart"></i> Likes</h1>
             {{#each profileObj.likes}}
             <div class="profile-body-right-card">
                 <div class="profile-body-like-card">
                     <h2>{{this.title}}</h2>
                     <p class="publishDate">{{this.publishDate}}</p>
+                    <HR id="HR">
                 </div>
             </div>
             {{/each}}
