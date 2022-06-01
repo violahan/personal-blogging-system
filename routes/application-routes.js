@@ -319,9 +319,10 @@ router.get("/analytics", async function (req, res) {
 router.post("/makeComment", async function (req, res){
 
   let commentAuthorID = res.locals.user.userID;
-  let commentContent = req.body.comment;
-  let commentArticleID = req.query.articleID
-  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
+  let commentContentFromUser = req.body.comment;
+  let commentContent = commentContentFromUser.replace(/(\r\n|\n|\r)/gm," ");
+  let commentArticleID = req.query.articleID;
+  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent);
 
 
   // Create notificaiton related to this comment event:
