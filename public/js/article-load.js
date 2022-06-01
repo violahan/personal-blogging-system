@@ -121,15 +121,6 @@ function switchDisplayedArticles(){
    
 }
 
-
-
-
-
-
-
-
-
-
 function deleteArticle(articleID){
     
     let deleteID = "delete-article-"+articleID;
