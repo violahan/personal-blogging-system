@@ -29,7 +29,7 @@
             
             <div class="dropdown">
                  <iframe onload="getNumberOfNotifications({{user.userID}})" style="display: none"></iframe>
-                <button onclick="getNumberOfNotifications({{user.userID}})" class="dropbtn"><i class="fa-solid fa-bell"></i>Notifications: <b id="number-of-notifications"></b> <i class="fa fa-caret-down"></i></button>
+                <button onclick="getNumberOfNotifications({{user.userID}})" class="dropbtn"><i class="fa-solid fa-bell"></i> Notifications: <b id="number-of-notifications"></b> <i class="fa fa-caret-down"></i></button>
                 <div class="dropdown-content">
                     <div id="notification-details"></div>
                 </div>
@@ -61,11 +61,10 @@
 
     <div id="loginModal" class="modal">
 
-        <!-- Modal content -->
-        <div class="modal-content">
+        <div class="login-container modal-content">
             <span class="close" id="loginClose">&times;</span>
-            <h1>Login</h1>
-            <form action="./login" method="POST">
+            <form class="login-form" action="./login" method="POST">
+                <h1>Login</h1>
                 <div>
                     <label for="txtUserName">Username:</label>
                     <input type="text" name="userName" id="txtUserName" required>
@@ -80,15 +79,10 @@
                     <button type="submit">Log in</button>
                 </div>
             </form>
-
-            <p>Don't have an account? <a href="./signup">Create one here.</a></p>
+            <div class="login-footer">
+                <p>Don't have an account? <a href="./signup">Create one here.</a></p>
+            </div>
         </div>
-        <div>
-
-
-
-        </div>
-
     </div>
 
     {{{body}}}
