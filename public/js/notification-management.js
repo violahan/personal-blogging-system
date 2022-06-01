@@ -42,6 +42,8 @@ function makeNotificationCard(notificationDetails){
     let notificationLinkURL;
     if(notificationDetails.typeOfNotification == "newSubscriber"){
         notificationLinkURL = `./profile?id=${notificationDetails.idForLink}`
+    } else if(notificationDetails.typeOfNotification == "newComment"){
+        notificationLinkURL = `./getArticle?articleID=${notificationDetails.articleIDForLink}#comment-card-${notificationDetails.idForLink}`
     } else {
         notificationLinkURL = `./getArticle?articleID=${notificationDetails.idForLink}`
     }

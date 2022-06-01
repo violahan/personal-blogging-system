@@ -1,12 +1,12 @@
 const SQL = require("sql-template-strings");
 const dbPromise = require("./database.js");
 
-async function addNotification(typeOfNotificaiton, content, userToBeNotified, idForLink) {
+async function addNotification(typeOfNotificaiton, content, userToBeNotified, idForLink, articleIDForLink) {
     const db = await dbPromise;
 
     const notification = await db.run(SQL`
-        insert into notifications (typeOFNotification, content, userToBeNotifiedID, hasBeenViewed, idForLink)
-        values (${typeOfNotificaiton}, ${content}, ${userToBeNotified}, 0, ${idForLink})`);
+        insert into notifications (typeOFNotification, content, userToBeNotifiedID, hasBeenViewed, idForLink, articleIDForLink)
+        values (${typeOfNotificaiton}, ${content}, ${userToBeNotified}, 0, ${idForLink}, ${articleIDForLink})`);
     return notification;
 }
 
