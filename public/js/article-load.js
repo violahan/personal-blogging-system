@@ -179,10 +179,7 @@ function deleteComment(commentID){
 
 }
 
-// function confirmDeleteComment(commentID){
-    
-//     alert("Comment Deleted")
-// }
+
 
 function deleteArticle(articleID){
     

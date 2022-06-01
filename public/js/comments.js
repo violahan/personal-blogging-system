@@ -11,7 +11,6 @@ async function displayComments(articleID){
 
 }
 
-
 async function templateCommentHTML(commentsTreeStrucutre){
 // Loops through the tree structure array of comments on an article.
 // For each article it creates a comment card with the content.
@@ -172,9 +171,6 @@ async function makeDeleteButtons(commentDetails){
     };
 
 };
-
-
-
 
 // Functions to confirm comment/reply boxes have content before submission
 function checkCommentHasContent(){
