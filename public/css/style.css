@@ -358,28 +358,50 @@ body {
     cursor: pointer;
 }
 
-.login-container{
+.login-form{
     margin: 10%;
 }
 
-.login-container h1{
+.login-form h1{
     font-family: "Arial";
     font-size: 30px;
     color: #0E1C40;
     text-align: center;
 }
 
-.login-container form{
+.login-form form{
     margin-top: 10%;
 }
 
-/*.login-container form div label{*/
-/*    width: 100px;*/
+/* Full-width inputs */
+.login-form input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
 
-/*    display: inline-block;*/
+.login-form button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
 
-/*    text-align: right;*/
-/*}*/
+/* Add a hover effect for buttons */
+.login-form button:hover {
+    opacity: 0.8;
+}
+
+.login-footer{
+    text-align: center;
+}
+
 
 
 
@@ -389,5 +411,7 @@ body {
 /*    margin-right: auto;*/
 /*    margin-top: 40px;*/
 /*}*/
+
+
 
 
