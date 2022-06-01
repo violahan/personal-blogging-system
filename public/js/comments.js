@@ -167,3 +167,28 @@ async function makeDeleteButtons(commentDetails){
     };
 
 };
+
+
+
+
+// Functions to confirm comment/reply boxes have content before submission
+function checkCommentHasContent(){
+
+    let commentTextBox = document.getElementById('comment-text-box')
+    let commentSubmitButton = document.getElementById('comment-submit-button')
+    if(commentTextBox.value == ""){
+        commentSubmitButton.disabled = true;        
+    } else {
+        commentSubmitButton.disabled = false;
+    }
+}
+function checkReplyHasContent(parentCommentID){
+
+    let replyTextBox = document.getElementById(`reply-to-comment-${parentCommentID}-text-box`)
+    let replySubmitButton = document.getElementById(`submit-reply-to-comment-${parentCommentID}-button`)
+    if(replyTextBox.value == ""){
+        replySubmitButton.disabled = true;        
+    } else {
+        replySubmitButton.disabled = false;
+    }
+}

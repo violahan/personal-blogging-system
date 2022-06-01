@@ -73,8 +73,9 @@
     <div>
         <form action="./makeComment?articleID={{articleInfo.articleID}}" method="POST">
             <label for="comment">Enter Comment:</label>
-            <textarea name="comment" rows="4" cols="50"></textarea>
-            <button type="submit">Post Comment</button>
+            <textarea id="comment-text-box" onkeyup="checkCommentHasContent()" name="comment" rows="4" cols="50"></textarea>
+            <button type="submit" id="comment-submit-button">Post Comment</button>
+            <iframe onload="checkCommentHasContent()" style="display: none"></iframe>
         </form>
     </div>
 {{/if}}
