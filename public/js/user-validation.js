@@ -3,6 +3,10 @@ window.addEventListener("load", async function () {
     //disable this button when needed
     const submitBtn = document.querySelector("#save-user-btn");
 
+    let usernameValid = true;
+    let passwordValid = true;
+
+
     //check if username exist, if yes display an error message
     const userNameInput = document.querySelector('#username-input');
     if (userNameInput) {
@@ -16,17 +20,23 @@ window.addEventListener("load", async function () {
                 if (exists) {
                     const currentUserRes = await fetch(`/getCurrentUser`);
                     const currentUser = await currentUserRes.json();
-                    if (currentUser.userName !== userName) {
+                    if (!currentUser || currentUser.userName !== userName) {
                         errorPara.removeAttribute("hidden");
                         errorPara.innerText = 'Username already exists, please type a new one';
-                        submitBtn.disabled = true;
+                        usernameValid = false;
+                    } else {
+                        errorPara.setAttribute("hidden", true);
+                        errorPara.innerText = '';
+                        usernameValid = true;
                     }
                 } else {
                     errorPara.setAttribute("hidden", true);
                     errorPara.innerText = '';
-                    submitBtn.disabled = false;
+                    usernameValid = true;
                 }
             }
+            
+            submitBtn.disabled = !(usernameValid && passwordValid);
         })
     }
     
@@ -41,12 +51,13 @@ window.addEventListener("load", async function () {
             if (psdCheck !== passwordInput.value) {
                 errorPara.removeAttribute("hidden");
                 errorPara.innerText = 'Passwords are not match';
-                submitBtn.disabled = true;
+                passwordValid = false;
             } else {
                 errorPara.setAttribute("hidden", true);
                 errorPara.innerText = '';
-                submitBtn.disabled = false;
+                passwordValid = true;
             }
+            submitBtn.disabled = !(usernameValid && passwordValid);
         })
     }
     

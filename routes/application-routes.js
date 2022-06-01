@@ -93,7 +93,7 @@ router.post("/signup", async function (req, res) {
   user.password = await bcrypt.hashPassword(user.password);
   //save user, return the user_id we might need it later
   const userId = await userDao.createNewUser(user);
-  res.redirect("/");
+  res.redirect("/login");
 });
 
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
