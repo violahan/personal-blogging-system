@@ -36,7 +36,7 @@ create table articles
     numberOfComments integer    not null default 0,
     numberOfLikes    integer    not null default 0,
     foreign key (authorID) references user (userID)
-
+    on delete cascade
 );
 
 create table comments
@@ -47,8 +47,8 @@ create table comments
     parentID    integer default null,
     content     text      not null,
     publishDate timestamp not null default CURRENT_TIMESTAMP,
-    foreign key (commentAuthorID) references user (userID),
-    foreign key (articleID) references articles (articleID)
+    foreign key (commentAuthorID) references user (userID) on delete cascade,
+    foreign key (articleID) references articles (articleID) on delete cascade
 
 );
 
@@ -57,9 +57,9 @@ create table likes
     articleID   integer   not null,
     userID      integer   not null,
     publishDate timestamp not null default CURRENT_TIMESTAMP,
-    foreign key (userID) references user (userID),
-    foreign key (articleID) references articles (articleID)
-
+    foreign key (userID) references user (userID) on delete cascade,
+    foreign key (articleID) references articles (articleID) on delete cascade
+    
 );
 
 create table images
@@ -70,7 +70,7 @@ create table images
     articleID     integer      not null,
     thumbnailFlag integer      not null,
     foreign key (articleID) references articles (articleID)
-
+    on delete cascade
 );
 
 create table subscribes
@@ -78,8 +78,8 @@ create table subscribes
     userSubscriberID integer   not null,
     articleAuthorID  integer   not null,
     dateSubscribed   timestamp not null default CURRENT_TIMESTAMP,
-    foreign key (UserSubscriberID) references user (userID),
-    foreign key (ArticleAuthorID) references user (userID)
+    foreign key (UserSubscriberID) references user (userID) on delete cascade,
+    foreign key (ArticleAuthorID) references user (userID) on delete cascade
 
 );
 
@@ -92,7 +92,7 @@ create table notifications
     userToBeNotifiedID integer      not null,
     hasBeenViewed      varchar(255),
     idForLink          integer      not null,
-    foreign key (userToBeNotifiedID) references user (userID)
+    foreign key (userToBeNotifiedID) references user (userID) on delete cascade
 
 );
 
