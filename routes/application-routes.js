@@ -582,4 +582,34 @@ router.post("/editProfile", async function (req, res) {
   res.redirect("/profile?id="+userToEdit.userID)
 })
 
+router.get("/changePassword", verifyAuthenticated, async function (req, res) {
+  res.locals.title = "Change password";
+  res.locals.userID = res.locals.user.userID;
+  res.render("change-password");
+});
+
+router.post("/changePassword", async function (req, res) {
+
+  const user = await userDao.getUserByID(req.body.userID);
+  if (user) {
+    const currentPassword = req.body.currentPassword;
+    console.log(user)
+    const validPassword = await bcrypt.comparePassword(currentPassword, user.password);
+    console.log(validPassword)
+    if (validPassword) {
+      let newPassword = req.body.password;
+      newPassword= await bcrypt.hashPassword(newPassword);
+      await userDao.changePassword(user.userID, newPassword);
+      //re-login after user change password successfully
+      res.clearCookie("authToken");
+      res.locals.user = null;
+      res.redirect("./login");
+    } else {
+      res.locals.error = 'Wrong current password';
+    }
+  } else {
+    res.locals.error = 'User not exists';
+  }
+})
+
 module.exports = router;

@@ -82,6 +82,16 @@ async function updateUser(user) {
         `);
 }
 
+async function changePassword(userID, newPassword) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set password = ${newPassword}
+            where userID = ${userID}
+        `);
+}
+
 module.exports = {
     createNewUser,
     getUserByUserName,
@@ -89,5 +99,6 @@ module.exports = {
     retrieveUserWithAuthToken,
     giveAuthToken,
     getAllUsernames,
-    updateUser
+    updateUser,
+    changePassword
 };
