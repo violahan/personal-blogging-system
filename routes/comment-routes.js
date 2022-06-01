@@ -107,5 +107,34 @@ router.post("/makeComment", async function (req, res){
   })
 
 
+  router.post("/makeReply", async function (req, res){
+
+    let commentAuthorID = res.locals.user.userID;
+    let commentContent = req.body.reply;
+    let commentArticleID = req.query.articleID
+    let parentCommentID = req.query.parentID
+    let commentID = await commentDao.addReplyComment(commentArticleID, commentAuthorID, parentCommentID, commentContent)
+  
+     // Create notificaiton related to this comment event:
+        // Check if any subscribers:
+        const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
+  
+      // If there are subscribers - create a notification:
+      if(subscribers  != ""){
+        const notificationType = "newComment";
+        const notificaitonContent = res.locals.user.userName+" has made a new comment";
+        const usersToBeNotified = subscribers;
+        const idForLink = commentID;
+        const articleIDForLink = commentArticleID;
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
+      } else {
+        // No subscribers, no notifications made
+      }
+  
+  
+    res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card"+commentID)
+  
+  })
+  
 
 module.exports = router;
