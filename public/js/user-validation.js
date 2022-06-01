@@ -14,14 +14,17 @@ window.addEventListener("load", async function () {
                 let exists = allUsernames.find(n => n.userName === userName);
                 let errorPara = document.querySelector("#username-error");
                 if (exists) {
-                    errorPara.removeAttribute("hidden");
-                    errorPara.innerText = 'Username already exists, please type a new one';
-                    submitBtn.disabled = true;
+                    const currentUserRes = await fetch(`/getCurrentUser`);
+                    const currentUser = await currentUserRes.json();
+                    if (currentUser.userName !== userName) {
+                        errorPara.removeAttribute("hidden");
+                        errorPara.innerText = 'Username already exists, please type a new one';
+                        submitBtn.disabled = true;
+                    }
                 } else {
                     errorPara.setAttribute("hidden", true);
                     errorPara.innerText = '';
-                    submitBtn.disabled = false
-                        ;
+                    submitBtn.disabled = false;
                 }
             }
         })

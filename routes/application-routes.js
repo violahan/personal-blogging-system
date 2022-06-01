@@ -603,10 +603,21 @@ router.post("/changePassword", async function (req, res) {
       res.redirect("./login");
     } else {
       res.locals.error = 'Wrong current password';
+      res.render("change-password");
     }
   } else {
     res.locals.error = 'User not exists';
+    res.render("change-password");
   }
 })
+
+
+router.get("/getCurrentUser", async function (req, res) {
+  if (res.locals.user) {
+    res.json(res.locals.user);
+  } else {
+    res.json(null);
+  }
+});
 
 module.exports = router;
