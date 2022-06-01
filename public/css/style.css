@@ -7,7 +7,7 @@
 }
 
 .header-left{
-    font-size: 120px;
+    font-size: 160px;
     font-family: "Arial Black";
     margin: 0 20px;
     float: left;
@@ -15,7 +15,7 @@
 
 .header-middle{
     width: 5px;
-    height: 120px;
+    height: 140px;
     background-color: #0E1C40;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .header-image{
-    width: 93%;
+    width: 95%;
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -58,13 +58,6 @@
     color: #f9f9f9;
     text-align: center;
     padding: 50px;
-}
-
-
-
-.avatar {
-    width: 40px;
-    height: auto;
 }
 
 form>input[type=text],
@@ -271,21 +264,61 @@ body {
     text-align: left;
 }
 
+.profile-body h2{
+    font-family: "Arial";
+    font-size: 20px;
+    color: #2A53C1;
+    text-align: left;
+}
+
+.profile-body-middle h2{
+    font-family: "Arial";
+    font-size: 25px;
+    color: #0E1C40;
+    text-align: left;
+}
+
 .profile-body-left{
-    border: 3px solid lightgray;
+    /*border: 3px solid lightgray;*/
     margin: 20px 0;
     padding: 10px 20px;
     height: auto;
 }
 
+.avatar {
+    width: 100%;
+    height: auto;
+}
+
 .profile-article-card{
     border: 1px solid grey;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 .profile-article-card-body{
     margin: 20px 20px 40px 20px;
 }
+
+.profile-article-card-bottom-line{
+    background-color: #2A53C1;
+    height: 2px;
+}
+
+.publishDate{
+    color: grey;
+    margin: 5px;
+}
+
+.profile-body-comment-card{
+    margin: 20px 20px 40px 7px;
+}
+
+.profile-body-like-card{
+    margin: 20px 20px 20px 7px;
+}
+
+
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -307,7 +340,7 @@ body {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 40%;
 }
 
 /* The Close Button */
@@ -325,27 +358,36 @@ body {
     cursor: pointer;
 }
 
-.profile-article-card-body h2{
+.login-container{
+    margin: 10%;
+}
+
+.login-container h1{
     font-family: "Arial";
+    font-size: 30px;
     color: #0E1C40;
+    text-align: center;
 }
 
-.profile-article-card-bottom-line{
-    background-color: #2A53C1;
-    height: 2px;
+.login-container form{
+    margin-top: 10%;
 }
 
-.profile-body-right-card{
-    border: 1px solid grey;
-    margin: 20px 0;
-}
+/*.login-container form div label{*/
+/*    width: 100px;*/
+
+/*    display: inline-block;*/
+
+/*    text-align: right;*/
+/*}*/
 
 
-.articles-body{
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 40px;
-}
+
+/*.articles-body{*/
+/*    width: 80%;*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*    margin-top: 40px;*/
+/*}*/
 
 

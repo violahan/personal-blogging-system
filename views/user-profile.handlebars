@@ -5,7 +5,7 @@
 
 <div class="profile-body">
     <div class="profile-body-left">
-        <h1>About </h1>
+        <h1>About</h1>
         <div class="profile-detail-card">
             <img class="avatar" src={{profileObj.avatarFilePath}} />
             <h1>{{profileObj.name}}</h1>
@@ -50,25 +50,26 @@
 
     <div class="profile-body-right">
         <h1>Comments</h1>
-        <div class="profile-body-right-card">
             {{#each profileObj.comments}}
-                <div class="profile-body-right-card-comment-card">
-                    <p>{{this.title}}</p>
-                    <p>{{this.publishDate}}</p>
+            <div class="profile-body-right-card">
+                <div class="profile-body-comment-card">
+                    <h2>{{this.title}}</h2>
                     <p>{{this.content}}</p>
+                    <p class="publishDate">{{this.publishDate}}</p>
                 </div>
+            </div>
             {{/each}}
-        </div>
+
 
         <h1>Likes</h1>
-        <div class="profile-body-right-card">
             {{#each profileObj.likes}}
-                <div class="profile-body-right-card-like-card">
-                    <p>article: {{this.title}}</p>
-                    <p>Date: {{this.publishDate}}</p>
+            <div class="profile-body-right-card">
+                <div class="profile-body-like-card">
+                    <h2>{{this.title}}</h2>
+                    <p class="publishDate">{{this.publishDate}}</p>
                 </div>
+            </div>
             {{/each}}
-        </div>
     </div>
 </div>
 
