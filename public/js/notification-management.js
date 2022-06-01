@@ -8,6 +8,9 @@ async function getNumberOfNotifications(userID){
 
     document.getElementById('number-of-notifications').innerText = numberOfNotifications;
 
+    // Clear out previous notifcaiton load if any
+    document.getElementById('notification-details').innerHTML = ""
+
     let notificationWindow = document.createElement('div');
     notificationWindow.setAttribute("id", "notification-window")
 
