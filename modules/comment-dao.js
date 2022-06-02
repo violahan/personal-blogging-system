@@ -175,8 +175,6 @@ async function deleteAllArticleComments(articleID){
     `);
 }
 
-
-
 module.exports = {
     getAllComments,
     getCommentsById,
