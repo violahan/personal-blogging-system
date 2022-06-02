@@ -9,6 +9,7 @@ const articleFunctions = require("../modules/display-articles");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const notificationFunctions = require("../modules/notification-functions.js");
+const notificationDAO = require("../modules/notifications-dao.js")
 
 
 const bcrypt = require("../Helper/bcrypt-helper");
@@ -381,6 +382,10 @@ router.get("/deleteArticle", async function (req, res){
       deleteMessage = "Not authorised to delete comment"
     }
   
+    // Once an article is deleted, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newArticle", articleID)
+
 
   res.redirect("/?deleteMessage="+deleteMessage)
 
@@ -451,6 +456,13 @@ router.get("/subscribeToAuthor", async function (req, res){
     if (userHasSubscribedToAuthor == 1){
       //Remove subscriber:
       await subscribeDao.removeFollow(subscribeUserID, authorID);
+
+
+      // Once a user has unsubscribed, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newSubscriber", subscribeUserID)
+
+
       res.json("Subscribe")
     } else {
       // Add like:
@@ -495,9 +507,18 @@ router.post("/editProfile", async function (req, res) {
   res.redirect("/profile?id="+userToEdit.userID)
 })
 
+router.get("/deleteUser", async function (req, res) {
+  const userId = req.query.userId;
+  
+  await commentDao.deleteCommentsByUserID(userId);
+  await userDao.deleteUser(userId);
+  res.locals.user = null;
+  res.clearCookie("authToken");
+  res.redirect("/");
+})
+
 router.get("/changePassword", verifyAuthenticated, async function (req, res) {
   res.locals.title = "Change password";
-  res.locals.userID = res.locals.user.userID;
   res.render("change-password");
 });
 
@@ -536,15 +557,9 @@ router.get("/getCurrentUser", async function (req, res) {
 
 
 router.get("/getLikes", async function (req, res){
-
   const likesOnArticle = await likeDao.getLikesByArticle(req.query.articleID)
-
   res.json(likesOnArticle.length)
-  
-
 })
-
-
 
 
 module.exports = router;

@@ -45,12 +45,25 @@ async function deleteAllNotificationByUserID(userID) {
     return deletedNotifications;
 }
 
+async function removeNotificationsByTypeAndIDLink(typeOfNotificaiton, idForLink){
+    const db = await dbPromise;
+
+    const notifications = await db.run(SQL`
+        delete 
+        from notifications
+        where typeOfNotification = ${typeOfNotificaiton}
+            and idForLink = ${idForLink} 
+    `);
+    return notifications;
+}
+
 
 // Export functions.
 module.exports = {
     addNotification,
     getNotificationsByUserID,
     deleteNotificationByNotificationID,
-    deleteAllNotificationByUserID
+    deleteAllNotificationByUserID,
+    removeNotificationsByTypeAndIDLink
     
 };
