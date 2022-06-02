@@ -497,8 +497,8 @@ router.post("/editProfile", async function (req, res) {
 
 router.get("/deleteUser", async function (req, res) {
   const userId = req.query.userId;
-  console.log(userId)
-
+  
+  await commentDao.deleteCommentsByUserID(userId);
   await userDao.deleteUser(userId);
   res.locals.user = null;
   res.clearCookie("authToken");
@@ -507,7 +507,6 @@ router.get("/deleteUser", async function (req, res) {
 
 router.get("/changePassword", verifyAuthenticated, async function (req, res) {
   res.locals.title = "Change password";
-  res.locals.userID = res.locals.user.userID;
   res.render("change-password");
 });
 
