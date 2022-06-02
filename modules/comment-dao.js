@@ -156,7 +156,7 @@ async function getCommentsAndArticleTitleByAuthorId(authorId) {
     const db = await dbPromise;
 
     const results = await db.all(SQL`
-        select c.commentID, c.content, c.publishDate, a.title
+        select c.commentID, c.content, c.publishDate, a.title, c.articleID
         from comments as c
         join articles as a on c.articleID = a.articleID
         where c.commentAuthorID = ${authorId}

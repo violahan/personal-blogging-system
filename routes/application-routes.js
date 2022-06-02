@@ -174,6 +174,7 @@ router.get("/getArticle", async function (req, res){
 
   res.locals.articleInfo = articleInfo;
   res.locals.commentsToDisplay = commentsToDisplay;
+  res.locals.title = "Article";
 
   res.render("article")
 });

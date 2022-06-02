@@ -484,6 +484,10 @@ a:hover {
     box-sizing: border-box;
 }
 
+button:disabled{
+    background: #dddddd;
+}
+
 
 
 
