@@ -36,9 +36,6 @@ const thumbnailImageMaxHeight = 150;
 
 
 
-
-
-
 router.get("/createArticle", verifyAuthenticated, async function (req, res){
     
     res.locals.imageMaxWidth = articleImageMaxWidth;
@@ -189,6 +186,67 @@ async function resizeThumbnailImage(filePath){
 
     return filePath;
 }
+
+
+router.get("/editArticle", async function (req, res){
+    let articleID = req.query.articleID;
+    let articleAuthorID = req.query.articleAuthorID;
+  
+    res.locals.imageMaxWidth = articleImageMaxWidth;
+    res.locals.imageMaxHeight = articleImageMaxHeight;
+
+    if(res.locals.user.userID == articleAuthorID){
+      //Edit Article
+      // Get Article content
+      let articleToEdit = await articleDAO.getArticleByID(articleID)
+      res.locals.articleToEdit = articleToEdit
+  
+      // Get article images (if any)
+      // If this returns 1 image, it is the default thumbnail,
+      // if 2 there is an image on the article
+      let articleImages = await imageDAO.getAllImageByArticleID(articleID)
+      if(articleImages.length == 1){
+        // Only the default thumbnail - show no image
+        articleImages = [];
+      } else {
+        articleImages = articleImages[1];
+      }
+  
+      res.locals.imagesToEdit = articleImages
+  
+      res.render("edit-article")
+  
+    } else {
+      // Not allowed to edit article
+      res.redirect(`/getArticle?articleID=${articleID}`)
+    }
+  
+  });
+
+router.post("/editArticle", async function (req, res){
+    const articleID = req.query.articleID
+    
+    // Obtain data from form:
+    const articleTitle = req.body.articleTitle
+    const articleContent = req.body.articleContent
+
+  
+});
+
+// router.post("/editProfile", async function (req, res) {
+//   const userToEdit = {
+//     userID: req.body.userID,
+//     userName: req.body.userName,
+//     fName: req.body.fname,
+//     lName: req.body.lname,
+//     DOB: req.body.dob,
+//     description: req.body.bio,
+//     avatarFilePath: req.body.avatar
+//   };
+
+//   await userDao.updateUser(userToEdit);
+//   res.redirect("/profile?id="+userToEdit.userID)
+// })
 
 
 module.exports = router;
