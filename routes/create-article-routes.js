@@ -239,13 +239,32 @@ router.post("/editArticle", upload.single("imageFileUpload"), async function (re
         // the ones used, or, there are no images.
 
         if(req.body.deleteImage == 1){
-            // Delete the current image on the file
+            // User did not add a new image, and chose to delete the image:
+            
+            // Delete current images from server if any:
+            const articleImages = await imageDAO.getAllImageByArticleID(articleID)
+      
+            if(articleImages){
+                for (let i = 0; i < articleImages.length; i++) {
+                let imagePathToDelete = articleImages[i].path;
+                let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
+                    if(articleImages[i].fileName == "default_thumbnail.png"){
+                        // Do not delete the default thumbnail image 
+                    } else {
+                        // Delete the image on the server
+                        fs.unlinkSync(fullImageFilePath)
+                    }
+                }
+
+
+            // Delete the current images on the database file
             await imageDAO.deleteAllArticleImages(articleID)
 
             // Add default thumbnail to the article
             thumbnailPath = './article-images/article-thumbnails/default_thumbnail.png'
             thumbnailFileName = 'default_thumbnail.png'
             await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
+            }
         }
 
     } else {
@@ -254,7 +273,7 @@ router.post("/editArticle", upload.single("imageFileUpload"), async function (re
         // Delete the current image on the file
         await imageDAO.deleteAllArticleImages(articleID)
 
-        // Make new article images:
+        // Make new article images (these will overwrite the old images on the server)
         let articleImageInformation = await createImages(articleID, req.file) 
             
             articleImageFileName = articleImageInformation[0].fileName;
@@ -269,6 +288,7 @@ router.post("/editArticle", upload.single("imageFileUpload"), async function (re
         
 
     res.redirect(`/getArticle?articleID=${articleID}`)
+
 });
 
 
