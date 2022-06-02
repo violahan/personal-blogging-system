@@ -1,13 +1,20 @@
 {{!-- Page to display an article --}}
+<script type="text/javascript" src="./js/comments.js"></script>
 
 <div class="details-background">
     <h3>{{deleteMessage}}</h3>
     {{#ifCond user.userID '==' articleInfo.authorID}}
+        {{!-- Edit Article --}}
+        <a href="./editArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="edit-article-{{articleInfo.articleID}}">Edit Article</button></a>
+
+
+        {{!-- Delete Article --}}
         <div class="delete-article-box">
             <p id="confirm-message-{{articleInfo.articleID}}"></p>
             <button id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>
             <a href="./deleteArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="confirm-delete-{{articleInfo.articleID}}" style="display: none">Yes - Delete the article</button></a>
         </div>
+
     {{/ifCond}}
     <div class="details-container">
         <div class="details-title">
@@ -85,6 +92,22 @@
             {{!-- List of all comments (or message saying comments are hidden) --}}
 
             <p id="comments-message"></p>
+
+            <div id="comments-container">
+                {{!-- if there are comments to display, they will show up here with appropraite
+                nesting --}}
+                {{#if commentsToDisplay}}
+                {{!-- On load of the hidden iframe below the displayComments function is called. This generates
+                comments to display, along with reply and delete buttons for each comment as required
+                reply functions generate a reply form when reply is clicked. --}}
+                    <iframe onload="displayComments({{articleInfo.articleID}}, window.location.href)" style="display: none"></iframe>
+
+                {{else}}
+                {{!-- display message if not comments have been made --}}
+                    <p>No comments on this article. Yet.</p>
+                {{/if}}
+
+            </div>
 
 
             <div id="comments-container">

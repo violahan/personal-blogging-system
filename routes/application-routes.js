@@ -9,6 +9,7 @@ const articleFunctions = require("../modules/display-articles");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const notificationFunctions = require("../modules/notification-functions.js");
+const notificationDAO = require("../modules/notifications-dao.js")
 
 
 const bcrypt = require("../Helper/bcrypt-helper");
@@ -116,12 +117,16 @@ router.get("/getArticle", async function (req, res){
 
   const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
 
+// Get details of all likes on article
+  const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+
+  res.locals.numberOfLikes = likesOnArticle.length
+
   // Check if user has liked the article
     if (res.locals.user){
       // There is a logged in user
 
-      // Get details of all likes on article
-      const likesOnArticle = await likeDao.getLikesByArticle(articleID)
+      
       let userHasLiked = "";
       for (let i = 0; i < likesOnArticle.length; i++) {
         
@@ -168,6 +173,7 @@ router.get("/getArticle", async function (req, res){
 
   res.locals.articleInfo = articleInfo;
   res.locals.commentsToDisplay = commentsToDisplay;
+  res.locals.title = "Article";
 
   res.render("article")
 });
@@ -314,101 +320,10 @@ router.get("/analytics", async function (req, res) {
 });
 
 
-router.post("/makeComment", async function (req, res){
-
-  let commentAuthorID = res.locals.user.userID;
-  let commentContent = req.body.comment;
-  let commentArticleID = req.query.articleID
-  let commentID = await commentDao.addComment(commentArticleID, commentAuthorID, commentContent)
 
 
-  // Create notificaiton related to this comment event:
-      // Check if any subscribers:
-      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
-
-      // If there are subscribers - create a notification:
-          if(subscribers != ""){
-              const notificationType = "newComment";
-              const notificaitonContent = res.locals.user.userName+" has made a new comment";
-              const usersToBeNotified = subscribers;
-              const idForLink = commentArticleID;
-              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
-          } else {
-              // No subscribers, no notifications made
-          }
 
 
-  res.redirect("/getArticle?articleID="+commentArticleID)
-
-})
-
-router.post("/makeReply", async function (req, res){
-
-  let commentAuthorID = res.locals.user.userID;
-  let commentContent = req.body.reply;
-  let commentArticleID = req.query.articleID
-  let parentCommentID = req.query.parentID
-  let commentID = await commentDao.addReplyComment(commentArticleID, commentAuthorID, parentCommentID, commentContent)
-
-   // Create notificaiton related to this comment event:
-      // Check if any subscribers:
-      const subscribers = await subscribeDao.getSubscribesByAuthorId(commentAuthorID);
-
-    // If there are subscribers - create a notification:
-    if(subscribers  != ""){
-      const notificationType = "newComment";
-      const notificaitonContent = res.locals.user.userName+" has made a new comment";
-      const usersToBeNotified = subscribers;
-      const idForLink = commentArticleID;
-      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
-    } else {
-      // No subscribers, no notifications made
-    }
-
-
-  res.redirect("/getArticle?articleID="+commentArticleID)
-
-})
-
-router.get("/deleteComment", async function (req, res){
-
-  //As the deleting a comment is a get request, check that the 
-  // user is allowed to delete the comment - either they are the
-  // article author, or the comment author
-
-  const articleID = req.query.articleID;
-  const commentID = req.query.commentID;
-  const commentAuthorID = req.query.commentAuthorID;
-  const articleAuthorID = req.query.articleAuthorID;
-  const currentUserID = res.locals.user.userID
-
-  let deleteMessage;
-
-  //Check if the comment has any children - if it does overwrite the comment.
-  // If it doesnt, delete the comment entirely.
-  const childComments = await commentDao.getCommentsByParent(commentID);
-
-    if(commentAuthorID == currentUserID || articleAuthorID == currentUserID){
-      
-      if(childComments != ""){
-        
-        let updatedComment = await commentDao.deleteCommentByOverWriting(commentID);
-        deleteMessage = "Comment deleted"
-      } else {
-
-        deleteMessage = "Comment deleted"
-
-        await commentDao.removeComment(commentID)
-
-      }
-    } else {
-      deleteMessage = "Not authorised to delete comment"
-    }
-  
-
-  res.redirect("/getArticle?articleID="+articleID+"&deleteMessage="+deleteMessage)
-
-})
 
 
 router.get("/getAllUsernames", async function (req, res) {
@@ -467,6 +382,10 @@ router.get("/deleteArticle", async function (req, res){
       deleteMessage = "Not authorised to delete comment"
     }
   
+    // Once an article is deleted, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newArticle", articleID)
+
 
   res.redirect("/?deleteMessage="+deleteMessage)
 
@@ -537,6 +456,13 @@ router.get("/subscribeToAuthor", async function (req, res){
     if (userHasSubscribedToAuthor == 1){
       //Remove subscriber:
       await subscribeDao.removeFollow(subscribeUserID, authorID);
+
+
+      // Once a user has unsubscribed, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newSubscriber", subscribeUserID)
+
+
       res.json("Subscribe")
     } else {
       // Add like:
@@ -547,7 +473,8 @@ router.get("/subscribeToAuthor", async function (req, res){
         const notificaitonContent = subscriberUserName+" has subscribed to you!";
         const usersToBeNotified = [{userSubscriberID: authorID}];
         const idForLink = subscribeUserID;
-        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
+        const articleIDForLink = ""
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
       
 
       res.json("Unsubscribe")
@@ -580,9 +507,31 @@ router.post("/editProfile", async function (req, res) {
   res.redirect("/profile?id="+userToEdit.userID)
 })
 
+router.get("/deleteUser", async function (req, res) {
+  const userId = req.query.userId;
+
+  const articleImages = await imageDAO.getAllImagesByAuthorID(userId)
+      
+  if(articleImages){
+    for (let i = 0; i < articleImages.length; i++) {
+      let imagePathToDelete = articleImages[i].path;
+      let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
+  
+      if(articleImages[i].fileName != "default_thumbnail.png"){
+        fs.unlinkSync(fullImageFilePath)
+      }
+    }
+  }
+  await notificationDAO.deleteAllNotificationsRelatedToUser(userId);
+  await commentDao.deleteCommentsByUserID(userId);
+  await userDao.deleteUser(userId);
+  res.locals.user = null;
+  res.clearCookie("authToken");
+  res.redirect("/");
+})
+
 router.get("/changePassword", verifyAuthenticated, async function (req, res) {
   res.locals.title = "Change password";
-  res.locals.userID = res.locals.user.userID;
   res.render("change-password");
 });
 
@@ -619,4 +568,17 @@ router.get("/getCurrentUser", async function (req, res) {
   }
 });
 
+
+router.get("/getLikes", async function (req, res){
+  const likesOnArticle = await likeDao.getLikesByArticle(req.query.articleID)
+  res.json(likesOnArticle.length)
+})
+
+
+
+
 module.exports = router;
+
+
+
+

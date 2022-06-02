@@ -38,6 +38,7 @@
             {{#if isCurrentUser}}
                 <a href="./editProfile">Edit Profile</a><br>
                 <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a><br>
+                <a href="./changepassword">Change Password</a><br>
                 <a href="./deleteuser?userId={{profileObj.authorID}}">Delete User</a>
             {{/if}}
         </div>
@@ -49,7 +50,9 @@
         {{#each profileObj.articles}}
             <div class="profile-article-card">
                 <div class="profile-article-card-body" >
-                    <h2> {{this.title}}</h2>
+                    <a href="./getArticle?articleID={{this.articleID}}">
+                        <h2> {{this.title}}</h2>
+                    </a>
                     <p>{{this.publishDate}}</p>
                 </div>
                 <div class="profile-article-card-bottom-line"></div>
@@ -63,7 +66,9 @@
             {{#each profileObj.comments}}
             <div class="profile-body-right-card">
                 <div class="profile-body-comment-card">
-                    <h2>{{this.title}}</h2>
+                    <a href="./getArticle?articleID={{this.articleID}}">
+                        <h2>{{this.title}}</h2>
+                    </a>
                     <p>{{this.content}}</p>
                     <p class="publishDate">{{this.publishDate}}</p>
                     <HR id="HR">

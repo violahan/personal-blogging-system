@@ -8,6 +8,9 @@ async function getNumberOfNotifications(userID){
 
     document.getElementById('number-of-notifications').innerText = numberOfNotifications;
 
+    // Clear out previous notifcaiton load if any
+    document.getElementById('notification-details').innerHTML = ""
+
     let notificationWindow = document.createElement('div');
     notificationWindow.setAttribute("id", "notification-window")
 
@@ -39,6 +42,8 @@ function makeNotificationCard(notificationDetails){
     let notificationLinkURL;
     if(notificationDetails.typeOfNotification == "newSubscriber"){
         notificationLinkURL = `./profile?id=${notificationDetails.idForLink}`
+    } else if(notificationDetails.typeOfNotification == "newComment"){
+        notificationLinkURL = `./getArticle?articleID=${notificationDetails.articleIDForLink}#comment-card-${notificationDetails.idForLink}`
     } else {
         notificationLinkURL = `./getArticle?articleID=${notificationDetails.idForLink}`
     }
@@ -46,7 +51,7 @@ function makeNotificationCard(notificationDetails){
     let notificationCard = document.createElement('div')
     notificationCard.setAttribute("id", `notification-${notificationDetails.notificationID}-display-card`)
         notificationCard.innerHTML = `
-            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID}, ${notificationDetails.userToBeNotifiedID})"><i class="fa fa-caret-right"></i> ${notificationDetails.content}</a> 
+            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID}, ${notificationDetails.userToBeNotifiedID})"><p class="notification-content"><i class="fa fa-caret-right"></i>${notificationDetails.content}</p><p class="notification-time-stamp">${notificationDetails.publishDate}</p></a> 
         `
 
 

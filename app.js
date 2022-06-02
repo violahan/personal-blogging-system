@@ -61,6 +61,9 @@ app.use(articleRouter);
 const notificationRouter = require("./routes/notification-routes.js");
 app.use(notificationRouter);
 
+const commentRouter = require("./routes/comment-routes.js");
+app.use(commentRouter);
+
 
 // Start the server running.
 app.listen(port, function () {

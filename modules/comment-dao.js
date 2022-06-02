@@ -115,7 +115,7 @@ async function addComment(articleId, authorId, content) {
     const comment = await db.run(SQL`
         insert into comments (articleID, commentAuthorID, content)
         values (${articleId}, ${authorId}, ${content})`);
-    return comment;
+    return comment.lastID;
 }
 
 async function addReplyComment(articleId, authorId, parentID, content) {
@@ -124,7 +124,7 @@ async function addReplyComment(articleId, authorId, parentID, content) {
     const comment = await db.run(SQL`
         insert into comments (articleID, commentAuthorID, parentID, content)
         values (${articleId}, ${authorId}, ${parentID}, ${content})`);
-  return comment;
+  return comment.lastID;
 }
 
 
@@ -146,7 +146,7 @@ async function deleteCommentByOverWriting(commentId) {
 
     const comment = await db.run(SQL`
         update comments
-        set authorID = 1, content = 'Deleted comment' 
+        set commentAuthorID = 1, content = 'Deleted comment' 
         where commentID = ${commentId}
     `);
     return comment;
@@ -156,7 +156,7 @@ async function getCommentsAndArticleTitleByAuthorId(authorId) {
     const db = await dbPromise;
 
     const results = await db.all(SQL`
-        select c.commentID, c.content, c.publishDate, a.title
+        select c.commentID, c.content, c.publishDate, a.title, c.articleID
         from comments as c
         join articles as a on c.articleID = a.articleID
         where c.commentAuthorID = ${authorId}
@@ -172,6 +172,28 @@ async function deleteAllArticleComments(articleID){
         delete
         from comments
         where articleID = ${articleID};
+    `);
+}
+
+async function deleteCommentsByUserID(userId) {
+    const db = await dbPromise;
+
+    //Just update comments if they have children comments 
+    await db.run(SQL`
+        update comments
+        set commentAuthorID = 1, content = 'Deleted comment' 
+        where commentID in (
+            select DISTINCT c1.commentID 
+            from comments as c1 
+            join comments as c2 on c1.commentID = c2.parentID
+            where c1.commentAuthorID = ${userId}
+        )
+    `);
+
+    await db.run(SQL`
+        delete
+        from comments
+        where commentAuthorID = ${userId};
     `);
 }
 
@@ -191,5 +213,6 @@ module.exports = {
     getAllCommentsByArticleIDOrdered,
     addReplyComment,
     deleteCommentByOverWriting,
-    deleteAllArticleComments
+    deleteAllArticleComments,
+    deleteCommentsByUserID
 };
