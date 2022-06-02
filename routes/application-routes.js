@@ -581,4 +581,14 @@ router.post("/editProfile", async function (req, res) {
   res.redirect("/profile?id="+userToEdit.userID)
 })
 
+router.get("/deleteUser", async function (req, res) {
+  const userId = req.query.userId;
+  console.log(userId)
+
+  await userDao.deleteUser(userId);
+  res.locals.user = null;
+  res.clearCookie("authToken");
+  res.redirect("/");
+})
+
 module.exports = router;

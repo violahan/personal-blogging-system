@@ -81,6 +81,14 @@ async function updateUser(user) {
         `);
 }
 
+async function deleteUser(userId) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        delete from user where userID = ${userId}
+        `);
+}
+
 module.exports = {
     createNewUser,
     getUserByUserName,
@@ -88,5 +96,6 @@ module.exports = {
     retrieveUserWithAuthToken,
     giveAuthToken,
     getAllUsernames,
-    updateUser
+    updateUser,
+    deleteUser
 };
