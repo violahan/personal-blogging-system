@@ -69,11 +69,48 @@ async function getAllUsers() {
     return allUsers;
 }
 
+async function getAllUsernames() {
+    const db = await dbPromise;
+
+    const usernames = await db.all(SQL`
+        select userName from user`);
+    
+    return usernames;
+}
+
+async function updateUser(user) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set userName = ${user.userName},
+            fName = ${user.fName},
+            lName = ${user.lName},
+            DOB = ${user.DOB},
+            description = ${user.description},
+            avatarFilePath = ${user.avatarFilePath}
+            where userID = ${user.userID}
+        `);
+}
+
+async function changePassword(userID, newPassword) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set password = ${newPassword}
+            where userID = ${userID}
+        `);
+}
+
 module.exports = {
     createNewUser,
     getUserByUserName,
     getUserByID,
     retrieveUserWithAuthToken,
+    getAllUsers,
     giveAuthToken,
-    getAllUsers
+    getAllUsernames,
+    updateUser,
+    changePassword
 };

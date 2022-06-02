@@ -158,6 +158,27 @@ async function createNewArticle(authorId, articleTitle, articleContent){
     return newArticle.lastID;
 }
 
+async function deleteArticle(articleID){
+    const db = await dbPromise;
+
+    const results = await db.run(SQL`
+        delete
+        from articles
+        where articleID = ${articleID};
+    `);
+}
+
+async function getAuthorByArticleID(articleID){
+    const db = await dbPromise;
+   
+    const authorID = await db.get(SQL`
+        select authorID
+        from articles
+        where articleID = ${articleID};
+    `);
+    return authorID;
+
+}
 
 
 // Export functions.
@@ -171,5 +192,7 @@ module.exports = {
     getArticleByID,
     getArticlesCardInformationByUserOrderedBy,
     getArticleSortedByPopularity,
-    createNewArticle
+    createNewArticle,
+    deleteArticle,
+    getAuthorByArticleID
 };

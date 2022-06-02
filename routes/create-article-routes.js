@@ -4,6 +4,9 @@ const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
 
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
+const notificationFunctions = require("../modules/notification-functions.js");
+const subscribeDAO = require("../modules/subscribe-dao.js")
+
 
 // Set up multer to allow file uploads and save files
 // to temp folder before being used
@@ -40,7 +43,7 @@ router.get("/createArticle", verifyAuthenticated, async function (req, res){
     
     res.locals.imageMaxWidth = articleImageMaxWidth;
     res.locals.imageMaxHeight = articleImageMaxHeight;
-
+    res.locals.title = 'Create Article';
     // If user is logged in (verifyAuthrnticated) will direct to create article page
     res.render("create-article")
 
@@ -69,7 +72,7 @@ router.post("/createArticle", upload.single("imageFileUpload"), async function (
             // Article will not have an image
             // Set default thumbnail image for article cards
             
-            thumbnailPath = 'public/article-images/article-thumbnails/default_thumbnail.png'
+            thumbnailPath = './article-images/article-thumbnails/default_thumbnail.png'
             thumbnailFileName = 'default_thumbnail.png'
 
             await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
@@ -88,6 +91,23 @@ router.post("/createArticle", upload.single("imageFileUpload"), async function (
             await imageDAO.createArticleImage(articleID, articleImageFileName, articleImagePath)
             await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
 
+        }
+
+
+    // Create notificaiton related to this article:
+    // Check if any subscribers:
+        const subscribers = await subscribeDAO.getSubscribesByAuthorId(author.userID);
+
+    // If there are subscribers - create a notification:
+        if(subscribers != ""){
+            const notificationType = "newArticle";
+            const notificaitonContent = author.userName+" has written a new article titled "+articleTitle;
+            const usersToBeNotified = subscribers;
+            const idForLink = articleID;
+            const articleIDForLink = ""
+            await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
+        } else {
+            // No subscribers, no notifications made
         }
 
     res.redirect(`./getArticle?articleID=${articleID}`)
@@ -119,12 +139,12 @@ async function createImages(articleID, imageFile){
    let imageInformaiton = [
             {
                 fileName: `image_article${articleID}${fileExtension}`,
-                filePath: `${articleImageNewFileName}`,
+                filePath: `./article-images/image_article${articleID}${fileExtension}`,
                 thumbnailFlag: "0"
             },
             {
                 fileName: `thumbnail_article${articleID}${fileExtension}`,
-                filePath: `${thumbnailImageNewFileName}`,
+                filePath: `./article-images/article-thumbnails/thumbnail_article${articleID}${fileExtension}`,
                 thumbnailFlag: "1"
             }   
         ]

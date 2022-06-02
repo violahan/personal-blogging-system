@@ -1,6 +1,63 @@
-.avatar {
-    width: 40px;
-    height: auto;
+/*Header*/
+.header{
+    display: flex;
+    margin: 0 20px;
+    align-items: center;
+    color: #0E1C40;
+}
+
+.header-left{
+    font-size: 160px;
+    font-family: "Arial Black";
+    margin: 0 20px;
+    float: left;
+}
+
+.header-middle{
+    width: 5px;
+    height: 140px;
+    background-color: #0E1C40;
+}
+
+.header-right{
+    font-size: 22px;
+    font-family: "Arial Black";
+    margin: 0 20px;
+}
+
+.header-image{
+    width: 95%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-image div{
+    font-size: 25px;
+    font-family: "Arial Black";
+    position: absolute;
+    background-color: #2A53C1;
+    color: #f9f9f9;
+    width: 90%;
+    height: 60px;
+    line-height: 60px;
+    text-align: left;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.header-image div span{
+    margin-left: 5%;
+}
+
+/*Footer*/
+.footer{
+    height: 100px;
+    background-color: #0E1C40;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 50px;
 }
 
 form>input[type=text],
@@ -13,8 +70,8 @@ form>button[type=submit] {
 
 form>* {
     margin-bottom: 3px;
-
 }
+
 
 .card-container {
     /* border: 1px solid black; */
@@ -33,42 +90,154 @@ form>* {
     width: 75%;
 }
 
-
-#analytics-header{
-    background-color: lightgray;
-    padding: 10px;
+/* Navbar page */
+.navbar {
+    overflow: hidden;
+    background-color: #2A53C1;
+    font-family: Arial;
 }
 
-#analytics-body{
+#nav-left{
+    margin-left: 0;
+    margin-right: auto;
+}
+
+#nav-right{
+    float: right;
+    margin-right: 50px;
+}
+
+.navbar a {
+    float: left;
+    font-family: "Arial Black";
+    font-size: 16px;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+    font-family: "Arial Black";
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: #f9f9f9;
+    padding: 20px 20px;
+    background-color: inherit;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+    color: #a19fa7;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2A53C1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: #f9f9f9;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+body {
+    background-color: white;
+    margin: 0px;
+}
+
+
+/*analytics page*/
+
+.analytics-body{
+    width: 80%;
     display:grid;
     grid-template-columns: 1fr 2fr 2fr;
-    grid-gap: 20px;
+    grid-gap: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
 }
 
-.analytics-panel{
-    margin: 5px;
-    padding: 5px;
-}
-
-.analytics-card{
-    border: 1px solid lightgray;
-    margin: 10px;
-    padding: 10px;
-}
-
-.analytics-number{
-    font-size: 150%;
+.analytics-body h1{
+    font-family: "Arial Black";
+    font-size: 25px;
+    color: #0E1C40;
     text-align: center;
 }
 
-/*#analytics-card-highlight{*/
-/*    background-color: thistle;*/
-/*}*/
+.analytics-number-card{
+    border: 3px solid lightgray;
+    border-radius: 5%;
+    margin: 20px 0;
+    padding: 10px 20px;
+    text-align: center;
+}
 
-#analytics-card-highlight > span {
-    font-size: 600%;
+.analytics-number-card span{
+    font-size: 400%;
     font-weight: 600;
-    color: rgb(255, 99, 132);
+    color:#2A53C1;
+}
+
+#followNum{
+    font-size: 400%;
+    font-weight: 600;
+    color: lightcoral;
+}
+
+.analytics-number-card p{
+    color: grey;
+    margin: 5px;
+}
+
+
+.analytics-article-card{
+    border: 1px solid grey;
+    margin: 20px 0;
+}
+
+.analytics-article-card-body{
+    margin: 20px 20px 40px 20px;
+}
+
+.analytics-article-card-body h2{
+    font-family: "Arial";
+    color: #2A53C1;
+}
+
+.analytics-article-card-bottom-line{
+    background-color: #2A53C1;
+    height: 2px;
+}
+
+.analytics-graph-card{
+    border: 1px solid grey;
+    margin: 20px 0 40px 0;
+    padding: 10px;
 }
 
 .top-level-comment{
@@ -82,3 +251,239 @@ form>* {
     border: 1px solid green;
     margin-left: 30px;
 }
+
+/*profile page*/
+.profile-body{
+    width: 80%;
+    display:grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-gap: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+.profile-body h1{
+    font-family: "Arial Black";
+    font-size: 25px;
+    color: #0E1C40;
+    text-align: left;
+}
+
+.profile-body h2{
+    font-family: "Arial";
+    font-size: 20px;
+    color: #2A53C1;
+    text-align: left;
+}
+
+.profile-body-middle h2{
+    font-family: "Arial";
+    font-size: 25px;
+    color: #0E1C40;
+    text-align: left;
+}
+
+#profile-name{
+    color: #2A53C1;
+}
+
+.avatar {
+    width: 50px;
+    height: auto;
+}
+
+#subscribe-button{
+    font-family: "Arial";
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f24691;
+    color: white;
+    border: 1px solid white;
+}
+
+#subscribe-button:hover {
+    background-color: white; /* Green */
+    color: #f24691;
+    border: 1px solid #f24691;
+}
+
+#HR{
+    border: 1px solid lightgray;
+}
+
+.profile-article-card{
+    border: 1px solid grey;
+    margin: 10px 0;
+}
+
+.profile-detail-card{
+    margin: 30px 0;
+}
+
+.profile-detail-card-left{
+    font-family: "Arial Black";
+    font-size: 15px;
+    color: #f24691;
+}
+
+.profile-detail-span-right{
+    font-family: "Arial";
+    font-size: 15px;
+    color: #0E1C40;
+    float:right;
+}
+
+a:hover {
+    color: #f24691;
+}
+
+.profile-article-card-body{
+    margin: 20px 20px 40px 20px;
+}
+
+.profile-article-card-bottom-line{
+    background-color: #2A53C1;
+    height: 2px;
+}
+
+.publishDate{
+    color: grey;
+    margin: 5px;
+}
+
+.profile-body-comment-card{
+    margin: 20px 20px 40px 7px;
+}
+
+.profile-body-like-card{
+    margin: 20px 20px 20px 7px;
+}
+
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.login-form{
+    margin: 10%;
+}
+
+.login-form h1{
+    font-family: "Arial";
+    font-size: 30px;
+    color: #0E1C40;
+    text-align: center;
+}
+
+.login-form form{
+    margin-top: 10%;
+}
+
+/* Full-width inputs */
+.login-form input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.login-form button, .signup-form button{
+    background-color: #2A53C1;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Add a hover effect for buttons */
+.login-form button:hover {
+    opacity: 0.8;
+}
+
+.login-footer{
+    text-align: center;
+}
+
+
+
+
+.articles-body{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+}
+
+.signup-background{
+    background-color: #f2f2f2;
+}
+
+.signup-container{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px;
+}
+
+.signup-container h1{
+    font-family: "Arial";
+    font-size: 30px;
+    color: #0E1C40;
+    text-align: left;
+}
+
+
+.signup-form input[type=text], input[type=password], input[type=date], textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+
+
+

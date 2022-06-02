@@ -108,46 +108,23 @@ async function getCommentsCountPerDayByArticleAuthor(authorId, dayNumber) {
     return commentStatistics;
 }
 
-async function getCumulativeSubscribeCountByArticleAuthor(authorId) {
-    const db = await dbPromise;
-
-    const subscribeStatistics = await db.all(SQL`
-        with SubscribeByDay as (
-            select
-                strftime('%Y-%m-%d', dateSubscribed) as date,
-                count(*) as count
-            from
-                subscribes
-            where
-                articleAuthorID = ${authorId}
-            group by
-                strftime('%Y-%m-%d', dateSubscribed)
-        )
-        select
-            date,
-            sum(count) over (order by date rows between unbounded preceding and current row) as cumulativeCount
-        from SubscribeByDay
-    `);
-    return subscribeStatistics
-}
-
 
 async function addComment(articleId, authorId, content) {
     const db = await dbPromise;
 
     const comment = await db.run(SQL`
-        insert into comments (articleID, authorID, content)
+        insert into comments (articleID, commentAuthorID, content)
         values (${articleId}, ${authorId}, ${content})`);
-    return comment;
+    return comment.lastID;
 }
 
 async function addReplyComment(articleId, authorId, parentID, content) {
     const db = await dbPromise;
 
     const comment = await db.run(SQL`
-        insert into comments (articleID, authorID, parentID, content)
+        insert into comments (articleID, commentAuthorID, parentID, content)
         values (${articleId}, ${authorId}, ${parentID}, ${content})`);
-  return comment;
+  return comment.lastID;
 }
 
 
@@ -169,7 +146,7 @@ async function deleteCommentByOverWriting(commentId) {
 
     const comment = await db.run(SQL`
         update comments
-        set authorID = 1, content = 'Deleted comment' 
+        set commentAuthorID = 1, content = 'Deleted comment' 
         where commentID = ${commentId}
     `);
     return comment;
@@ -188,6 +165,18 @@ async function getCommentsAndArticleTitleByAuthorId(authorId) {
     return results;
 }
 
+async function deleteAllArticleComments(articleID){
+    const db = await dbPromise;
+
+    const results = await db.run(SQL`
+        delete
+        from comments
+        where articleID = ${articleID};
+    `);
+}
+
+
+
 module.exports = {
     getAllComments,
     getCommentsById,
@@ -197,10 +186,10 @@ module.exports = {
     addComment,
     getCommentsByArticleAuthor,
     getCommentsCountPerDayByArticleAuthor,
-    getCumulativeSubscribeCountByArticleAuthor,
     removeComment,
     getCommentsAndArticleTitleByAuthorId,
     getAllCommentsByArticleIDOrdered,
     addReplyComment,
-    deleteCommentByOverWriting
+    deleteCommentByOverWriting,
+    deleteAllArticleComments
 };

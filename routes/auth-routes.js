@@ -15,6 +15,7 @@ router.get("/login", function (req, res) {
     }
 
     else {
+        res.locals.title = 'Login';
         res.render("login");
     }
 
@@ -55,7 +56,7 @@ router.post("/login", async function (req, res) {
             // Auth fail
             res.locals.user = null;
             //    res.setToastMessage("Password is incorrect!");
-            res.redirect("./login");
+            res.redirect("/");
 
         }
 
@@ -64,7 +65,7 @@ router.post("/login", async function (req, res) {
         // Auth fail
         res.locals.user = null;
         //    res.setToastMessage("No such user!");
-        res.redirect("./login");
+        res.redirect("/");
 
     }
 
