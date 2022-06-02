@@ -497,6 +497,12 @@ a:hover {
     color: white;
     border: 1px solid white;
 }
+#create-article-button:disabled{
+
+    background-color: #dddddd;
+    color: black;
+
+}
 
 /*home-article page*/
 form>input[type=text],
