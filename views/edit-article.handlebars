@@ -27,9 +27,14 @@
                 <input id="imageFileUpload" type="file" name="imageFileUpload" accept=".png,.jpg,.jpeg,.bmp,.gif">
                 <p>Accepted file types are: .png, .jpg, .jpeg, .bmp, and .gif</p>
                 <p>Note: Images greater than {{imageMaxWidth}}px width <i>or</i> {{imageMaxHeight}}px height will be resized automatically</p>
+            
+                <p>OR - tick box to delete current image without replacement</p>
+                <label for="deleteImage">Delete current image without replacement: </label><input type="checkbox" id="deleteImage" name="deleteImage" value="1">
+                <br>
+
             </div>
 
-        <button id="article-submit-button" type="submit">Create article</button>
+        <button id="article-submit-button" type="submit">Edit article</button>
         </form>
     </div>
 </div>
