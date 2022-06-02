@@ -241,15 +241,15 @@ body {
 }
 
 .top-level-comment{
-    border: 1px solid black;
+    border: 8px solid #ddd;
 }
 .level-1-comment{
-    border: 1px solid blue;
-    margin-left: 15px;
+    border: 5px solid #ddd;
+    margin-left: 30px;
 }
 .level-2-comment{
-    border: 1px solid green;
-    margin-left: 30px;
+    border: 3px solid #ddd;
+    margin-left: 60px;
 }
 
 /*profile page*/
@@ -568,7 +568,7 @@ a:hover {
 
 .comment-reply-button{
     background-color: whitesmoke;
-    padding: 7px 20px;
+    padding: 14px 20px;
     margin: 0 auto;
     border: none;
     cursor: pointer;
@@ -584,6 +584,16 @@ a:hover {
     background-color: #2A53C1;
     padding: 14px 20px;
     margin: 8px auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.comment-delete-button{
+    color: white;
+    background-color: #f099a3;
+    padding: 14px 20px;
+    margin: 0 auto;
     border: none;
     cursor: pointer;
     width: 100%;
