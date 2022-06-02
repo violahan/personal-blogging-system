@@ -9,6 +9,7 @@ const articleFunctions = require("../modules/display-articles");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const notificationFunctions = require("../modules/notification-functions.js");
+const notificationDAO = require("../modules/notifications-dao.js")
 
 
 const bcrypt = require("../Helper/bcrypt-helper");
@@ -381,6 +382,10 @@ router.get("/deleteArticle", async function (req, res){
       deleteMessage = "Not authorised to delete comment"
     }
   
+    // Once an article is deleted, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newArticle", articleID)
+
 
   res.redirect("/?deleteMessage="+deleteMessage)
 
@@ -451,6 +456,13 @@ router.get("/subscribeToAuthor", async function (req, res){
     if (userHasSubscribedToAuthor == 1){
       //Remove subscriber:
       await subscribeDao.removeFollow(subscribeUserID, authorID);
+
+
+      // Once a user has unsubscribed, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newSubscriber", subscribeUserID)
+
+
       res.json("Subscribe")
     } else {
       // Add like:
