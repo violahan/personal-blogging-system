@@ -14,7 +14,6 @@ function showComments(){
     document.getElementById('hide-comments-button').style.display = "inline-block"
 }
 
-// Read URL within this function - then manually set page to that place holder.
 async function displayComments(articleID){
   
     // Get the details of comments to display:
@@ -25,9 +24,6 @@ async function displayComments(articleID){
 
     document.getElementById('comments-container').appendChild(displayCommentHTML)
 
-// In here we might be able to get the IDs to laod the page to a spot
-// window.location.href
-// And then look for ID properties/height
 }
 
 async function templateCommentHTML(commentsTreeStrucutre){
