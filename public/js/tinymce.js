@@ -17,7 +17,7 @@ tinymce.init({
       
       let articleTitleContent = document.getElementById('article-title').value
       let articleContent = tinymce.get('articleContentTinyMCETextArea').getContent();
-      let submitButton = document.getElementById('article-submit-button')
+      let submitButton = document.getElementById('create-article-button')
 
       if (articleTitleContent == "" || articleContent == ""){
         submitButton.disabled = true;
