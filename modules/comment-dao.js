@@ -175,6 +175,28 @@ async function deleteAllArticleComments(articleID){
     `);
 }
 
+async function deleteCommentsByUserID(userId) {
+    const db = await dbPromise;
+
+    //Just update comments if they have children comments 
+    await db.run(SQL`
+        update comments
+        set commentAuthorID = 1, content = 'Deleted comment' 
+        where commentID in (
+            select DISTINCT c1.commentID 
+            from comments as c1 
+            join comments as c2 on c1.commentID = c2.parentID
+            where c1.commentAuthorID = ${userId}
+        )
+    `);
+
+    await db.run(SQL`
+        delete
+        from comments
+        where commentAuthorID = ${userId};
+    `);
+}
+
 
 
 module.exports = {
@@ -191,5 +213,6 @@ module.exports = {
     getAllCommentsByArticleIDOrdered,
     addReplyComment,
     deleteCommentByOverWriting,
-    deleteAllArticleComments
+    deleteAllArticleComments,
+    deleteCommentsByUserID
 };

@@ -47,7 +47,7 @@ create table comments
     parentID    integer default null,
     content     text      not null,
     publishDate timestamp not null default CURRENT_TIMESTAMP,
-    foreign key (commentAuthorID) references user (userID) on delete cascade,
+    foreign key (commentAuthorID) references user (userID),
     foreign key (articleID) references articles (articleID) on delete cascade
 
 );
