@@ -51,7 +51,7 @@ function makeNotificationCard(notificationDetails){
     let notificationCard = document.createElement('div')
     notificationCard.setAttribute("id", `notification-${notificationDetails.notificationID}-display-card`)
         notificationCard.innerHTML = `
-            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID}, ${notificationDetails.userToBeNotifiedID})"><i class="fa fa-caret-right"></i> ${notificationDetails.content}</a> 
+            <a href="${notificationLinkURL}" onclick="notificationViewed(${notificationDetails.notificationID}, ${notificationDetails.userToBeNotifiedID})"><p class="notification-content"><i class="fa fa-caret-right"></i>${notificationDetails.content}</p><p class="notification-time-stamp">${notificationDetails.publishDate}</p></a> 
         `
 
 
