@@ -181,6 +181,19 @@ async function getAuthorByArticleID(articleID){
 }
 
 
+async function updateArticle(articleID, title, content) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update articles
+            set title = ${title},
+            content = ${content}
+            where articleID = ${articleID}
+        `);
+}
+
+
+
 // Export functions.
 module.exports = {
     getAllArticles,
@@ -194,5 +207,6 @@ module.exports = {
     getArticleSortedByPopularity,
     createNewArticle,
     deleteArticle,
-    getAuthorByArticleID
+    getAuthorByArticleID,
+    updateArticle
 };

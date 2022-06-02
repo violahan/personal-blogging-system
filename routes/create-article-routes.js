@@ -36,9 +36,6 @@ const thumbnailImageMaxHeight = 150;
 
 
 
-
-
-
 router.get("/createArticle", verifyAuthenticated, async function (req, res){
     
     res.locals.imageMaxWidth = articleImageMaxWidth;
@@ -189,6 +186,90 @@ async function resizeThumbnailImage(filePath){
 
     return filePath;
 }
+
+
+router.get("/editArticle", async function (req, res){
+    let articleID = req.query.articleID;
+    let articleAuthorID = req.query.articleAuthorID;
+  
+    res.locals.imageMaxWidth = articleImageMaxWidth;
+    res.locals.imageMaxHeight = articleImageMaxHeight;
+
+    if(res.locals.user.userID == articleAuthorID){
+      //Edit Article
+      // Get Article content
+      let articleToEdit = await articleDAO.getArticleByID(articleID)
+      res.locals.articleToEdit = articleToEdit
+  
+      // Get article images (if any)
+      // If this returns 1 image, it is the default thumbnail,
+      // if 2 there is an image on the article
+      let articleImages = await imageDAO.getAllImageByArticleID(articleID)
+      if(articleImages.length == 1){
+        // Only the default thumbnail - show no image
+        articleImages = [];
+      } else {
+        articleImages = articleImages[1];
+      }
+  
+      res.locals.imagesToEdit = articleImages
+  
+      res.render("edit-article")
+  
+    } else {
+      // Not allowed to edit article
+      res.redirect(`/getArticle?articleID=${articleID}`)
+    }
+  
+  });
+
+router.post("/editArticle", upload.single("imageFileUpload"), async function (req, res){
+    const articleID = req.query.articleID
+    
+    // Obtain data from form:
+    const articleTitle = req.body.articleTitle
+    const articleContent = req.body.articleContent
+    
+    await articleDAO.updateArticle(articleID, articleTitle, articleContent)
+
+// Check for image upload - if none the image part will not be changed
+    if(req.file == undefined){
+        
+        // Do not change the images related to the file. Either keep
+        // the ones used, or, there are no images.
+
+        if(req.body.deleteImage == 1){
+            // Delete the current image on the file
+            await imageDAO.deleteAllArticleImages(articleID)
+
+            // Add default thumbnail to the article
+            thumbnailPath = './article-images/article-thumbnails/default_thumbnail.png'
+            thumbnailFileName = 'default_thumbnail.png'
+            await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
+        }
+
+    } else {
+        // New image has been uploaded
+
+        // Delete the current image on the file
+        await imageDAO.deleteAllArticleImages(articleID)
+
+        // Make new article images:
+        let articleImageInformation = await createImages(articleID, req.file) 
+            
+            articleImageFileName = articleImageInformation[0].fileName;
+            articleImagePath = articleImageInformation[0].filePath;
+            thumbnailFileName = articleImageInformation[1].fileName;
+            thumbnailPath = articleImageInformation[1].filePath;
+            
+            await imageDAO.createArticleImage(articleID, articleImageFileName, articleImagePath)
+            await imageDAO.createArticleThumbnail(articleID, thumbnailFileName, thumbnailPath)
+
+    }
+        
+
+    res.redirect(`/getArticle?articleID=${articleID}`)
+});
 
 
 module.exports = router;
