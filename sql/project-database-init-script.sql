@@ -93,6 +93,7 @@ create table notifications
     hasBeenViewed      varchar(255),
     idForLink          integer      not null,
     articleIDForLink   integer,
+    publishDate timestamp not null default CURRENT_TIMESTAMP,
     foreign key (userToBeNotifiedID) references user (userID) on delete cascade
 );
 

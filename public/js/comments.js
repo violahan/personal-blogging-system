@@ -14,7 +14,10 @@ function showComments(){
     document.getElementById('hide-comments-button').style.display = "inline-block"
 }
 
-async function displayComments(articleID){
+
+// Read URL within this function - then manually set page to that place holder.
+async function displayComments(articleID, url){
+
   
     // Get the details of comments to display:
     const response = await fetch(`./getArticleComments?articleID=${articleID}`)
@@ -23,6 +26,15 @@ async function displayComments(articleID){
     const displayCommentHTML = await templateCommentHTML(commentsToDisplayJSON);
 
     document.getElementById('comments-container').appendChild(displayCommentHTML)
+
+
+    // Scroll window to selected comment:
+
+    if(url.includes("#")){
+        const commentID = url.substring(url.indexOf("#")+1)
+        const elementOnPage = document.getElementById(commentID)
+        const rect = elementOnPage.getBoundingClientRect();
+        window.scrollTo(0, rect.top);
 
 }
 
