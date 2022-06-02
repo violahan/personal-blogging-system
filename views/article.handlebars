@@ -108,13 +108,13 @@
         {{!-- On load of the hidden iframe below the displayComments function is called. This generates
         comments to display, along with reply and delete buttons for each comment as required
         reply functions generate a reply form when reply is clicked. --}}
-        <iframe onload="displayComments({{articleInfo.articleID}})" style="display: none"></iframe>
+        <iframe onload="displayComments({{articleInfo.articleID}}, window.location.href)" style="display: none"></iframe>
+        
         {{else}}
             {{!-- display message if not comments have been made --}}
             <p>No comments on this article. Yet.</p>
         {{/if}}
 
-{{!-- Maybe add function here to get the ids position --}}
 
     </div>
 </div>

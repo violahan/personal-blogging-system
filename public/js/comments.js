@@ -15,7 +15,7 @@ function showComments(){
 }
 
 // Read URL within this function - then manually set page to that place holder.
-async function displayComments(articleID){
+async function displayComments(articleID, url){
   
     // Get the details of comments to display:
     const response = await fetch(`./getArticleComments?articleID=${articleID}`)
@@ -25,9 +25,14 @@ async function displayComments(articleID){
 
     document.getElementById('comments-container').appendChild(displayCommentHTML)
 
-// In here we might be able to get the IDs to laod the page to a spot
-// window.location.href
-// And then look for ID properties/height
+    // Scroll window to selected comment:
+
+    if(url.includes("#")){
+        const commentID = url.substring(url.indexOf("#")+1)
+        const elementOnPage = document.getElementById(commentID)
+        const rect = elementOnPage.getBoundingClientRect();
+        window.scrollTo(0, rect.top);
+    }
 }
 
 async function templateCommentHTML(commentsTreeStrucutre){
