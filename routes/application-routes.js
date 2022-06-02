@@ -337,14 +337,15 @@ router.post("/makeComment", async function (req, res){
               const notificationType = "newComment";
               const notificaitonContent = res.locals.user.userName+" has made a new comment";
               const usersToBeNotified = subscribers;
-              const idForLink = commentArticleID;
-              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
+              const idForLink = commentID;
+              const articleIDForLink = commentArticleID;
+              await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
           } else {
               // No subscribers, no notifications made
           }
 
 
-  res.redirect("/getArticle?articleID="+commentArticleID)
+  res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card"+commentID)
 
 })
 
@@ -365,14 +366,15 @@ router.post("/makeReply", async function (req, res){
       const notificationType = "newComment";
       const notificaitonContent = res.locals.user.userName+" has made a new comment";
       const usersToBeNotified = subscribers;
-      const idForLink = commentArticleID;
-      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
+      const idForLink = commentID;
+      const articleIDForLink = commentArticleID;
+      await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
     } else {
       // No subscribers, no notifications made
     }
 
 
-  res.redirect("/getArticle?articleID="+commentArticleID)
+  res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card"+commentID)
 
 })
 
@@ -553,7 +555,8 @@ router.get("/subscribeToAuthor", async function (req, res){
         const notificaitonContent = subscriberUserName+" has subscribed to you!";
         const usersToBeNotified = [{userSubscriberID: authorID}];
         const idForLink = subscribeUserID;
-        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink);
+        const articleIDForLink = ""
+        await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
       
 
       res.json("Unsubscribe")

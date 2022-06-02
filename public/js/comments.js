@@ -30,6 +30,8 @@ async function templateCommentHTML(commentsTreeStrucutre){
         let topLevelDelete = await makeDeleteButtons(commentsTreeStrucutre[i])
         topCommentCardHTML.appendChild(topLevelDelete)
 
+        displayCommentContainer.appendChild(topCommentCardHTML)
+
         if(commentsTreeStrucutre[i].children != ""){
 
             for (let j = 0; j < commentsTreeStrucutre[i].children.length; j++) {
@@ -44,6 +46,8 @@ async function templateCommentHTML(commentsTreeStrucutre){
                 let level1Delete = await makeDeleteButtons(commentsTreeStrucutre[i].children[j])
                 level1CommentCardHTML.appendChild(level1Delete)
 
+                displayCommentContainer.appendChild(level1CommentCardHTML);
+
                  if(commentsTreeStrucutre[i].children[j].children != ""){  
 
                     for (let k = 0; k < commentsTreeStrucutre[i].children[j].children.length; k++) {
@@ -56,17 +60,18 @@ async function templateCommentHTML(commentsTreeStrucutre){
                         let level2Delete = await makeDeleteButtons(commentsTreeStrucutre[i].children[j].children[k])
                         level2CommentCardHTML.appendChild(level2Delete)
 
-                        level1CommentCardHTML.appendChild(level2CommentCardHTML)
+
+                        displayCommentContainer.appendChild(level2CommentCardHTML)
 
                     }
                   }     
                 
-                topCommentCardHTML.appendChild(level1CommentCardHTML);
+
 
             }
         }
         
-        displayCommentContainer.appendChild(topCommentCardHTML)
+
 
     }
 
