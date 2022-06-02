@@ -562,6 +562,33 @@ a:hover {
     background-color: whitesmoke;
 }
 
+.comment-content{
+    padding: 30px;
+}
+
+.comment-reply-button{
+    background-color: whitesmoke;
+    padding: 7px 20px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.comment-reply-form{
+    margin: 5px 30px;
+}
+
+.comment-reply-submit{
+    color: white;
+    background-color: #2A53C1;
+    padding: 14px 20px;
+    margin: 8px auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
 
 
 
