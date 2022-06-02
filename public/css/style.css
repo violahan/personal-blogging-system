@@ -653,7 +653,8 @@ form>* {
 
 
 button:disabled{
-    background: #dddddd;
+    background-color: #dddddd;
+    color: black;
 }
 
 
