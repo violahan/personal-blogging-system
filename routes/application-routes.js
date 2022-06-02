@@ -507,9 +507,18 @@ router.post("/editProfile", async function (req, res) {
   res.redirect("/profile?id="+userToEdit.userID)
 })
 
+router.get("/deleteUser", async function (req, res) {
+  const userId = req.query.userId;
+  
+  await commentDao.deleteCommentsByUserID(userId);
+  await userDao.deleteUser(userId);
+  res.locals.user = null;
+  res.clearCookie("authToken");
+  res.redirect("/");
+})
+
 router.get("/changePassword", verifyAuthenticated, async function (req, res) {
   res.locals.title = "Change password";
-  res.locals.userID = res.locals.user.userID;
   res.render("change-password");
 });
 
@@ -548,15 +557,9 @@ router.get("/getCurrentUser", async function (req, res) {
 
 
 router.get("/getLikes", async function (req, res){
-
   const likesOnArticle = await likeDao.getLikesByArticle(req.query.articleID)
-
   res.json(likesOnArticle.length)
-  
-
 })
-
-
 
 
 module.exports = router;
