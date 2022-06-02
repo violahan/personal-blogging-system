@@ -6,11 +6,17 @@
 <div id="full-article-container">
     
     {{#ifCond user.userID '==' articleInfo.authorID}}
+        {{!-- Edit Article --}}
+        <a href="./editArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="edit-article-{{articleInfo.articleID}}">Edit Article</button></a>
+
+        
+        {{!-- Delete Article --}}
         <div class="delete-article-box">
             <p id="confirm-message-{{articleInfo.articleID}}"></p>
             <button id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>                    
             <a href="./deleteArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="confirm-delete-{{articleInfo.articleID}}" style="display: none">Yes - Delete the article</button></a>
         </div>
+
     {{/ifCond}}
 
 
