@@ -1,3 +1,4 @@
+<script type="text/javascript" src="./js/create-article-validation.js"></script>
 <div>
     <div class="header-image">
         <img src="./images/create-article.jpg" width=100%>
@@ -7,16 +8,8 @@
 
 <div class="create-article-container">
         <form class="create-article-form" action="./createArticle" method="POST" enctype="multipart/form-data">
-<script type="text/javascript" src="./js/create-article-validation.js"></script>
-<div class="container">
-
-    <h1>Create new article</h1>
-    <div>
-        <form action="./createArticle" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="articleTitle" class="articles-title">Article Title:</label>
-                <input type="text" name="articleTitle" cols="50"><br>
-                <label  for="articleTitle">Article Title:</label>
                 <input onkeyup="checkArticleContentAndTitle()" id="article-title" type="text" name="articleTitle" cols="50"><br>
             </div>
             <br>
@@ -35,7 +28,6 @@
                 <p class="create-article-instruction">Note: Images greater than {{imageMaxWidth}}px width <i>or</i> {{imageMaxHeight}}px height will be resized automatically</p>
             </div>
 
-            <button type="submit" id="create-article-button">Create article</button>
-        <button id="article-submit-button" type="submit" disabled="true">Create article</button>
+            <button type="submit" id="create-article-button" disabled="true">Create article</button>
         </form>
 </div>
