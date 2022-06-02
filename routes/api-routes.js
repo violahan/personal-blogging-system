@@ -18,7 +18,7 @@ const authRoutes = require("./auth-routes");
 router.use(express.json())
 
 
-
+//api POST request to login
 router.post("/api/login", async function (req, res) {
 
     // Get the username and password submitted in the form
@@ -57,6 +57,15 @@ router.post("/api/login", async function (req, res) {
 
 });
 
+//api GET request to logout
+router.get("/api/logout", async function (req, res) {
+    res.clearCookie("authToken");
+    res.setToastMessage("Successfully logged out!");
+    res.statusCode = 204;
+    res.send();
+});
+
+//api GET request to get all users
 router.get("/api/users", async function(req, res) {
     try {
         const user = res.locals.user;
@@ -73,5 +82,13 @@ router.get("/api/users", async function(req, res) {
     }
     
 })
+
+//api DELETE request
+// router.delete("/api/users/:id", async function(req, res){
+//     if (user.adminFlag === 1){
+//         }
+//     }
+// })
+
 
 module.exports = router;
