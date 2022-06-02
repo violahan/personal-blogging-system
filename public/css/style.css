@@ -485,5 +485,68 @@ a:hover {
 }
 
 
+.details-background{
+    background-color: #f2f2f2;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.details-container{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5% 10%;
+    /*border: 1px solid #aaaaaa;*/
+    background-color: white;
+}
+
+.details-author{
+    align-items: center;
+    display: -webkit-flex;
+}
+
+.details-image img{
+    margin: 40px auto;
+    width: 100%;
+}
+
+.details-content{
+    font-family: "Arial";
+    font-size: 20px;
+    color: #0E1C40;
+    line-height: 1.5;
+}
+
+.details-like{
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+}
+
+.details-like-button{
+    color: #f24691;
+    background-color: white;
+    padding: 14px 20px;
+    margin: 8px auto;
+    border: 2px solid #f24691;
+    cursor: pointer;
+    width: 20%;
+    border-radius: 12px;
+    font-size: 20px;
+}
+
+.details-enter-comment button{
+    color: white;
+    background-color: #2A53C1;
+    padding: 14px 20px;
+    margin: 8px auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+
+
 
 
