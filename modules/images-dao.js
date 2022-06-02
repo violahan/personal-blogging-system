@@ -77,6 +77,20 @@ async function getAllImageByArticleID(articleID){
     return imagesByArticle;
 };
 
+async function getAllImagesByAuthorID(authorId) {
+    const db = await dbPromise;
+
+    const images = await db.all(SQL`
+        select * from images
+        where articleID in (
+            select articleID from articles 
+            where authorID = ${authorId}
+        )
+    `);
+
+    return images;
+}
+
 // Export functions.
 module.exports = {
     getMainImageByArticleID,
@@ -84,5 +98,6 @@ module.exports = {
     createArticleImage,
     createArticleThumbnail,
     deleteAllArticleImages,
-    getAllImageByArticleID
+    getAllImageByArticleID,
+    getAllImagesByAuthorID
 };
