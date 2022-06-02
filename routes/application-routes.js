@@ -509,6 +509,19 @@ router.post("/editProfile", async function (req, res) {
 
 router.get("/deleteUser", async function (req, res) {
   const userId = req.query.userId;
+
+  const articleImages = await imageDAO.getAllImagesByAuthorID(userId)
+      
+  if(articleImages){
+    for (let i = 0; i < articleImages.length; i++) {
+      let imagePathToDelete = articleImages[i].path;
+      let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
+  
+      if(articleImages[i].fileName != "default_thumbnail.png"){
+        fs.unlinkSync(fullImageFilePath)
+      }
+    }
+  }
   
   await commentDao.deleteCommentsByUserID(userId);
   await userDao.deleteUser(userId);
