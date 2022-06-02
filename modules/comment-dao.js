@@ -146,7 +146,7 @@ async function deleteCommentByOverWriting(commentId) {
 
     const comment = await db.run(SQL`
         update comments
-        set authorID = 1, content = 'Deleted comment' 
+        set commentAuthorID = 1, content = 'Deleted comment' 
         where commentID = ${commentId}
     `);
     return comment;

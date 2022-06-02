@@ -1,3 +1,18 @@
+function hideComments(){
+    document.getElementById('hide-comments-button').style.display = "none"
+    document.getElementById('comments-message').innerText = "Comments are hidden"
+    document.getElementById('comments-container').style.display = "none"
+
+    document.getElementById('show-comments-button').style.display = "inline-block"
+}
+
+function showComments(){
+    document.getElementById('show-comments-button').style.display = "none"
+    document.getElementById('comments-message').innerText = ""
+    document.getElementById('comments-container').style.display = "block"
+
+    document.getElementById('hide-comments-button').style.display = "inline-block"
+}
 
 async function displayComments(articleID){
   
@@ -10,7 +25,6 @@ async function displayComments(articleID){
     document.getElementById('comments-container').appendChild(displayCommentHTML)
 
 }
-
 
 async function templateCommentHTML(commentsTreeStrucutre){
 // Loops through the tree structure array of comments on an article.
@@ -110,22 +124,27 @@ async function makeReplyButtons(commentDetails){
     let response = await fetch("./getUserID");
     let userIDjson = await response.json();
 
-    let replyBox = document.createElement('div');
-    replyBox.setAttribute("class", "reply-box");
+    // Check if the comment author is "deletedcomment" in which case dont make a reply card
+    if(commentDetails.commentAuthorID == 1 || userIDjson == ""){
+        return document.createElement('div')
+    } else{
 
-    let replyButton = document.createElement('button');
-    replyButton.setAttribute("id", `let-reply-${commentDetails.commentID}`)
-    replyButton.setAttribute("onclick", `letReply(${commentDetails.commentID}, ${commentDetails.articleID}, ${userIDjson})`)
-    replyButton.innerText = "Reply";
-    
-    let replyFormContainer = document.createElement('div');
-    replyFormContainer.setAttribute("id", `reply-form-container-${commentDetails.commentID}`)
+        let replyBox = document.createElement('div');
+        replyBox.setAttribute("class", "reply-box");
 
-    replyBox.appendChild(replyButton)
-    replyBox.appendChild(replyFormContainer)
+        let replyButton = document.createElement('button');
+        replyButton.setAttribute("id", `let-reply-${commentDetails.commentID}`)
+        replyButton.setAttribute("onclick", `letReply(${commentDetails.commentID}, ${commentDetails.articleID}, ${userIDjson})`)
+        replyButton.innerText = "Reply";
+        
+        let replyFormContainer = document.createElement('div');
+        replyFormContainer.setAttribute("id", `reply-form-container-${commentDetails.commentID}`)
 
-    return replyBox;
+        replyBox.appendChild(replyButton)
+        replyBox.appendChild(replyFormContainer)
 
+        return replyBox;
+    }
 }
 
 
@@ -173,9 +192,6 @@ async function makeDeleteButtons(commentDetails){
 
 };
 
-
-
-
 // Functions to confirm comment/reply boxes have content before submission
 function checkCommentHasContent(){
 
@@ -196,4 +212,61 @@ function checkReplyHasContent(parentCommentID){
     } else {
         replySubmitButton.disabled = false;
     }
+}
+
+
+
+function deleteComment(commentID){
+    
+    let deleteID = "delete-comment-"+commentID;
+    let confirmMessageID = "confirm-message-"+commentID;
+    let confirmDeleteID = "confirm-delete-"+commentID;
+
+    if (document.getElementById(deleteID).innerText == "Delete Comment"){
+        document.getElementById(confirmMessageID).innerText = "Are you sure you want to delete the comment?";        
+        document.getElementById(deleteID).innerText = "No, don't delete the comment";
+        document.getElementById(confirmDeleteID).style.display = "inline-block";
+    } else {
+        document.getElementById(confirmDeleteID).style.display = "none";
+        document.getElementById(deleteID).innerText = "Delete Comment";
+        document.getElementById(confirmMessageID).innerText = "";
+    }
+
+}
+
+
+
+function letReply(parentCommentID, articleID, commentAuthorID){
+    
+    let replyID = "let-reply-"+parentCommentID;
+    let replyFormID = "reply-form-"+parentCommentID;
+
+    // If the button clicked was a "Reply" button
+    if (document.getElementById(replyID).innerText == "Reply"){
+        // Change button to be cancel
+        document.getElementById(replyID).innerText = "Cancel Reply"
+
+        // Make templated HTML for the reply form:
+        makeReplyForm(parentCommentID, articleID, commentAuthorID);
+
+        document.getElementById(replyFormID).style.display = "block"
+
+    } else {
+        document.getElementById(replyID).innerText = "Reply"
+        document.getElementById(replyFormID).style.display = "none"
+    }
+}
+
+
+// makeReplyForm builds a form to allow a reply, populated with appropraite comment/user data for the database:
+function makeReplyForm(parentCommentID, articleID, commentAuthorID){
+    let replyFormContainer = document.getElementById(`reply-form-container-${parentCommentID}`)
+    replyFormContainer.innerHTML = `
+        <form id="reply-form-${parentCommentID}" action="./makeReply?articleID=${articleID}&parentID=${parentCommentID}&commentAuthorID=${commentAuthorID}" method="POST" style="display: none">
+            <label for="reply">Enter Reply:</label>
+            <textarea id="reply-to-comment-${parentCommentID}-text-box" onkeyup="checkReplyHasContent(${parentCommentID})" name="reply" rows="4" cols="50"></textarea>
+            <button id="submit-reply-to-comment-${parentCommentID}-button" type="submit">Post Reply</button>
+            <iframe onload="checkReplyHasContent(${parentCommentID})" style="display: none"></iframe>
+        </form>
+    `
 }
