@@ -5,6 +5,9 @@ const articleDAO = require("../modules/article-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const subscribeDao = require("../modules/subscribe-dao");
 const notificationFunctions = require("../modules/notification-functions.js");
+const notificationDAO = require("../modules/notifications-dao.js")
+
+
 
 router.get("/getArticleComments", async function (req, res){
 
@@ -68,7 +71,12 @@ router.get("/deleteComment", async function (req, res){
       } else {
         deleteMessage = "Not authorised to delete comment"
       }
-    
+  
+      // Once a comment is deleted, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newComment", commentID)
+
+
   
     res.redirect("/getArticle?articleID="+articleID+"&deleteMessage="+deleteMessage)
   
