@@ -555,6 +555,13 @@ a:hover {
     border-radius: 12px;
 }
 
+.comment-title{
+    align-items: center;
+    display: -webkit-flex;
+    padding: 2px 10px;
+    background-color: whitesmoke;
+}
+
 
 
 

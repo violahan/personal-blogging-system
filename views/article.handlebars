@@ -94,15 +94,26 @@
                 {{#if commentsToDisplay}}
                     {{#each commentsToDisplay}}
                         <div class="top-level-comment">
-                            <img src="{{this.avatarFilePath}}" alt="" class="avatar">
-                            <p>Publishdate ={{this.publishDate}}</p>
-                            <p>CommentID = {{this.commentID}}</p>
-                            <p>Content = {{this.content}}</p>
-                            {{#ifCond this.authorID '==' 1}}
-                            {{!-- if the comment has been "deleted" - assigned to user 1 - do not show a user name or link to profile --}}
-                            {{else}}
-                                <p> <a href="./profile?id={{this.authorID}}">Username = {{this.userName}}</a></p>
-                            {{/ifCond}}
+                            <div class="comment-title">
+                                <span>
+                                    <img src="{{this.avatarFilePath}}" alt="" class="avatar">
+                                </span>
+                                <span>
+                                    {{#ifCond this.authorID '==' 1}}
+                                    {{!-- if the comment has been "deleted" - assigned to user 1 - do not show a user name or link to profile --}}
+                                    {{else}}
+                                        <p> <a href="./profile?id={{this.authorID}}">{{this.userName}}</a></p>
+                                    {{/ifCond}}
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-calendar-days"></i> {{this.publishDate}}
+                                </span>
+                            </div>
+                            <div class="comment-content">
+                                <p>{{this.content}}</p>
+                            </div>
+
+
 
                             {{#ifCond this.authorID '==' 1}}
                             {{!-- if the comment is deleted, do not show delete or reply options --}}
