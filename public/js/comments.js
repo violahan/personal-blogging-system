@@ -38,6 +38,7 @@ async function displayComments(articleID, url){
 
     }
 
+
     async function templateCommentHTML(commentsTreeStrucutre){
 // Loops through the tree structure array of comments on an article.
 // For each article it creates a comment card with the content.
