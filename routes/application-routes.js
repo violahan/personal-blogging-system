@@ -522,7 +522,7 @@ router.get("/deleteUser", async function (req, res) {
       }
     }
   }
-  
+  await notificationDAO.deleteAllNotificationsRelatedToUser(userId);
   await commentDao.deleteCommentsByUserID(userId);
   await userDao.deleteUser(userId);
   res.locals.user = null;

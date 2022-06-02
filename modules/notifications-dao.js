@@ -57,6 +57,34 @@ async function removeNotificationsByTypeAndIDLink(typeOfNotificaiton, idForLink)
     return notifications;
 }
 
+async function deleteAllNotificationsRelatedToUser(userID) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        delete from notifications
+        where typeOfNotification = 'newArticle' 
+        and idForLink in (
+            select articleID from articles 
+            where authorID = ${userID} 
+        )
+    `);
+
+    await db.run(SQL`
+        delete from notifications
+        where typeOfNotification = 'newComment' 
+        and idForLink in (
+            select commentID from comments 
+            where commentAuthorID = ${userID} 
+        )
+    `);
+
+    await db.run(SQL`
+        delete from notifications
+        where typeOfNotification = 'newSubscriber' 
+        and idForLink = ${userID} 
+    `);
+}
+
 
 // Export functions.
 module.exports = {
@@ -64,6 +92,6 @@ module.exports = {
     getNotificationsByUserID,
     deleteNotificationByNotificationID,
     deleteAllNotificationByUserID,
-    removeNotificationsByTypeAndIDLink
-    
+    removeNotificationsByTypeAndIDLink,
+    deleteAllNotificationsRelatedToUser
 };
