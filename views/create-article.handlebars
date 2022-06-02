@@ -11,11 +11,13 @@
                 <div>
                     <label for="articleTitle" class="articles-title">Article Title:</label>
                     <input onkeyup="checkArticleContentAndTitle()" id="article-title" type="text" name="articleTitle" cols="50"><br>
+                    <p class="error-text" id="article-title-error" hidden>Error: Article title cannot be blank</p>
                 </div>
                 <br>
 
                 <div>
                     <textarea id="articleContentTinyMCETextArea" name="articleContent"></textarea>
+                    <p class="error-text" id="article-content-error" hidden>Error: Article content cannot be blank</p>
                 </div>
                 <br>
 
