@@ -72,7 +72,8 @@ async function updateUser(user) {
 
     await db.run(SQL`
         update user
-            set fName = ${user.fName},
+            set userName = ${user.userName},
+            fName = ${user.fName},
             lName = ${user.lName},
             DOB = ${user.DOB},
             description = ${user.description},
@@ -85,7 +86,16 @@ async function deleteUser(userId) {
     const db = await dbPromise;
 
     await db.run(SQL`
-        delete from user where userID = ${userId}
+        delete from user where userID = ${userId}`)
+}
+
+async function changePassword(userID, newPassword) {
+    const db = await dbPromise;
+
+    await db.run(SQL`
+        update user
+            set password = ${newPassword}
+            where userID = ${userID}
         `);
 }
 
@@ -97,5 +107,6 @@ module.exports = {
     giveAuthToken,
     getAllUsernames,
     updateUser,
-    deleteUser
+    deleteUser,
+    changePassword
 };

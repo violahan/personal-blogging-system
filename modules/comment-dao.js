@@ -115,7 +115,7 @@ async function addComment(articleId, authorId, content) {
     const comment = await db.run(SQL`
         insert into comments (articleID, commentAuthorID, content)
         values (${articleId}, ${authorId}, ${content})`);
-    return comment;
+    return comment.lastID;
 }
 
 async function addReplyComment(articleId, authorId, parentID, content) {
@@ -124,7 +124,7 @@ async function addReplyComment(articleId, authorId, parentID, content) {
     const comment = await db.run(SQL`
         insert into comments (articleID, commentAuthorID, parentID, content)
         values (${articleId}, ${authorId}, ${parentID}, ${content})`);
-  return comment;
+  return comment.lastID;
 }
 
 
@@ -146,7 +146,7 @@ async function deleteCommentByOverWriting(commentId) {
 
     const comment = await db.run(SQL`
         update comments
-        set authorID = 1, content = 'Deleted comment' 
+        set commentAuthorID = 1, content = 'Deleted comment' 
         where commentID = ${commentId}
     `);
     return comment;

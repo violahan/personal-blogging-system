@@ -1,5 +1,3 @@
-
-
 async function allSortOptions(){
 
     // Obtain the selected option from the drop down menu - returns the value
@@ -122,44 +120,6 @@ function switchDisplayedArticles(){
     }
    
 }
-
-function letReply(parentCommentID){
-    
-    let replyID = "let-reply-"+parentCommentID;
-    let replyFormID = "reply-form-"+parentCommentID;
-
-    if (document.getElementById(replyID).innerText == "Reply"){
-        document.getElementById(replyID).innerText = "Cancel Reply"
-        document.getElementById(replyFormID).style.display = "block"
-    } else {
-        document.getElementById(replyID).innerText = "Reply"
-        document.getElementById(replyFormID).style.display = "none"
-    }
-}
-
-
-function deleteComment(commentID){
-    
-    let deleteID = "delete-comment-"+commentID;
-    let confirmMessageID = "confirm-message-"+commentID;
-    let confirmDeleteID = "confirm-delete-"+commentID;
-
-    if (document.getElementById(deleteID).innerText == "Delete Comment"){
-        document.getElementById(confirmMessageID).innerText = "Are you sure you want to delete the comment?";        
-        document.getElementById(deleteID).innerText = "No, don't delete the comment";
-        document.getElementById(confirmDeleteID).style.display = "inline-block";
-    } else {
-        document.getElementById(confirmDeleteID).style.display = "none";
-        document.getElementById(deleteID).innerText = "Delete Comment";
-        document.getElementById(confirmMessageID).innerText = "";
-    }
-
-}
-
-// function confirmDeleteComment(commentID){
-    
-//     alert("Comment Deleted")
-// }
 
 function deleteArticle(articleID){
     

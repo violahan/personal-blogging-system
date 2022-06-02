@@ -92,8 +92,8 @@ create table notifications
     userToBeNotifiedID integer      not null,
     hasBeenViewed      varchar(255),
     idForLink          integer      not null,
+    articleIDForLink   integer,
     foreign key (userToBeNotifiedID) references user (userID) on delete cascade
-
 );
 
 -- user 1 and 2 were set up as actual users - deletecomment password is password, admin password is admin
