@@ -14,17 +14,15 @@ between viewing all articles and viewing your articles --}}
 
 
         {{#if user}}
-        <div>
+        <div class="show-users-button">
             <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
         </div>
         {{/if}}
 
-
-
         <div id="all-articles-home">
 
         <div class="all-article-Sort">
-            <form action="">
+            <form class="all-article-form" action="">
                 <label for="allSortOption">Sort articles by:</label>
                 <select id="allSortOption" name="allSortOption" onchange="allSortOptions()">
                     <option value="publishDate" selected>Date</option>
@@ -49,7 +47,7 @@ between viewing all articles and viewing your articles --}}
         {{#if user}}
         <div id="user-articles-home" style="display: none">
             <div class="user-article-Sort">
-            <form action="">
+            <form class="all-article-form" action="">
                 <label for="userSortOption">Sort articles by:</label>
                 <select id="userSortOption" name="userSortOption" onchange="userSortOptions()">
                     <option value="publishDate" selected>Date</option>
