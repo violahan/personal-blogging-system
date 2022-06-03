@@ -4,7 +4,12 @@ async function likeArticle(articleID, userID){
 
     const like = await fetch(`./likeArticle?articleID=${articleID}&userID=${userID}`) 
     const likeConfirmation = await like.json();
-    document.getElementById('like-button').innerText = likeConfirmation
+    if (likeConfirmation==="Like"){
+        document.getElementById('like-button').innerHTML = "<i class=\"fa-solid fa-heart\"></i> Like"
+    }
+    else{
+        document.getElementById('like-button').innerHTML = "<i class=\"fa-solid fa-heart-crack\"></i> Unlike"
+    }
 
     const numberOfLikes = await fetch(`./getLikes?articleID=${articleID}`)
     const numberOfLikesConfirmation = await numberOfLikes.json();
@@ -18,7 +23,7 @@ async function subscribeAuthor(authorID, userID) {
 }
 
 async function subscribeUserFromList(authorID, userID) {
-    const subscribe = await fetch(`./subscribeToAuthor?authorID=${authorID}&userID=${userID}`) 
+    const subscribe = await fetch(`./subscribeToAuthor?authorID=${authorID}&userID=${userID}`)
     const subscriptionConfirmation = await subscribe.json();
     document.querySelectorAll(`.subscribe-button-${authorID}`).forEach(b => {
         b.innerText = subscriptionConfirmation;

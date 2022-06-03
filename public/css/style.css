@@ -211,7 +211,8 @@ body {
     padding: 10px;
 }
 
-.top-level-comment{
+.level-0-comment{
+    margin-top: 30px;
     border: 8px solid #ddd;
 }
 .level-1-comment{
@@ -275,7 +276,7 @@ body {
 }
 
 #subscribe-button:hover {
-    background-color: white; /* Green */
+    background-color: white;
     color: #f24691;
     border: 1px solid #f24691;
 }
@@ -321,11 +322,25 @@ body {
 }
 
 .profile-detail-span-right{
-    font-family: "Arial";
+    font-family: "Arial Black";
     font-size: 15px;
-    color: #0E1C40;
+    color: #f24691;
     float:right;
 }
+
+.profile-detail-span-right a{
+    color: #f24691;
+}
+
+.profile-detail-span-right a:link {
+    text-decoration: none;
+}
+
+.profile-detail-span-right a:visited {
+    text-decoration: none;
+}
+
+/*Profile Page Middle Part*/
 
 .profile-article-card-body{
     margin: 20px 20px 40px 20px;
@@ -353,6 +368,8 @@ body {
     margin: 5px;
 }
 
+/*Profile Page Right Part*/
+
 .profile-body-comment-card{
     margin: 20px 20px 40px 7px;
 }
@@ -367,6 +384,24 @@ body {
 
 .profile-body-like-card{
     margin: 20px 20px 20px 7px;
+}
+
+/*subscribe page*/
+.profile-body{
+    width: 80%;
+    display:grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-gap: 5%;
+    margin: 60px auto 80px auto;
+}
+
+#user-image{
+    width: 70%;
+}
+
+#subscribe-button{
+    margin: 15px;
+    float: right;
 }
 
 
@@ -454,9 +489,6 @@ body {
     text-align: center;
 }
 
-
-
-
 .articles-body{
     width: 80%;
     margin-left: auto;
@@ -528,18 +560,14 @@ body {
 #create-article-button{
     font-family: "Arial";
     font-size: 16px;
+    width: 100%;
     padding: 8px;
     border-radius: 4px;
     background-color: #f24691;
     color: white;
     border: 1px solid white;
 }
-#create-article-button:disabled{
 
-    background-color: #dddddd;
-    color: black;
-
-}
 
 /*home-article page*/
 form>input[type=text],
@@ -601,6 +629,41 @@ form>* {
 }
 
 
+/*Edit Profile Page*/
+.edit-profile-container{
+    width: 40%;
+    margin: 30px auto;
+    padding: 40px;
+}
+
+.edit-profile-container label{
+    font-family: "Arial Black";
+    font-size: 15px;
+    color: #0E1C40;
+    text-align: left;
+}
+
+.edit-profile-form input[type=text], input[type=password], input[type=date], textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#save-user-btn{
+    font-family: "Arial";
+    font-size: 16px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f24691;
+    color: white;
+    border: 1px solid white;
+}
+
+
 /*Detail Article Page*/
 .details-background{
     background-color: #f2f2f2;
@@ -618,8 +681,16 @@ form>* {
 }
 
 .details-author{
+    overflow: hidden;
+}
+
+.details-author-left{
     align-items: center;
     display: -webkit-flex;
+}
+
+.details-author-right{
+    float: right;
 }
 
 .details-image img{
@@ -709,6 +780,16 @@ form>* {
 .comment-delete-button{
     color: white;
     background-color: #f099a3;
+    padding: 14px 20px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.comment-delete-confirm-button{
+    color: white;
+    background-color: #fc6a76;
     padding: 14px 20px;
     margin: 0 auto;
     border: none;
