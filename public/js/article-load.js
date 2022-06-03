@@ -110,12 +110,12 @@ function updateUserArticles(userCardsToDisplay){
 function switchDisplayedArticles(){
 
     if(document.getElementById('switch-article-button').innerText == "Show User Articles"){
-        document.getElementById('all-articles-home').style.display = "none"
-        document.getElementById('user-articles-home').style.display = "block"
+        document.getElementById('all-card-container').style.display = "none"
+        document.getElementById('user-card-container').style.display = "block"
         document.getElementById('switch-article-button').innerText = "Show All Articles"
     } else {
-        document.getElementById('all-articles-home').style.display = "block"
-        document.getElementById('user-articles-home').style.display = "none"
+        document.getElementById('all-card-container').style.display = "block"
+        document.getElementById('user-card-container').style.display = "none"
         document.getElementById('switch-article-button').innerText = "Show User Articles"
     }
    
