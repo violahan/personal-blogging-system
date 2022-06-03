@@ -1,20 +1,21 @@
 const express = require("express");
-const { json } = require("express/lib/response");
 const router = express.Router();
-const { v4: uuid } = require("uuid");
 const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
+const bcrypt = require("../Helper/bcrypt-helper");
+
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
 const articleFunctions = require("../modules/display-articles");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
-const notificationFunctions = require("../modules/notification-functions.js");
 const notificationDAO = require("../modules/notifications-dao.js")
-
-
-const bcrypt = require("../Helper/bcrypt-helper");
+const notificationFunctions = require("../modules/notification-functions.js");
 const likeDao = require("../modules/like-dao");
 const subscribeDao = require("../modules/subscribe-dao");
+
+
+const { json } = require("express/lib/response");
+const { v4: uuid } = require("uuid");
 const { route } = require("express/lib/application");
 const cookieParser = require("cookie-parser");
 
@@ -25,7 +26,7 @@ const { resourceLimits } = require("worker_threads");
 
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
-
+    
     const user = res.locals.user;
 
     if(req.query.deleteMessage){
@@ -35,13 +36,12 @@ router.get("/", verifyAuthenticated, async function(req, res) {
     // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
     let orderBy = "desc";
-
     let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
     let totalArticles = orderedArticles.length;
-
+    
     // This call can be adjusted (change total articles) to change the number of articles initially loaded
     let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
-
+    
     res.locals.allArticleToDisplay = cardsToDisplay;
 
     if(user != ""){

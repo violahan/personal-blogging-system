@@ -58,6 +58,17 @@ async function giveAuthToken(user) {
         `);
 }
 
+async function getAllUsers() {
+    const db = await dbPromise;
+
+    const allUsers = await db.all(SQL`
+            select *
+                from user
+        `);
+
+    return allUsers;
+}
+
 async function getAllUsernames() {
     const db = await dbPromise;
 
@@ -104,6 +115,7 @@ module.exports = {
     getUserByUserName,
     getUserByID,
     retrieveUserWithAuthToken,
+    getAllUsers,
     giveAuthToken,
     getAllUsernames,
     updateUser,

@@ -18,7 +18,6 @@ function showComments(){
 // Read URL within this function - then manually set page to that place holder.
 async function displayComments(articleID, url){
 
-
     // Get the details of comments to display:
     const response = await fetch(`./getArticleComments?articleID=${articleID}`)
     const commentsToDisplayJSON = await response.json();
@@ -37,8 +36,10 @@ async function displayComments(articleID, url){
         window.scrollTo(0, rect.top);
 
     }
+}
 
-    async function templateCommentHTML(commentsTreeStrucutre){
+
+async function templateCommentHTML(commentsTreeStrucutre){
 // Loops through the tree structure array of comments on an article.
 // For each article it creates a comment card with the content.
 // If there are child comments, these are created and placed below the parent.
@@ -300,4 +301,3 @@ async function displayComments(articleID, url){
         </form>
     `
     }
-}

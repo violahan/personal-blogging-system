@@ -82,7 +82,7 @@
     float: left;
     font-family: "Arial Black";
     font-size: 16px;
-    color: #f9f9f9;
+    color: #f9f9f9 !important;
     text-align: center;
     padding: 20px 20px;
     text-decoration: none;
@@ -106,7 +106,7 @@
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn {
-    color: #a19fa7;
+    color: #a19fa7 !important;
 }
 
 .dropdown-content {
@@ -283,6 +283,27 @@ body {
 #HR{
     border: 1px solid lightgray;
 }
+.profile-detail-card a{
+    font-family: "Arial Black";
+    font-size: 13px;
+    color: #0E1C40;
+}
+
+.profile-detail-card a:link, a:visited{
+    background-color: white;
+    color: #0E1C40;
+    border: 2px solid #2A53C1;
+    padding: 10px 20px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.profile-detail-card a:hover, a:active {
+    background-color: #2A53C1;
+    color: white;
+}
 
 .profile-article-card{
     border: 1px solid grey;
@@ -306,12 +327,20 @@ body {
     float:right;
 }
 
-a:hover {
-    color: #f24691;
-}
-
 .profile-article-card-body{
     margin: 20px 20px 40px 20px;
+}
+
+.profile-article-card-body a{
+    color: #0E1C40;
+}
+
+.profile-article-card-body a:link {
+    text-decoration: none;
+}
+
+.profile-article-card-body a:visited {
+    text-decoration: none;
 }
 
 .profile-article-card-bottom-line{
@@ -326,6 +355,14 @@ a:hover {
 
 .profile-body-comment-card{
     margin: 20px 20px 40px 7px;
+}
+
+.profile-body-comment-card a{
+    color: #2A53C1;
+}
+
+.profile-body-comment-card a:link {
+    text-decoration: none;
 }
 
 .profile-body-like-card{
@@ -497,6 +534,12 @@ a:hover {
     color: white;
     border: 1px solid white;
 }
+#create-article-button:disabled{
+
+    background-color: #dddddd;
+    color: black;
+
+}
 
 /*home-article page*/
 form>input[type=text],
@@ -530,6 +573,35 @@ form>* {
     padding: 20px;
 }
 
+.cardImage{
+    width: 50%;
+    float: left;
+}
+
+.cardContent{
+    width: 50%;
+    float: right;
+}
+
+.cardContent a{
+   font-size: 20px;
+    color: #0E1C40;
+}
+
+.cardContent a:link {
+    text-decoration: none;
+}
+
+.cardContent a:visited {
+    text-decoration: none;
+}
+
+.cardContent a:hover {
+    color: #2A53C1;
+}
+
+
+/*Detail Article Page*/
 .details-background{
     background-color: #f2f2f2;
     padding-top: 40px;
@@ -647,8 +719,10 @@ form>* {
 
 
 button:disabled{
-    background: #dddddd;
+    background-color: #dddddd;
+    color: black;
 }
+
 
 
 

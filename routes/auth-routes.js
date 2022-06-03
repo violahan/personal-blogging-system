@@ -26,11 +26,11 @@ router.get("/login", function (req, res) {
 // If they match a user in the database, give that user an authToken, save the authToken
 // in a cookie, and redirect to "/". Otherwise, redirect to "/login", with a "login failed" message.
 router.post("/login", async function (req, res) {
-
+    
     // Get the username and password submitted in the form
     const username = req.body.userName;
     const password = req.body.password;
-
+    
     // Find a matching user in the database
     const user = await userDao.getUserByUserName(username);
 
