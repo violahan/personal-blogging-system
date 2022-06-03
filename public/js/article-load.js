@@ -1,128 +1,90 @@
-async function allSortOptions(){
+const imageDAO = require("../../modules/images-dao");
+const commentDAO = require("../../modules/comment-dao");
 
-    // Obtain the selected option from the drop down menu - returns the value
-    let allSortOption = document.getElementById('allSortOption');
-    let allSortOptionValue = allSortOption.options[allSortOption.selectedIndex].value;
-    
-    // Obtain the sort order from the radio boxes - defauls to descending
-    let allSortOrder = document.getElementsByName('allSortOrder');
-    let allSortOrderOption = "desc"
-
-    // set the sort order based on which radio box is checked:
-    if(allSortOrder[0].checked == false){
-        allSortOrderOption = "asc"
-    } else if (allSortOrder[0].checked == true){
-        allSortOrderOption = "desc"
-    }
-
-    // Make get request to the server, providing the sort option and sort order
-    // returns ordered article array
-    const response = await fetch(`./sortedArticles?value=${allSortOptionValue}&order=${allSortOrderOption}`)
-    const orderedArticleArray = await response.json();
-    
-    let cardsToDisplay = createArticleCards(orderedArticleArray)
-
-    // Call function to update the visible articles
-    updateArticles(cardsToDisplay);
-
-}
-
-async function userSortOptions(){
-
-    // Obtain the selected option from the drop down menu - returns the value
-    let userSortOption = document.getElementById('userSortOption');
-    let userSortOptionValue = userSortOption.options[userSortOption.selectedIndex].value;
-    
-    // Obtain the sort order from the radio boxes - defauls to descending
-    let userSortOrder = document.getElementsByName('userSortOrder');
-    let userSortOrderOption = "desc"
-
-    // set the sort order based on which radio box is checked:
-    if(userSortOrder[0].checked == false){
-        userSortOrderOption = "asc"
-    } else if (userSortOrder[0].checked == true){
-        userSortOrderOption = "desc"
-    }
-
-
-    const userResponse = await fetch(`./sortedUserArticles?value=${userSortOptionValue}&order=${userSortOrderOption}`)
-    const orderedUserArticleArray = await userResponse.json();
-    if(orderedUserArticleArray == null){
-        // Do nothing
-
-    } else {
-        let userCardsToDisplay = createArticleCards(orderedUserArticleArray)
-        // Call function to update the visible articles
-        updateUserArticles(userCardsToDisplay);
-    }
-
-}
-
-function createArticleCards(orderedArticleArray){
-
-    // Loop to take the ordered array, extract the key information only,
-    // format as HTML article cards to be displayed.
-
+function generateArticlesHTML(articleArray, numberToLoad){
     let cardsToDisplay = "";
+    for (let i = 0; i < numberToLoad; i++) {
+        let articleData = articleArray[i];
 
-    for (let i = 0; i < orderedArticleArray.length; i++) {
-        let articleID = orderedArticleArray[i].articleID;
-        let title = orderedArticleArray[i].title;
-        let authorID = orderedArticleArray[i].authorID;
-        let userName = orderedArticleArray[i].userName;
-        let publishDate = orderedArticleArray[i].publishDate;
-        let thumbnailImagePath = orderedArticleArray[i].thumbnailImagePath;
-      
         let cardHTML = `
-                <div class="card">
-                    <div class="cardImage">
-                        <img src="${thumbnailImagePath}" alt="">
+            <div class="card">
+                <div class="card-left">
+                    <img src="${articleData.thumbnailImagePath}" alt="">
+                </div>
+                <div class="card-right">
+                    <div class="card-title">
+                        <a href="./getArticle?articleID=${articleData.articleID}">
+                            <h3>${articleData.title}</h3>
+                        </a>
                     </div>
-                    <div class="cardContent">
-                        <p>ArticleID = ${articleID}</p>
-                        <a href="./getArticle?articleID=${articleID}">
-                            <h3>${title}</h3>
-                        </a>
-                        <a href="./profile?id=${authorID}">
-                            <h4>${userName}</h4>
-                        </a>
-                            
-                        <p>${publishDate}</p>
+                    <div class="card-author">
+                        <span>
+                            <i class="fa-solid fa-user-pen"></i><a href="./profile?id=${articleData.authorID}"> ${articleData.userName}</a>
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-calendar-days"></i> ${articleData.publishDate}
+                        </span>
+                    </div>
+                    <div class="card-content">
+                        <p>${articleData.content}</p>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-breakline"></div>
+                        <div>
+                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.authorID} comments</span>
+                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.authorID} likes</span>
+                        </div>
                     </div>
                 </div>
-                `    
-        
-        cardsToDisplay = cardsToDisplay+cardHTML;
-    };
-
+            </div>
+        `
+        cardsToDisplay = cardsToDisplay + cardHTML;
+    }
     return cardsToDisplay;
-
 }
 
-function updateArticles(cardsToDisplay){
-    document.getElementById('all-card-container').innerHTML = cardsToDisplay;
-}
 
-function updateUserArticles(userCardsToDisplay){
-    document.getElementById('user-card-container').innerHTML = userCardsToDisplay;
+
+async function refreshArticleCards(){
+    // Obtain the selected option from the dropdown menu - returns the value
+    let sortByElement = document.getElementById('sortBy');
+    let sortByValue = sortByElement.options[sortByElement.selectedIndex].value;
+    // Obtain the sort order from the radio boxes - defauls to descending
+    let sortOrderElement = document.getElementById('sortOrder');
+    let sortOrderValue = sortOrderElement.options[sortOrderElement.selectedIndex].value;
+
+    let userId;
+    if(document.getElementById("only-display-users-article").checked){
+        let userIdResponse = await fetch("./getUserID");
+        userId = await userIdResponse.json();
+    }
+    let response;
+    if(userId){
+        response = await fetch(`./sortedAllArticles?value=${sortByValue}&order=${sortOrderValue}&userId=${userId}`);
+    }else {
+        response = await fetch(`./sortedAllArticles?value=${sortByValue}&order=${sortOrderValue}`);
+    }
+    const articleArray = await response.json();
+    const articleNumber = articleArray.length;
+    let articlesHTML = generateArticlesHTML(articleArray, articleNumber);
+    document.getElementById('all-card-container').innerHTML = articlesHTML;
 }
 
 function switchDisplayedArticles(){
 
     if(document.getElementById('switch-article-button').innerText == "Show User Articles"){
-        document.getElementById('all-articles-home').style.display = "none"
-        document.getElementById('user-articles-home').style.display = "block"
+        document.getElementById('all-card-container').style.display = "none"
+        document.getElementById('user-card-container').style.display = "block"
         document.getElementById('switch-article-button').innerText = "Show All Articles"
     } else {
-        document.getElementById('all-articles-home').style.display = "block"
-        document.getElementById('user-articles-home').style.display = "none"
+        document.getElementById('all-card-container').style.display = "block"
+        document.getElementById('user-card-container').style.display = "none"
         document.getElementById('switch-article-button').innerText = "Show User Articles"
     }
    
 }
 
 function deleteArticle(articleID){
-    
     let deleteID = "delete-article-"+articleID;
     let confirmMessageID = "confirm-message-"+articleID;
     let confirmDeleteID = "confirm-delete-"+articleID;
@@ -138,3 +100,56 @@ function deleteArticle(articleID){
     }
 
 }
+
+
+
+//***************************************************************************
+//Testing tree structure array
+async function getAllCommentsByArticleIDOrdered(articleID){
+    const topLevelComments = await commentDAO.getAllCommentsByArticleIDOrdered(articleID);
+    const treeStructureComments = unflattenComments(topLevelComments)
+    return treeStructureComments;
+}
+
+// This is not a proper unflattening function, but works to make required two levels of comments
+function unflattenComments(flatArrayOfComments){
+    let treeArray = [];
+    // Add children placehodler array to each comment:
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        flatArrayOfComments[i].children = [];
+    }
+    // make top level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        if(flatArrayOfComments[i].parentID == null){
+            treeArray.push(flatArrayOfComments[i])
+        }
+    }
+    // add first level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            if(flatArrayOfComments[i].parentID == treeArray[j].commentID){
+                treeArray[j].children.push(flatArrayOfComments[i]);
+            }
+        }
+    }
+    // add second level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            for (let k = 0; k < treeArray[j].children.length; k++) {
+                if(flatArrayOfComments[i].parentID == treeArray[j].children[k].commentID){
+                    treeArray[j].children[k].children.push(flatArrayOfComments[i]);
+                }
+            }
+        }
+    }
+    return treeArray;
+}
+
+
+// Export functions.
+module.exports = {
+    generateArticlesHTML,
+    getAllCommentsByArticleIDOrdered,
+    unflattenComments
+
+};
