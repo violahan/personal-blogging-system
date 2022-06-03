@@ -1,10 +1,12 @@
 {{!-- Page to display an article --}}
 <script type="text/javascript" src="./js/comments.js"></script>
 
-<div class="alert-message">
-    <span class="alert-message-close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
-    {{deleteMessage}}
-</div>
+{{#if deleteMessage}}
+    <div class="alert-message">
+        <span class="alert-message-close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        {{deleteMessage}}
+    </div>
+{{/if}}
 <div class="details-background">
     <div class="details-container">
         <div class="details-title">

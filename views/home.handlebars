@@ -10,10 +10,12 @@ between viewing all articles and viewing your articles --}}
 
     <div class="articles-body">
 
+        {{#if deleteMessage}}
         <div class="alert-message">
             <span class="alert-message-close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
             {{deleteMessage}}
         </div>
+        {{/if}}
 
         {{#if user}}
         <div class="card-display-mode-switch">
