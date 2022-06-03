@@ -574,6 +574,39 @@ router.get("/getLikes", async function (req, res){
   res.json(likesOnArticle.length)
 })
 
+router.get("/subscribes", verifyAuthenticated, async function (req, res) {
+  const userId = req.query.userId;
+  const user = await userDao.getUserByID(userId);
+  const followers = await userDao.getAllFollowersByUserId(userId);
+  const following = await userDao.getAllFollowingUserByUserId(userId);
+  if (res.locals.user.userID == userId) {
+    following.forEach(f => {
+      f.isSubscribed = true;
+    })
+    followers.forEach(f => {
+      f.isSubscribed = following.findIndex(u => u.userID == f.userID) >= 0;
+    })
+  } else {
+    const currentUserFollowing = await userDao.getAllFollowingUserByUserId(res.locals.user.userID);
+    following.forEach(f => {
+      f.isSubscribed = currentUserFollowing.findIndex(u => u.userID == f.userID) >= 0;
+    })
+    followers.forEach(f => {
+      f.isSubscribed = currentUserFollowing.findIndex(u => u.userID == f.userID) >= 0;
+    })
+  }
+  
+  const resultToRender = {
+    name: user.fName + " " + user.lName,
+    avatarFilePath: user.avatarFilePath,
+    followers: followers,
+    following: following
+  }
+  res.locals.title = "Subscribes";
+  res.locals.result = resultToRender;
+  res.render('subscribe');
+})
+
 
 
 

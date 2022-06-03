@@ -1,3 +1,5 @@
+const { blit } = require("jimp");
+
 async function likeArticle(articleID, userID){
 
     const like = await fetch(`./likeArticle?articleID=${articleID}&userID=${userID}`) 
@@ -9,9 +11,16 @@ async function likeArticle(articleID, userID){
     document.getElementById('total-likes-count').innerText = numberOfLikesConfirmation
 }
 
-async function subscribeAuthor(authorID, userID){
+async function subscribeAuthor(authorID, userID) {
     const subscribe = await fetch(`./subscribeToAuthor?authorID=${authorID}&userID=${userID}`) 
     const subscriptionConfirmation = await subscribe.json();
     document.getElementById('subscribe-button').innerText = subscriptionConfirmation;
 }
 
+async function subscribeUserFromList(authorID, userID) {
+    const subscribe = await fetch(`./subscribeToAuthor?authorID=${authorID}&userID=${userID}`) 
+    const subscriptionConfirmation = await subscribe.json();
+    document.querySelectorAll(`.subscribe-button-${authorID}`).forEach(b => {
+        b.innerText = subscriptionConfirmation;
+    })
+}
