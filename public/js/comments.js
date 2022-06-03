@@ -40,7 +40,7 @@ async function generateCommentHTML(commentsData) {
     for (let i = 0; i < commentsData.length; i++) {
 
         // Comment Card Level 0
-        let commentCardLevel0 = generateBasicCommentCard(commentsData[i], 0);
+        let commentCardLevel0 = generateBasicCommentCard(commentsData[i], 0, "Level "+(i+1));
         let commentOpsLevel0 = await generateOperationDiv(commentsData[i]);
         commentCardLevel0.appendChild(commentOpsLevel0);
         commentsContainer.appendChild(commentCardLevel0)
@@ -49,14 +49,14 @@ async function generateCommentHTML(commentsData) {
         if (commentsData[i].children !== "") {
             for (let j = 0; j < commentsData[i].children.length; j++) {
                 // Comment Card Level 1
-                let commentCardLevel1 = generateBasicCommentCard(commentsData[i].children[j], 1);
+                let commentCardLevel1 = generateBasicCommentCard(commentsData[i].children[j], 1, "Reply "+(j+1));
                 let commentOpsLevel1 = await generateOperationDiv(commentsData[i].children[j]);
                 commentCardLevel1.appendChild(commentOpsLevel1);
                 commentsContainer.appendChild(commentCardLevel1);
                 // If this comment has "grandchildren" comments
                 if (commentsData[i].children[j].children !== "") {
                     for (let k = 0; k < commentsData[i].children[j].children.length; k++) {
-                        let commentCardLevel2 = generateBasicCommentCard(commentsData[i].children[j].children[k], 2);
+                        let commentCardLevel2 = generateBasicCommentCard(commentsData[i].children[j].children[k], 2, "Reply "+(k+1));
                         let commentOpsLevel2 = await generateOperationDiv(commentsData[i].children[j].children[k]);
                         commentCardLevel2.appendChild(commentOpsLevel2);
                         commentsContainer.appendChild(commentCardLevel2);
@@ -70,7 +70,7 @@ async function generateCommentHTML(commentsData) {
 
 
 // Generates a basic comment card based on supplied comment details
-function generateBasicCommentCard(commentDetails, level) {
+function generateBasicCommentCard(commentDetails, level, label) {
     let commentCard = document.createElement('div');
     commentCard.setAttribute("id", `comment-card-${commentDetails.commentID}`);
     commentCard.setAttribute("class", `level-${level}-comment`);
@@ -80,8 +80,13 @@ function generateBasicCommentCard(commentDetails, level) {
     if (commentDetails.commentAuthorID === 1) {
         commentCard.innerHTML = `
                 <div class="comment-title">
-                    <span>Deleted User</span>
-                    <span><i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}</span>
+                    <div class="comment-title-left">
+                        <span class="comment-label">${label}</span>&nbsp;&nbsp;
+                        <span>Deleted User</span>
+                    </div>
+                    <div class="comment-title-right">
+                        <span><i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}</span>
+                    </div>
                 </div>
                 <div class="comment-content">
                     <p>${commentDetails.content}</p>
@@ -89,26 +94,27 @@ function generateBasicCommentCard(commentDetails, level) {
             `
     } else {
         commentCard.innerHTML = `
-                <div class="comment-title">
-                    <div class="comment-title-left">
-                    <span>
-                        <img src="${commentDetails.avatarFilePath}" alt="" class="avatar">
-                    </span>
-                    <span>
-                        <p><a href="./profile?id=${commentDetails.authorID}">${commentDetails.userName}</a></p>
-                    </span>
-                    </div>
-                    
-                    <div class="comment-title-right">
-                    <span>
-                        <i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}
-                    </span>
-                    </div>
+            <div class="comment-title">
+                <div class="comment-title-left">
+                <span class="comment-label">${label}</span>&nbsp;&nbsp;
+                <span>
+                    <img src="${commentDetails.avatarFilePath}" alt="" class="avatar">
+                </span>
+                <span>
+                    <p><a href="./profile?id=${commentDetails.authorID}">${commentDetails.userName}</a></p>
+                </span>
                 </div>
-                <div class="comment-content">
-                    <p>${commentDetails.content}</p>
+                
+                <div class="comment-title-right">
+                <span>
+                    <i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}
+                </span>
                 </div>
-            `
+            </div>
+            <div class="comment-content">
+                <p>${commentDetails.content}</p>
+            </div>
+        `
     }
     return commentCard;
 }
