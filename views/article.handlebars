@@ -1,117 +1,317 @@
 {{!-- Page to display an article --}}
 <script type="text/javascript" src="./js/comments.js"></script>
 
-<h3>{{deleteMessage}}</h3>
-
-<div id="full-article-container">
-    
+<div class="details-background">
+    <h3>{{deleteMessage}}</h3>
     {{#ifCond user.userID '==' articleInfo.authorID}}
         {{!-- Edit Article --}}
         <a href="./editArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="edit-article-{{articleInfo.articleID}}">Edit Article</button></a>
 
-        
+
         {{!-- Delete Article --}}
         <div class="delete-article-box">
             <p id="confirm-message-{{articleInfo.articleID}}"></p>
-            <button id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>                    
+            <button id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>
             <a href="./deleteArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="confirm-delete-{{articleInfo.articleID}}" style="display: none">Yes - Delete the article</button></a>
         </div>
 
     {{/ifCond}}
+    <div class="details-container">
+        <div class="details-title">
+            <h1>{{articleInfo.title}}</h1>
+        </div>
+        <div class="details-author">
+            <span>
+                <img src="{{articleInfo.avatarFilePath}}" alt="" class="avatar">
+            </span>
+            <span>
+                <a href="./profile?id={{articleInfo.authorID}}">{{articleInfo.userName}}</a>
+            </span>
+            <span>
+                {{#if user}}
+                    {{#ifCond user.userID '==' articleInfo.authorID}}
+                    {{!-- Do not display any buttons here as user is the author and cant subscribe to themself --}}
+                    {{else}}
+                        {{#if userHasSubscribed}}
+                            <div>
+                                <button id="subscribe-button" onclick="subscribeAuthor({{articleInfo.authorID}}, {{user.userID}})" >Unsubscribe</button>
+                            </div>
+                        {{else}}
+                            <div>
+                                <button id="subscribe-button" onclick="subscribeAuthor({{articleInfo.authorID}}, {{user.userID}})" >Subscribe</button>
+                            </div>
+                        {{/if}}
+                    {{/ifCond}}
+                {{/if}}
+            </span>
+            <span class="details-author-date">
+                <i class="fa-solid fa-calendar-days"></i> {{articleInfo.publishDate}}
+            </span>
+        </div>
+        <div class="details-image">
+            {{#if articleImages}}
+                <img src="{{articleImages.path}}" alt="">
+            {{/if}}
+        </div>
+        <div class="details-content">
+            {{{articleInfo.content}}}
+        </div>
+        <div class="details-like">
+            {{#if user}}
+                <button id="like-button" class="details-like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >
+                {{#if userHasLiked}}
+                    <i class="fa-solid fa-heart-crack"></i> Unlike
+                {{else}}
+                    <i class="fa-solid fa-heart"></i> Like
+                {{/if}}
+                </button>
+            {{/if}}
+        </div>
+        <div class="details-enter-comment">
+            {{#if user}}
+                <div>
+                    <form action="./makeComment?articleID={{articleInfo.articleID}}" method="POST">
+                        <label for="comment">Enter Comment:</label>
+                        <textarea name="comment" rows="8" cols="50"></textarea>
+                        <button type="submit">Post Comment</button>
+                    </form>
+                </div>
+            {{/if}}
+        </div>
+        <div class="details-comments">
+            {{!-- Buttons to show or hide all comments - defaults to comments being visible
+            with the "hide" button visible - onclick these switch --}}
+            <h2>Comments</h2>
+            <button class="details-comments-switch-button" id="hide-comments-button" onclick="hideComments()">
+                <i class="fa-solid fa-caret-up"></i> Hide Comments
+            </button>
+            <button class="details-comments-switch-button" id="show-comments-button" onclick="showComments()" style="display: none">
+                <i class="fa-solid fa-caret-down"></i> Show Comments
+            </button>
+
+            {{!-- List of all comments (or message saying comments are hidden) --}}
+
+            <p id="comments-message"></p>
 
 
 
-    <p>Article ID: {{articleInfo.articleID}}</p>
-    <h1>Title: {{articleInfo.title}}</h1>
-    
-    <h4><a href="./profile?id={{articleInfo.authorID}}">Author: {{articleInfo.userName}}</a></h4>
-    <img src="{{articleInfo.avatarFilePath}}" alt="" class="avatar">
+            {{!-- TODO: I have tested both of the following comments-containers, either of them is working as expected.
+            I will enable the formated one just for now, and I will gradually swith to the Ajex one during tommorrow. --}}
 
-{{!-- Subscribe to author function --}}
-{{#if user}}
-    {{#ifCond user.userID '==' articleInfo.authorID}}
-        {{!-- Do not display any buttons here as user is the author and cant subscribe to themself --}}
-    {{else}}
-        {{#if userHasSubscribed}}
-            <div>
-                <button id="subscribe-button" onclick="subscribeAuthor({{articleInfo.authorID}}, {{user.userID}})" >Unsubscribe</button>
+            <!-- Container 1-->
+<!--            <div id="comments-container">-->
+<!--                {{!-- if there are comments to display, they will show up here with appropraite-->
+<!--                nesting --}}-->
+<!--                {{#if commentsToDisplay}}-->
+<!--                {{!-- On load of the hidden iframe below the displayComments function is called. This generates-->
+<!--                comments to display, along with reply and delete buttons for each comment as required-->
+<!--                reply functions generate a reply form when reply is clicked. --}}-->
+<!--                    <iframe onload="displayComments({{articleInfo.articleID}}, window.location.href)" style="display: none"></iframe>-->
+
+<!--                {{else}}-->
+<!--                {{!-- display message if not comments have been made --}}-->
+<!--                    <p>No comments on this article. Yet.</p>-->
+<!--                {{/if}}-->
+
+<!--            </div>-->
+
+            <!-- Container 2 -->
+            <div id="comments-container">
+                {{#if commentsToDisplay}}
+                    {{#each commentsToDisplay}}
+                        <div class="top-level-comment">
+                            <div class="comment-title">
+                                <span>
+                                    <img src="{{this.avatarFilePath}}" alt="" class="avatar">
+                                </span>
+                                <span>
+                                    {{#ifCond this.authorID '==' 1}}
+                                    {{!-- if the comment has been "deleted" - assigned to user 1 - do not show a user name or link to profile --}}
+                                    {{else}}
+                                        <p> <a href="./profile?id={{this.authorID}}">{{this.userName}}</a></p>
+                                    {{/ifCond}}
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-calendar-days"></i> {{this.publishDate}}
+                                </span>
+                            </div>
+                            <div class="comment-content">
+                                <p>{{this.content}}</p>
+                            </div>
+                            <div class="comment-ops">
+                                {{#ifCond this.authorID '==' 1}}
+                                {{!-- if the comment is deleted, do not show delete or reply options --}}
+                                {{else}}
+                                {{!-- If the current user is the author of the comment, or the author of the article
+                                a delete comment button/function is avaiable --}}
+                                    {{#ifCond ../user.userID '==' this.authorID}}
+                                        <div class="delete-comment-box">
+                                            <p id="confirm-message-{{this.commentID}}"></p>
+                                            <button class="comment-delete-button" id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>
+                                            <a href="./deleteComment?commentID={{this.commentID}}&commentAuthorID={{this.authorID}}&articleAuthorID={{../articleInfo.authorID}}&articleID={{this.articleID}}"><button id="confirm-delete-{{this.commentID}}" style="display: none">Yes - Delete the comment</button></a>
+                                        </div>
+                                    {{else}} {{#ifCond ../user.userID '==' ../articleInfo.authorID}}
+                                        <div class="delete-comment-box">
+                                            <p id="confirm-message-{{this.commentID}}"></p>
+                                            <button class="comment-delete-button" id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>
+                                            <a href="./deleteComment?commentID={{this.commentID}}&commentAuthorID={{this.authorID}}&articleAuthorID={{../articleInfo.authorID}}&articleID={{this.articleID}}"><button id="confirm-delete-{{this.commentID}}" style="display: none">Yes - Delete the comment</button></a>
+                                        </div>
+                                    {{/ifCond}}
+                                    {{/ifCond}}
+
+                                    {{!-- If the current user viewing the page is logged in, they have the option to reply to
+                                    top level, or level 1 comments (allow two levels of nesting) --}}
+                                    {{#if ../user}}
+                                        <div class="reply-box">
+                                            <button class="comment-reply-button" id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
+
+                                            <form class="comment-reply-form" id="reply-form-{{this.commentID}}" action="./makeReply?articleID={{../articleInfo.articleID}}&parentID={{this.commentID}}&commentAuthorID={{../user.userID}}" method="POST" style="display: none">
+                                                <label for="reply">Enter Reply:</label>
+                                                <textarea name="reply" rows="4" cols="50"></textarea>
+                                                <button class="comment-reply-submit" type="submit">Post Reply</button>
+                                            </form>
+
+                                        </div>
+                                    {{/if}}
+                                {{/ifCond}}
+                            </div>
+                        </div>
+                        <div>
+                        {{!-- Display level 1 nested comments, if any
+                        this includes delete and reply functions as above --}}
+                        {{#if this.children}}
+                            {{#each this.children}}
+                                <div class="level-1-comment">
+                                    <div class="comment-title">
+                                <span>
+                                    <img src="{{this.avatarFilePath}}" alt="" class="avatar">
+                                </span>
+                                <span>
+                                    {{#ifCond this.authorID '==' 1}}
+                                    {{!-- if the comment has been "deleted" - assigned to user 1 - do not show a user name or link to profile --}}
+                                    {{else}}
+                                        <p> <a href="./profile?id={{this.authorID}}">{{this.userName}}</a></p>
+                                    {{/ifCond}}
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-calendar-days"></i> {{this.publishDate}}
+                                </span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p>{{this.content}}</p>
+                                    </div>
+                                    <div class="comment-ops">
+                                        {{#ifCond this.authorID '==' 1}}
+                                        {{!-- if the comment is deleted, do not show delete or reply options --}}
+                                        {{else}}
+                                        {{!-- If the current user is the author of the comment, or the author of the article
+                                        a delete comment button/function is avaiable --}}
+                                            {{#ifCond ../user.userID '==' this.authorID}}
+                                                <div class="delete-comment-box">
+                                                    <p id="confirm-message-{{this.commentID}}"></p>
+                                                    <button class="comment-delete-button" id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>
+                                                    <a href="./deleteComment?commentID={{this.commentID}}&commentAuthorID={{this.authorID}}&articleAuthorID={{../articleInfo.authorID}}&articleID={{this.articleID}}"><button id="confirm-delete-{{this.commentID}}" style="display: none">Yes - Delete the comment</button></a>
+                                                </div>
+                                            {{else}} {{#ifCond ../user.userID '==' ../articleInfo.authorID}}
+                                                <div class="delete-comment-box">
+                                                    <p id="confirm-message-{{this.commentID}}"></p>
+                                                    <button class="comment-delete-button" id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>
+                                                    <a href="./deleteComment?commentID={{this.commentID}}&commentAuthorID={{this.authorID}}&articleAuthorID={{../articleInfo.authorID}}&articleID={{this.articleID}}"><button id="confirm-delete-{{this.commentID}}" style="display: none">Yes - Delete the comment</button></a>
+                                                </div>
+                                            {{/ifCond}}
+                                            {{/ifCond}}
+
+                                            {{!-- If the current user viewing the page is logged in, they have the option to reply to
+                                            top level, or level 1 comments (allow two levels of nesting) --}}
+                                            {{#if ../user}}
+                                                <div class="reply-box">
+                                                    <button class="comment-reply-button" id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
+
+                                                    <form class="comment-reply-form" id="reply-form-{{this.commentID}}" action="./makeReply?articleID={{../articleInfo.articleID}}&parentID={{this.commentID}}&commentAuthorID={{../user.userID}}" method="POST" style="display: none">
+                                                    <label for="reply">Enter Reply:</label>
+                                                    <textarea name="reply" rows="4" cols="50"></textarea>
+                                                    <button class="comment-reply-submit" type="submit">Post Reply</button>
+                                                    </form>
+
+                                                </div>
+                                            {{/if}}
+                                        {{/ifCond}}
+                                    </div>
+                                </div>
+
+                                {{!-- Display level 2 nested comments, if any
+                                this includes delete function as above --}}
+                                {{#if this.children}}
+                                    {{#each this.children}}
+                                        <div class="level-2-comment">
+                                            <div class="comment-title">
+                                <span>
+                                    <img src="{{this.avatarFilePath}}" alt="" class="avatar">
+                                </span>
+                                                <span>
+                                                    {{#ifCond this.authorID '==' 1}}
+                                                    {{!-- if the comment has been "deleted" - assigned to user 1 - do not show a user name or link to profile --}}
+                                                    {{else}}
+                                                        <p> <a href="./profile?id={{this.authorID}}">{{this.userName}}</a></p>
+                                                    {{/ifCond}}
+                                                </span>
+                                                <span>
+                                    <i class="fa-solid fa-calendar-days"></i> {{this.publishDate}}
+                                </span>
+                                            </div>
+                                            <div class="comment-content">
+                                                <p>{{this.content}}</p>
+                                            </div>
+                                            <div class="comment-ops">
+                                                {{#ifCond this.authorID '==' 1}}
+                                                {{!-- if the comment is deleted, do not show delete or reply options --}}
+                                                {{else}}
+                                                {{!-- If the current user is the author of the comment, or the author of the article
+                                                a delete comment button/function is avaiable --}}
+                                                    {{#ifCond ../user.userID '==' this.authorID}}
+                                                        <div class="delete-comment-box">
+                                                            <p id="confirm-message-{{this.commentID}}"></p>
+                                                            <button class="comment-delete-button" id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>
+                                                            <a href="./deleteComment?commentID={{this.commentID}}&commentAuthorID={{this.authorID}}&articleAuthorID={{../articleInfo.authorID}}&articleID={{this.articleID}}"><button id="confirm-delete-{{this.commentID}}" style="display: none">Yes - Delete the comment</button></a>
+                                                        </div>
+                                                    {{else}} {{#ifCond ../user.userID '==' ../articleInfo.authorID}}
+                                                        <div class="delete-comment-box">
+                                                            <p id="confirm-message-{{this.commentID}}"></p>
+                                                            <button class="comment-delete-button" id="delete-comment-{{this.commentID}}" onclick="deleteComment({{this.commentID}})">Delete Comment</button>
+                                                            <a href="./deleteComment?commentID={{this.commentID}}&commentAuthorID={{this.authorID}}&articleAuthorID={{../articleInfo.authorID}}&articleID={{this.articleID}}"><button id="confirm-delete-{{this.commentID}}" style="display: none">Yes - Delete the comment</button></a>
+                                                        </div>
+                                                    {{/ifCond}}
+                                                    {{/ifCond}}
+
+                                                    {{!-- If the current user viewing the page is logged in, they have the option to reply to
+                                                    top level, or level 1 comments (allow two levels of nesting) --}}
+                                                    {{#if ../user}}
+                                                        <div class="reply-box">
+                                                            <button class="comment-reply-button" id="let-reply-{{this.commentID}}" onclick="letReply({{this.commentID}})">Reply</button>
+
+                                                            <form class="comment-reply-form" id="reply-form-{{this.commentID}}" action="./makeReply?articleID={{../articleInfo.articleID}}&parentID={{this.commentID}}&commentAuthorID={{../user.userID}}" method="POST" style="display: none">
+                                                                <label for="reply">Enter Reply:</label>
+                                                                <textarea name="reply" rows="4" cols="50"></textarea>
+                                                                <button class="comment-reply-submit" type="submit">Post Reply</button>
+                                                            </form>
+
+                                                        </div>
+                                                    {{/if}}
+                                                {{/ifCond}}
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                        </div>
+                    {{/each}}
+                {{else}}
+                {{!-- display message if not comments have been made --}}
+                    <p>No comments on this article. Yet.</p>
+                {{/if}}
             </div>
-        {{else}}
-            <div>
-                <button id="subscribe-button" onclick="subscribeAuthor({{articleInfo.authorID}}, {{user.userID}})" >Subscribe</button>
-            </div>
-        {{/if}}
-    {{/ifCond}}
-{{/if}}
 
-
-    <p>Date: {{articleInfo.publishDate}}</p>
-
-    <h5>Image:</h5>
-    {{#if articleImages}}
-        <img src="{{articleImages.path}}" alt="">
-    {{else}}
-        {{!-- NO IMAGE ON THIS ARTICLE --}}
-    {{/if}}
-
-    <p>Article content:</p>
-    {{{articleInfo.content}}}
-
-</div>
-
-{{!-- Like Article Functions --}}
-<div id="likes-container">
-    <b id="likes-heading">Total likes:</b><b id="total-likes-count">{{numberOfLikes}}</b>
-    {{#if user}}
-        {{#if userHasLiked}}
-            <div>
-                <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Unlike</button>
-            </div>
-        {{else}}
-            <div>
-            <button id="like-button" onclick="likeArticle({{articleInfo.articleID}}, {{user.userID}})" >Like</button>
-            </div>
-        {{/if}}
-    {{/if}}
-</div>
-
-
-{{!-- Comment text boxes - if user if loged in --}}
-{{#if user}}
-    <div>
-        <form action="./makeComment?articleID={{articleInfo.articleID}}" method="POST">
-            <label for="comment">Enter Comment:</label>
-            <textarea id="comment-text-box" onkeyup="checkCommentHasContent()" name="comment" rows="4" cols="50"></textarea>
-            <button type="submit" id="comment-submit-button">Post Comment</button>
-            <iframe onload="checkCommentHasContent()" style="display: none"></iframe>
-        </form>
-    </div>
-{{/if}}
-
-{{!-- Display comments on article here --}}
-<div>
-
-    {{!-- Buttons to show or hide all comments - defaults to comments being visible
-    with the "hide" button visible - onclick these switch --}}
-    <button id="hide-comments-button" onclick="hideComments()">Hide Comments</button>
-    <button id="show-comments-button" onclick="showComments()" style="display: none">Show Comments</button>
-    
-    {{!-- List of all comments (or message saying comments are hidden) --}}
-    <h2>Comments</h2>
-    <p id="comments-message"></p>
-
-
-    <div id="comments-container">
-    {{!-- if there are comments to display, they will show up here with appropraite
-    nesting --}}
-        {{#if commentsToDisplay}}
-        {{!-- On load of the hidden iframe below the displayComments function is called. This generates
-        comments to display, along with reply and delete buttons for each comment as required
-        reply functions generate a reply form when reply is clicked. --}}
-        <iframe onload="displayComments({{articleInfo.articleID}})" style="display: none"></iframe>
-        {{else}}
-            {{!-- display message if not comments have been made --}}
-            <p>No comments on this article. Yet.</p>
-        {{/if}}
+        </div>
     </div>
 </div>

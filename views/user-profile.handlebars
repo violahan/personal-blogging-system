@@ -58,7 +58,9 @@
         {{#each profileObj.articles}}
             <div class="profile-article-card">
                 <div class="profile-article-card-body" >
-                    <h2> {{this.title}}</h2>
+                    <a href="./getArticle?articleID={{this.articleID}}">
+                        <h2> {{this.title}}</h2>
+                    </a>
                     <p>{{this.publishDate}}</p>
                 </div>
                 <div class="profile-article-card-bottom-line"></div>
@@ -72,7 +74,9 @@
             {{#each profileObj.comments}}
             <div class="profile-body-right-card">
                 <div class="profile-body-comment-card">
-                    <h2>{{this.title}}</h2>
+                    <a href="./getArticle?articleID={{this.articleID}}">
+                        <h2>{{this.title}}</h2>
+                    </a>
                     <p>{{this.content}}</p>
                     <p class="publishDate">{{this.publishDate}}</p>
                     <HR id="HR">

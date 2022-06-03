@@ -113,7 +113,7 @@ router.post("/makeComment", async function (req, res){
             }
   
   
-    res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card"+commentID)
+    res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card-"+commentID)
   
   })
 
@@ -143,7 +143,7 @@ router.post("/makeComment", async function (req, res){
       }
   
   
-    res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card"+commentID)
+    res.redirect("/getArticle?articleID="+commentArticleID+"#comment-card-"+commentID)
   
   })
   

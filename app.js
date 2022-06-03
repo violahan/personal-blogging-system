@@ -60,6 +60,9 @@ app.use(authRouter);
 const articleRouter = require("./routes/create-article-routes.js");
 app.use(articleRouter);
 
+const apiRoutes = require("./routes/api-routes.js");
+app.use(apiRoutes);
+
 const notificationRouter = require("./routes/notification-routes.js");
 app.use(notificationRouter);
 
