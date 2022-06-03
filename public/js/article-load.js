@@ -47,24 +47,17 @@ function generateArticlesHTML(articleArray, numberToLoad){
 
 async function reSortArticleCards(){
     // Obtain the selected option from the dropdown menu - returns the value
-    let allSortOption = document.getElementById('allSortOption');
-    let allSortOptionValue = allSortOption.options[allSortOption.selectedIndex].value;
-    
+    let sortByElement = document.getElementById('sortBy');
+    let sortByValue = sortByElement.options[sortByElement.selectedIndex].value;
     // Obtain the sort order from the radio boxes - defauls to descending
-    let allSortOrder = document.getElementsByName('allSortOrder');
-    let allSortOrderOption = "desc"
+    let sortOrderElement = document.getElementById('sortOrder');
+    let sortOrderValue = sortOrderElement.options[sortOrderElement.selectedIndex].value;
 
-    // set the sort order based on which radio box is checked:
-    if(allSortOrder[0].checked === false){
-        allSortOrderOption = "asc"
-    } else if (allSortOrder[0].checked === true){
-        allSortOrderOption = "desc"
-    }
-    const response = await fetch(`./sortedAllArticles?value=${allSortOptionValue}&order=${allSortOrderOption}`)
-    const orderedArticleArray = await response.json();
-    const articleNumber = orderedArticleArray.length;
-    let cardsToDisplay = generateArticlesHTML(orderedArticleArray, articleNumber);
-    document.getElementById('all-card-container').innerHTML = cardsToDisplay;
+    const response = await fetch(`./sortedAllArticles?value=${sortByValue}&order=${sortOrderValue}`)
+    const articleArray = await response.json();
+    const articleNumber = articleArray.length;
+    let articlesHTML = generateArticlesHTML(articleArray, articleNumber);
+    document.getElementById('all-card-container').innerHTML = articlesHTML;
 }
 
 function switchDisplayedArticles(){
