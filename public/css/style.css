@@ -275,7 +275,7 @@ body {
 }
 
 #subscribe-button:hover {
-    background-color: white; /* Green */
+    background-color: white;
     color: #f24691;
     border: 1px solid #f24691;
 }
@@ -321,28 +321,25 @@ body {
 }
 
 .profile-detail-span-right{
-    font-family: "Arial";
+    font-family: "Arial Black";
     font-size: 15px;
-    color: #0E1C40;
+    color: #f24691;
     float:right;
 }
 
-.profile-detail-card-middle a{
-    color: #0E1C40;
+.profile-detail-span-right a{
+    color: #f24691;
 }
 
-.profile-detail-card-middle a:link {
+.profile-detail-span-right a:link {
     text-decoration: none;
 }
 
-.profile-detail-card-middle a:visited {
+.profile-detail-span-right a:visited {
     text-decoration: none;
 }
 
-.profile-detail-card-middle a:hover, a:active {
-    background-color: #f24691;
-    color: white;
-}
+/*Profile Page Middle Part*/
 
 .profile-article-card-body{
     margin: 20px 20px 40px 20px;
@@ -369,6 +366,8 @@ body {
     color: grey;
     margin: 5px;
 }
+
+/*Profile Page Right Part*/
 
 .profile-body-comment-card{
     margin: 20px 20px 40px 7px;
@@ -489,9 +488,6 @@ body {
     text-align: center;
 }
 
-
-
-
 .articles-body{
     width: 80%;
     margin-left: auto;
@@ -563,18 +559,14 @@ body {
 #create-article-button{
     font-family: "Arial";
     font-size: 16px;
+    width: 100%;
     padding: 8px;
     border-radius: 4px;
     background-color: #f24691;
     color: white;
     border: 1px solid white;
 }
-#create-article-button:disabled{
 
-    background-color: #dddddd;
-    color: black;
-
-}
 
 /*home-article page*/
 form>input[type=text],
@@ -633,6 +625,41 @@ form>* {
 
 .cardContent a:hover {
     color: #2A53C1;
+}
+
+
+/*Edit Profile Page*/
+.edit-profile-container{
+    width: 40%;
+    margin: 30px auto;
+    padding: 40px;
+}
+
+.edit-profile-container label{
+    font-family: "Arial Black";
+    font-size: 15px;
+    color: #0E1C40;
+    text-align: left;
+}
+
+.edit-profile-form input[type=text], input[type=password], input[type=date], textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#save-user-btn{
+    font-family: "Arial";
+    font-size: 16px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f24691;
+    color: white;
+    border: 1px solid white;
 }
 
 

@@ -1,7 +1,12 @@
 <script type="text/javascript" src="./js/user-validation.js"></script>
-<div class="container">
-    <h2>Edit Profile:</h2>
-    <form action="./editProfile" method="POST">
+<div>
+    <div class="header-image">
+        <img src="./images/edit-profile.jpg" width=100%>
+        <div><span>Edit Profile</span></div>
+    </div>
+
+<div class="edit-profile-container">
+    <form class="edit-profile-form" action="./editProfile" method="POST">
         <input type="hidden" name="userID" value="{{userToEdit.userID}}" />
         <p id="username-error" hidden></p>
         <label for="userName">Username:</label>
@@ -27,8 +32,11 @@
         <label for="avatar5"><img src="./avatars/5.jpeg" class="avatar"></label>
         <input type="radio" id="avatar6" name="avatar" value="./avatars/6.jpeg" {{#ifCond userToEdit.avatarFilePath '==' './avatars/6.jpeg'}} checked {{/ifCond}}>
         <label for="avatar6"><img src="./avatars/6.jpeg" class="avatar"></label>
+        <HR>
+        <br>
         <button type="submit" id="save-user-btn">Save</button>
     </form>
 
     <br>
+</div>
 </div>
