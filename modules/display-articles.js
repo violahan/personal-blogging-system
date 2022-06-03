@@ -5,27 +5,15 @@ const userDAO = require("./user-dao");
 const imageDAO = require("./images-dao");
 
 
-// Initial function to load a number of articles
-async function loadArticles(orderedArticleArray, numberToLoad){
-
-let cardsToDisplay = "";
-
+async function generateArticlesHTML(articleArray, numberToLoad){
+    let cardsToDisplay = "";
     for (let i = 0; i < numberToLoad; i++) {
-        let articleID = orderedArticleArray[i].articleID;
-        let title = orderedArticleArray[i].title;
-        let authorID = orderedArticleArray[i].authorID;
-        let userName = orderedArticleArray[i].userName;
-        let publishDate = orderedArticleArray[i].publishDate;
-        let avatarFilePath = orderedArticleArray[i].avatarFilePath;
+        let articleData = articleArray[i];
+        let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleData.articleID);
 
-        let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleID);
-        
-        
         let thumbnailImagePath = "";
-
         if(thumbnailImage != ""){
-             thumbnailImagePath = await thumbnailImage[0].path; 
-         
+             thumbnailImagePath = await thumbnailImage[0].path;
          } else {
             thumbnailImagePath = "";
         }
@@ -37,38 +25,34 @@ let cardsToDisplay = "";
                 </div>
                 <div class="card-right">
                     <div class="card-title">
-                        <a href="./getArticle?articleID=${articleID}">
-                            <h3>${title}</h3>
+                        <a href="./getArticle?articleID=${articleData.articleID}">
+                            <h3>${articleData.title}</h3>
                         </a>
                     </div>
                     <div class="card-author">
                         <span>
-                            <i class="fa-solid fa-user-pen"></i><a href="./profile?id=${authorID}"> ${userName}</a>
+                            <i class="fa-solid fa-user-pen"></i><a href="./profile?id=${articleData.authorID}"> ${articleData.userName}</a>
                         </span>
                         <span>
-                            <i class="fa-solid fa-calendar-days"></i> ${publishDate}
+                            <i class="fa-solid fa-calendar-days"></i> ${articleData.publishDate}
                         </span>
                     </div>
                     <div class="card-content">
-                        <p>content</p>
+                        <p>${articleData.content}</p>
                     </div>
                     <div class="card-info">
                         <div class="card-breakline"></div>
                         <div>
-                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> 10 comments</span>
-                            <span style="float: right"><i class="fa-solid fa-heart"></i> 15 likes</span>
+                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.authorID} comments</span>
+                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.authorID} likes</span>
                         </div>
                     </div>
                 </div>
             </div>
         `
-        
-        cardsToDisplay = cardsToDisplay+cardHTML;
-    };
-
-
+        cardsToDisplay = cardsToDisplay + cardHTML;
+    }
      return cardsToDisplay;
-     
 }
 
 
@@ -134,7 +118,7 @@ function unflattenComments(flatArrayOfComments){
 
 // Export functions.
 module.exports = {
-    loadArticles,
+    generateArticlesHTML,
     getAllCommentsByArticleIDOrdered,
     unflattenComments
 
