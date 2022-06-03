@@ -90,15 +90,20 @@ function generateBasicCommentCard(commentDetails, level) {
     } else {
         commentCard.innerHTML = `
                 <div class="comment-title">
+                    <div class="comment-title-left">
                     <span>
                         <img src="${commentDetails.avatarFilePath}" alt="" class="avatar">
                     </span>
                     <span>
                         <p><a href="./profile?id=${commentDetails.authorID}">${commentDetails.userName}</a></p>
                     </span>
+                    </div>
+                    
+                    <div class="comment-title-right">
                     <span>
                         <i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}
                     </span>
+                    </div>
                 </div>
                 <div class="comment-content">
                     <p>${commentDetails.content}</p>
