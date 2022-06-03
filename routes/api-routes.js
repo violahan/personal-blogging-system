@@ -85,22 +85,17 @@ router.get("/api/users", async function(req, res) {
 
 //api DELETE request
 router.delete("/api/users/:id", async function(req, res){
-    console.log("DELETE api doing something");
-    console.log("userID is " + req.params.id);
     if (res.locals.user.adminFlag === 1){
         const userID = req.params.id;
-        console.log("DELETE api params working");
         await commentDao.deleteCommentsByUserID(userID);
         await userDao.deleteUser(userID);
-        
         res.statusCode = 204;
         res.send();
         
-    } else{
+    } else {(res.locals.user = null)
         res.statusCode = 401;
         res.send();
     }}
 )
-
 
 module.exports = router;
