@@ -45,7 +45,7 @@ function generateArticlesHTML(articleArray, numberToLoad){
 
 
 
-async function reSortArticleCards(){
+async function refreshArticleCards(){
     // Obtain the selected option from the dropdown menu - returns the value
     let sortByElement = document.getElementById('sortBy');
     let sortByValue = sortByElement.options[sortByElement.selectedIndex].value;
@@ -53,7 +53,17 @@ async function reSortArticleCards(){
     let sortOrderElement = document.getElementById('sortOrder');
     let sortOrderValue = sortOrderElement.options[sortOrderElement.selectedIndex].value;
 
-    const response = await fetch(`./sortedAllArticles?value=${sortByValue}&order=${sortOrderValue}`)
+    let userId;
+    if(document.getElementById("only-display-users-article").checked){
+        let userIdResponse = await fetch("./getUserID");
+        userId = await userIdResponse.json();
+    }
+    let response;
+    if(userId){
+        response = await fetch(`./sortedAllArticles?value=${sortByValue}&order=${sortOrderValue}&userId=${userId}`);
+    }else {
+        response = await fetch(`./sortedAllArticles?value=${sortByValue}&order=${sortOrderValue}`);
+    }
     const articleArray = await response.json();
     const articleNumber = articleArray.length;
     let articlesHTML = generateArticlesHTML(articleArray, articleNumber);

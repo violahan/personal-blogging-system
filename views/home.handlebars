@@ -16,20 +16,26 @@ between viewing all articles and viewing your articles --}}
 
         {{#if user}}
         <div class="card-display-mode-switch">
-            <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
+            <div>
+                <label class="switch">
+                    <input type="checkbox" id="only-display-users-article" onclick="refreshArticleCards()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div>Only Show My Articles</div>
         </div>
         {{/if}}
 
         <div class="card-sorter">
             <form class="card-sorter-form" action="">
                 <label for="sortBy">Sort articles by </label>
-                <select id="sortBy" name="sortBy" onchange="reSortArticleCards()">
+                <select id="sortBy" name="sortBy" onchange="refreshArticleCards()">
                     <option value="publishDate" selected>Date</option>
                     <option value="userName">Author username</option>
                     <option value="title">Article Title</option>
                 </select>
                 <label for="sortOrder">in </label>
-                <select id="sortOrder" name="allSortOption" onchange="reSortArticleCards()">
+                <select id="sortOrder" name="allSortOption" onchange="refreshArticleCards()">
                     <option value="desc" selected>descending order</option>
                     <option value="asc">ascending order</option>
                 </select>
