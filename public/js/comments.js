@@ -107,6 +107,7 @@ async function displayComments(articleID, url){
 
 // Generates a tempalted comment, based on supplied comment details.
     function commentCardHTML(commentDetails){
+        console.log(commentDetails);
 
         let commentCard = document.createElement('div');
         commentCard.setAttribute("id", `comment-card-${commentDetails.commentID}`);
@@ -114,19 +115,33 @@ async function displayComments(articleID, url){
         if(commentDetails.commentAuthorID == 1){
             // If the commentAuthorID is 1 this means the comment has been deleted.
             // Remove the user details, leave only the content "Deleted comment"
-            commentCard.innerHTML =
-                `
-            <p>${commentDetails.content}</p>
-        `
+            commentCard.innerHTML = `
+                <div class="comment-title">
+                    <span>Deleted User</span>
+                    <span><i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}</span>
+                </div>
+                <div class="comment-content">
+                    <p>${commentDetails.content}</p>
+                </div
+            `
         } else {
-            commentCard.innerHTML =
-                `
-            <p><img src="${commentDetails.avatarFilePath}" class="avatar"> <a href="./profile?id=${commentDetails.commentAuthorID}">${commentDetails.userName}</a></p>
-            <p>Date: ${commentDetails.publishDate}</p>
-            <p>${commentDetails.content}</p>
-        `
+            commentCard.innerHTML = `
+                <div class="comment-title">
+                    <span>
+                        <img src="${commentDetails.avatarFilePath}" alt="" class="avatar">
+                    </span>
+                    <span>
+                        <p><a href="./profile?id=${commentDetails.authorID}">${commentDetails.userName}</a></p>
+                    </span>
+                    <span>
+                        <i class="fa-solid fa-calendar-days"></i> ${commentDetails.publishDate}
+                    </span>
+                </div>
+                <div class="comment-content">
+                    <p>${commentDetails.content}</p>
+                </div
+            `
         }
-
         return commentCard;
     }
 
