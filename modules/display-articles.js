@@ -37,10 +37,10 @@ let cardsToDisplay = "";
                     </div>
                     <div class="cardContent">
                         <p>ArticleID = ${articleID}</p>
-                        <a href="./getArticle?articleID=${articleID}">
+                        <a class="article-link" href="./getArticle?articleID=${articleID}">
                             <h3>${title}</h3>
                         </a>
-                        <a href="./profile?id=${authorID}">
+                        <a class="article-link" href="./profile?id=${authorID}">
                             <h4>${userName}</h4>
                         </a>
                             
