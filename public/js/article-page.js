@@ -2,7 +2,12 @@ async function likeArticle(articleID, userID){
 
     const like = await fetch(`./likeArticle?articleID=${articleID}&userID=${userID}`) 
     const likeConfirmation = await like.json();
-    document.getElementById('like-button').innerText = likeConfirmation
+    if (likeConfirmation==="Like"){
+        document.getElementById('like-button').innerHTML = "<i class=\"fa-solid fa-heart\"></i> Like"
+    }
+    else{
+        document.getElementById('like-button').innerHTML = "<i class=\"fa-solid fa-heart-crack\"></i> Unlike"
+    }
 
     const numberOfLikes = await fetch(`./getLikes?articleID=${articleID}`)
     const numberOfLikesConfirmation = await numberOfLikes.json();
@@ -14,4 +19,3 @@ async function subscribeAuthor(authorID, userID){
     const subscriptionConfirmation = await subscribe.json();
     document.getElementById('subscribe-button').innerText = subscriptionConfirmation;
 }
-

@@ -212,6 +212,7 @@ body {
 }
 
 .level-0-comment{
+    margin-top: 30px;
     border: 8px solid #ddd;
 }
 .level-1-comment{
@@ -618,8 +619,16 @@ form>* {
 }
 
 .details-author{
+    overflow: hidden;
+}
+
+.details-author-left{
     align-items: center;
     display: -webkit-flex;
+}
+
+.details-author-right{
+    float: right;
 }
 
 .details-image img{
@@ -709,6 +718,16 @@ form>* {
 .comment-delete-button{
     color: white;
     background-color: #f099a3;
+    padding: 14px 20px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.comment-delete-confirm-button{
+    color: white;
+    background-color: #fc6a76;
     padding: 14px 20px;
     margin: 0 auto;
     border: none;
