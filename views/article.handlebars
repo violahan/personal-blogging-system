@@ -5,19 +5,7 @@
     <div style="text-align: center">
         <h3>{{deleteMessage}}</h3>
     </div>
-    {{#ifCond user.userID '==' articleInfo.authorID}}
-        {{!-- Edit Article --}}
-        <a href="./editArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="edit-article-{{articleInfo.articleID}}">Edit Article</button></a>
 
-
-        {{!-- Delete Article --}}
-        <div class="delete-article-box">
-            <p id="confirm-message-{{articleInfo.articleID}}"></p>
-            <button id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>
-            <a href="./deleteArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="confirm-delete-{{articleInfo.articleID}}" style="display: none">Yes - Delete the article</button></a>
-        </div>
-
-    {{/ifCond}}
     <div class="details-container">
         <div class="details-title">
             <h1>{{articleInfo.title}}</h1>
@@ -73,6 +61,26 @@
                 </button>
             {{/if}}
         </div>
+        <br>
+        {{#ifCond user.userID '==' articleInfo.authorID}}
+            <div>
+                {{!-- Edit Article --}}
+                <div class="edit-article-button">
+                    <a href="./editArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button class="edit-button" id="edit-article-{{articleInfo.articleID}}">Edit Article</button></a>
+                </div>
+
+                {{!-- Delete Article --}}
+                <div class="delete-article-button">
+                    <p id="confirm-message-{{articleInfo.articleID}}"></p>
+                    <button class="delete-button" id="delete-article-{{articleInfo.articleID}}" onclick="deleteArticle({{articleInfo.articleID}})">Delete Article</button>
+                    <a href="./deleteArticle?articleID={{articleInfo.articleID}}&articleAuthorID={{articleInfo.authorID}}"><button id="confirm-delete-{{articleInfo.articleID}}" style="display: none">Yes - Delete the article</button></a>
+                </div>
+            </div>
+        {{/ifCond}}
+        <br>
+        <br>
+        <HR>
+        <br>
         <div class="details-enter-comment">
             {{#if user}}
                 <div>

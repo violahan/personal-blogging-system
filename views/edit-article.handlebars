@@ -1,11 +1,16 @@
 <script type="text/javascript" src="./js/create-article-validation.js"></script>
-<div class="container">
-    
-    <h1>Edit article</h1>
+<div>
+    <div class="header-image">
+        <img src="./images/edit-article.jpg" width=100%>
+        <div><span>Create New Article</span></div>
+    </div>
+</div>
+
+<div class="article-container">
     <div>
-        <form action="./editArticle?articleID={{articleToEdit.articleID}}" method="POST" enctype="multipart/form-data">
+        <form class="create-article-form" action="./editArticle?articleID={{articleToEdit.articleID}}" method="POST" enctype="multipart/form-data">
             <div>
-                <label  for="articleTitle">Article Title:</label>
+                <label  class="articles-title" for="articleTitle">Article Title:</label>
                 <input value="{{articleToEdit.title}}" onkeyup="checkArticleContentAndTitle()" id="article-title" type="text" name="articleTitle" cols="50"><br>
                 <p class="error-text" id="article-title-error" hidden>Error: Article title cannot be blank</p>
             </div>
@@ -15,7 +20,7 @@
                 <p class="error-text" id="article-content-error" hidden>Error: Article content cannot be blank</p>
             </div>
             
-            <div>
+            <div class="article-instruction">
                 {{#if imagesToEdit}}
                 <p>Current article image:</p>
                 <img src="{{imagesToEdit.path}}" alt="">
@@ -35,6 +40,7 @@
                 <br>
 
             </div>
+        <br>
 
         <button id="article-submit-button" type="submit">Edit article</button>
         </form>

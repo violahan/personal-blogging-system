@@ -1,7 +1,8 @@
-<div>
 
-    <h1>Login</h1>
-    <form action="./login" method="POST">
+<div class="login-container">
+    <span class="close" id="loginClose">&times;</span>
+    <form class="login-form" action="./login" method="POST">
+        <h1>Login</h1>
         <div>
             <label for="txtUserName">Username:</label>
             <input type="text" name="userName" id="txtUserName" required>
@@ -16,7 +17,7 @@
             <button type="submit">Log in</button>
         </div>
     </form>
-
-    <p>Don't have an account? <a href="./signup">Create one here.</a></p>
-
+    <div class="login-footer">
+        <p>Don't have an account? <a href="./signup">Create one here.</a></p>
+    </div>
 </div>
