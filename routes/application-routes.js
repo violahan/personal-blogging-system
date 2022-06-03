@@ -26,7 +26,7 @@ const { resourceLimits } = require("worker_threads");
 
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
-
+    
     const user = res.locals.user;
 
     if(req.query.deleteMessage){
@@ -36,13 +36,12 @@ router.get("/", verifyAuthenticated, async function(req, res) {
     // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
     let orderBy = "desc";
-
     let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
     let totalArticles = orderedArticles.length;
-
+    
     // This call can be adjusted (change total articles) to change the number of articles initially loaded
     let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
-
+    
     res.locals.allArticleToDisplay = cardsToDisplay;
 
     if(user != ""){
