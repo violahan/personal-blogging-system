@@ -50,11 +50,8 @@ async function templateCommentHTML(commentsTreeStrucutre){
             // Make comment HTML for top level comments
             let topCommentCardHTML = commentCardHTML(commentsTreeStrucutre[i], 0);
 
-            let topLevelReply = await makeReplyButtons(commentsTreeStrucutre[i])
-            topCommentCardHTML.appendChild(topLevelReply)
-
-            let topLevelDelete = await makeDeleteButtons(commentsTreeStrucutre[i])
-            topCommentCardHTML.appendChild(topLevelDelete)
+            let commentOps = await generateCommentOps(commentsTreeStrucutre[i]);
+            topCommentCardHTML.appendChild(commentOps);
 
             displayCommentContainer.appendChild(topCommentCardHTML)
 
@@ -146,6 +143,63 @@ async function templateCommentHTML(commentsTreeStrucutre){
 
         let authorIDresponse = await fetch(`./getArticleAuthorID?articleID=${commentDetails.articleID}`);
         let authorIDjson = await authorIDresponse.json();
+
+        let commentOpsDiv = document.createElement('div');
+        commentOpsDiv.setAttribute("class", "comment-ops");
+
+        if(userIDjson == commentDetails.commentAuthorID || userIDjson == authorIDjson){
+
+            let deleteCommentBox = document.createElement('div');
+            deleteCommentBox.setAttribute("class", "delete-comment-box");
+
+            let confirmMessage = document.createElement('p')
+            confirmMessage.setAttribute("id", `confirm-message-${commentDetails.commentID}`)
+
+            let deleteButton = document.createElement('button');
+            deleteButton.setAttribute("id", `delete-comment-${commentDetails.commentID}`);
+            deleteButton.setAttribute("onclick", `deleteComment(${commentDetails.commentID})`);
+            deleteButton.setAttribute("class", 'comment-delete-button');
+            deleteButton.innerText = "Delete Comment";
+
+            let deleteLink = document.createElement('a')
+            deleteLink.setAttribute("href", `./deleteComment?commentID=${commentDetails.commentID}&commentAuthorID=${commentDetails.commentAuthorID}&articleAuthorID=${authorIDjson}&articleID=${commentDetails.articleID}`)
+
+            let confirmDeleteButton = document.createElement('button');
+            confirmDeleteButton.setAttribute("id", `confirm-delete-${commentDetails.commentID}`)
+            confirmDeleteButton.setAttribute("style", "display: none");
+            confirmDeleteButton.innerText = "Yes - Delete the comment"
+
+            deleteLink.appendChild(confirmDeleteButton);
+
+            deleteCommentBox.appendChild(confirmMessage);
+            deleteCommentBox.appendChild(deleteButton);
+            deleteCommentBox.appendChild(deleteLink)
+
+            commentOpsDiv.appendChild(deleteCommentBox);
+        }
+
+        if(commentDetails.commentAuthorID == 1 || userIDjson == ""){
+
+        } else{
+
+            let replyBox = document.createElement('div');
+            replyBox.setAttribute("class", "reply-box");
+
+            let replyButton = document.createElement('button');
+            replyButton.setAttribute("id", `let-reply-${commentDetails.commentID}`)
+            replyButton.setAttribute("onclick", `letReply(${commentDetails.commentID}, ${commentDetails.articleID}, ${userIDjson})`)
+            replyButton.innerText = "Reply";
+
+            let replyFormContainer = document.createElement('div');
+            replyFormContainer.setAttribute("id", `reply-form-container-${commentDetails.commentID}`)
+
+            replyBox.appendChild(replyButton)
+            replyBox.appendChild(replyFormContainer)
+
+            commentOpsDiv.appendChild(replyBox);
+        }
+
+        return commentOpsDiv;
 
     }
 
