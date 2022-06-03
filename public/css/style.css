@@ -612,10 +612,11 @@ form>* {
     width: 50%;
     float: right;
     padding: 30px;
+    position: relative;
 }
 
 .card-right a{
-   font-size: 20px;
+    font-size: 20px;
     color: #0E1C40;
 }
 
@@ -630,6 +631,27 @@ form>* {
 .card-right a:hover {
     color: #2A53C1;
 }
+
+.card-info{
+    position: absolute;
+    bottom: 40px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.card-breakline{
+    background-color: rgba(0,0,0,0.4);
+    height: 2px;
+}
+
+
+
+
+
+
+
+
+
 
 
 /*Edit Profile Page*/

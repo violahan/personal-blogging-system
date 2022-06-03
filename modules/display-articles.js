@@ -52,11 +52,12 @@ let cardsToDisplay = "";
                     <div class="card-content">
                         <p>content</p>
                     </div>
-                    <div class="card-breakline">
-                        
-                    </div>
                     <div class="card-info">
-                        
+                        <div class="card-breakline"></div>
+                        <div>
+                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> 10 comments</span>
+                            <span style="float: right"><i class="fa-solid fa-heart"></i> 15 likes</span>
+                        </div>
                     </div>
                 </div>
             </div>
