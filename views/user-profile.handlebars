@@ -44,10 +44,10 @@
         <div class="profile-detail-card">
             <a href="./subscribes?userId={{profileObj.authorID}}">Subscription</a><br>
             {{#if isCurrentUser}}
-                <a href="./editProfile">Edit Profile</a><br>
                 <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a><br>
-                <a href="./changepassword">Change Password</a><br>
+                <a href="./editProfile">Edit Profile</a><br>
                 <a href="./deleteuser?userId={{profileObj.authorID}}">Delete User</a>
+                <a href="./changepassword">Change Password</a><br>
             {{/if}}
         </div>
 

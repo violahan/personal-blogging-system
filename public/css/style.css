@@ -483,6 +483,8 @@ body {
     margin-top: 60px;
 }
 
+/*Signup Page*/
+
 .signup-background{
     background-color: #f2f2f2;
 }
@@ -509,6 +511,25 @@ body {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+}
+
+/*Change Article Page*/
+.changePassword-background{
+    background-color: #f2f2f2;
+}
+
+.changePassword-container{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px;
+}
+
+.changePassword-container h1{
+    font-family: "Arial";
+    font-size: 30px;
+    color: #0E1C40;
+    text-align: left;
 }
 
 /*Create Article Page*/
