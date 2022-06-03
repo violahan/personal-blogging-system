@@ -173,46 +173,27 @@ router.get("/getArticle", async function (req, res){
 });
 
 
-// Route to allow AJAX request from clientside JS for ordered articles
-router.get("/sortedArticles", async function (req, res) {
-  
+// Route to allow AJAX requests from clientside JS for ordered articles
+router.get("/sortedAllArticles", async function (req, res) {
   // Obtain the sort option, and the order option from the 
   // request generated on change of the filters in handlebars
   const orderColumn = req.query.value;
   const orderBy = req.query.order;
-   
-  // make database call for articles sorted by the required options. Include User fields to extract user name
-  let orderedArticles = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
-  
-  // loop through articles and add thumbnail path
-  for (let i = 0; i < orderedArticles.length; i++) {
-    
-    let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(orderedArticles[i].articleID);
-        
-        let thumbnailImagePath = "";
-
-        if(thumbnailImage != ""){
-             thumbnailImagePath = await thumbnailImage[0].path; 
-         } else {
-            thumbnailImagePath = "";
-        }
-
-    orderedArticles[i].thumbnailImagePath = thumbnailImagePath;    
-    
+  const userId = req.query.userId || null;
+  let orderedArticles;
+  if(userId){
+    orderedArticles = await articleDAO.getAllSortedArticlesByUser(userId, orderColumn, orderBy);
   }
-
-  // Pass JSON of the ordered articles back to the client side
+  else{
+    orderedArticles = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
+  }
   res.json(orderedArticles)
-
 });
 
 router.get("/profile", verifyAuthenticated, async function (req, res) {
   const userId = req.query.id;
- 
   let user;
-
-
-  if (userId == res.locals.user.userID) {
+  if (userId === res.locals.user.userID) {
     res.locals.isCurrentUser = true;
     user = res.locals.user;
   } else {
@@ -244,53 +225,6 @@ router.get("/profile", verifyAuthenticated, async function (req, res) {
   res.render("user-profile");
 });
 
-
-// Route to allow AJAX request from clientside JS for ordered articles
-router.get("/sortedUserArticles", async function (req, res) {
-  
-
-  if(res.locals.user){
-    
-    
-    // Obtain the sort option, and the order option from the 
-    // request generated on change of the filters in handlebars
-    const orderColumn = req.query.value;
-    const orderBy = req.query.order;
-    
-    userID = res.locals.user.userID;
-
-    // make database call for articles sorted by the required options. Include User fields to extract user name
-    let orderedArticles = await articleDAO.getArticlesCardInformationByUserOrderedBy(userID, orderColumn, orderBy);
-    
-
-    // loop through articles and add thumbnail path
-    for (let i = 0; i < orderedArticles.length; i++) {
-      
-      let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(orderedArticles[i].articleID);
-          
-          let thumbnailImagePath = "";
-
-          if(thumbnailImage != ""){
-              thumbnailImagePath = await thumbnailImage[0].path; 
-          } else {
-              thumbnailImagePath = "";
-          }
-
-      orderedArticles[i].thumbnailImagePath = thumbnailImagePath;
-    }
-   
-     // Pass JSON of the ordered articles back to the client side
-      res.json(orderedArticles)
-    
-  } else {
-
-    res.json(null)
-
-  }
-
-});
-
-
 router.get("/analytics", async function (req, res) {
     let userId = req.query.userId;
 
@@ -313,50 +247,33 @@ router.get("/analytics", async function (req, res) {
     res.render("analytics");
 });
 
-
-
-
-
-
-
-
 router.get("/getAllUsernames", async function (req, res) {
   const usernames = await userDao.getAllUsernames();
   res.json(usernames);
 })
   
 router.get("/deleteArticle", async function (req, res){
-
   //As the deleting an article is a get request, check that the 
   // user is allowed to delete the article - either they are the
   // article author
-
   const articleID = req.query.articleID;
   const articleAuthorID = req.query.articleAuthorID;
   const currentUserID = res.locals.user.userID
-
-    if(articleAuthorID == currentUserID){
-      
+    if(articleAuthorID === currentUserID){
       // Allowed to delete the article
       deleteMessage = "Article deleted"
-      
       // Delete items in order to ensure no database issues:
-      
       // Delete all comments on article
       await commentDao.deleteAllArticleComments(articleID);
-      
       // Delete all likes
       await likeDao.deleteAllArticleLikes(articleID)
-
       // Delete images
       // Delete images from server
       const articleImages = await imageDAO.getAllImageByArticleID(articleID)
-      
       if(articleImages){
         for (let i = 0; i < articleImages.length; i++) {
           let imagePathToDelete = articleImages[i].path;
           let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
-      
           if(articleImages[i].fileName == "default_thumbnail.png"){
             // Do not delete the default thumbnail image 
           } else {
@@ -365,24 +282,17 @@ router.get("/deleteArticle", async function (req, res){
           }
         }
       }
-    
       // Delete images from Database
       await imageDAO.deleteAllArticleImages(articleID)
-
       // Delete the article from the Database
       await articleDAO.deleteArticle(articleID)
-
     } else {
       deleteMessage = "Not authorised to delete comment"
     }
-  
     // Once an article is deleted, check to see if any notifications related to it
       // and remove them
       await notificationDAO.removeNotificationsByTypeAndIDLink("newArticle", articleID)
-
-
   res.redirect("/?deleteMessage="+deleteMessage)
-
 })
 
 router.get("/likeArticle", async function (req, res){
@@ -395,10 +305,8 @@ router.get("/likeArticle", async function (req, res){
   // Check in place to ensure that the current user, is the user that hit like
   // Required as this is a get request and URL could be entered by anyone.
   if(res.locals.user.userID == likeUserID){
-
     let userHasLikedArticle = 0
     for (let i = 0; i < likesOnArticle.length; i++) {
-      
       if(likeUserID == likesOnArticle[i].userID){
         // User has liked the article - Remove Like
         userHasLikedArticle += 1
@@ -406,7 +314,6 @@ router.get("/likeArticle", async function (req, res){
         // User has not liked - do nothing here
       }
     }
-
     if (userHasLikedArticle == 1){
       //Remove like:
       await likeDao.removeLike(articleID, likeUserID);
@@ -416,11 +323,9 @@ router.get("/likeArticle", async function (req, res){
       await likeDao.addLike(articleID, likeUserID);
       res.json("Unlike")
     }
-
   } else {
     // No logged in user / user does not match user that hit like - do nothing.
   }
-
 })
 
 router.get("/subscribeToAuthor", async function (req, res){
@@ -435,10 +340,8 @@ router.get("/subscribeToAuthor", async function (req, res){
   // Check in place to ensure that the current user, is the user that hit like
   // Required as this is a get request and URL could be entered by anyone.
   if(res.locals.user.userID == subscribeUserID){
-
     let userHasSubscribedToAuthor = 0
     for (let i = 0; i < subscribersToAuthor.length; i++) {
-      
       if(subscribeUserID == subscribersToAuthor[i].userSubscriberID){
         // User has liked the article - Remove Like
         userHasSubscribedToAuthor += 1
@@ -446,22 +349,16 @@ router.get("/subscribeToAuthor", async function (req, res){
         // User has not liked - do nothing here
       }
     }
-
     if (userHasSubscribedToAuthor == 1){
       //Remove subscriber:
       await subscribeDao.removeFollow(subscribeUserID, authorID);
-
-
       // Once a user has unsubscribed, check to see if any notifications related to it
       // and remove them
       await notificationDAO.removeNotificationsByTypeAndIDLink("newSubscriber", subscribeUserID)
-
-
       res.json("Subscribe")
     } else {
       // Add like:
       await subscribeDao.addFollow(subscribeUserID, authorID);
-
       // Create notificaiton related to this new subscriber:
         const notificationType = "newSubscriber";
         const notificaitonContent = subscriberUserName+" has subscribed to you!";
@@ -469,11 +366,8 @@ router.get("/subscribeToAuthor", async function (req, res){
         const idForLink = subscribeUserID;
         const articleIDForLink = ""
         await notificationFunctions.createNewNotification(notificationType, notificaitonContent, usersToBeNotified, idForLink, articleIDForLink);
-      
-
       res.json("Unsubscribe")
     }
-
   } else {
     // No logged in user / user does not match user that hit like - do nothing.
   }
@@ -496,21 +390,17 @@ router.post("/editProfile", async function (req, res) {
     description: req.body.bio,
     avatarFilePath: req.body.avatar
   };
-
   await userDao.updateUser(userToEdit);
   res.redirect("/profile?id="+userToEdit.userID)
 })
 
 router.get("/deleteUser", async function (req, res) {
   const userId = req.query.userId;
-
   const articleImages = await imageDAO.getAllImagesByAuthorID(userId)
-      
   if(articleImages){
     for (let i = 0; i < articleImages.length; i++) {
       let imagePathToDelete = articleImages[i].path;
       let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
-  
       if(articleImages[i].fileName != "default_thumbnail.png"){
         fs.unlinkSync(fullImageFilePath)
       }

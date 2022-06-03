@@ -2,7 +2,7 @@ const SQL = require("sql-template-strings");
 const dbPromise = require("./database.js");
 
 
-async function getAllSortedArticles(orderColumn, orderDirection){
+async function getAllSortedArticles(orderColumn, orderDirection, contentDisplayLength= 250){
 
     const db = await dbPromise;
     const articles = await db.all(`
@@ -16,26 +16,31 @@ async function getAllSortedArticles(orderColumn, orderDirection){
             from articles a left join likes l on a.articleID = l.articleID
             group by a.articleID
         )
+           ,thumbnailImage as (
+            select i.articleID as articleID, i.path as thumbnailImagePath
+            from images i
+            where i.thumbnailFlag = 1
+        )
         select
-            A.articleID,
-            A.authorID,
-            A.title,
-            strftime('%Y/%m/%d', A.publishDate) as publishDate,
-            A.numberOfComments,
-            A.numberOfLikes,
-            U.userID,
-            U.userName,
-            U.fName,
-            U.lName,
-            U.avatarFilePath,
-            substring(A.content, 0, 250) || '......' as content,
+            a.articleID,
+            a.authorID,
+            a.title,
+            strftime('%Y/%m/%d', a.publishDate) as publishDate,
+            u.userID,
+            u.userName,
+            u.fName,
+            u.lName,
+            u.avatarFilePath,
+            substring(a.content, 0, ${contentDisplayLength}) || '......' as content,
             c.commentCount,
-            l.likeCount
+            l.likeCount,
+            ifnull(t.thumbnailImagePath, './article-images/article-thumbnails/default_thumbnail.png') as thumbnailImagePath
         from
-            articles A
-                join user U on A.authorID = U.userID
-                join commentCount c on A.articleID = c.articleID
-                join likeCount l on A.articleID = l.articleID
+            articles a
+                join user u on a.authorID = u.userID
+                join commentCount c on a.articleID = c.articleID
+                join likeCount l on a.articleID = l.articleID
+                left join thumbnailImage t on a.articleID = t.articleID
         order by
             ${orderColumn} ${orderDirection}
     `);
@@ -45,10 +50,9 @@ async function getAllSortedArticles(orderColumn, orderDirection){
 async function getAllSortedArticlesByUser(userID, orderColumn, orderDirection){
     const allArticles = await getAllSortedArticles(orderColumn, orderDirection);
     const articlesByUser = allArticles.filter(function (article){
-        return article.authorID ===userID;
+        return article.authorID.toString() === userID;
     })
     return articlesByUser;
-
 };
 
 async function getArticlesByAuthorId(authorId) {
