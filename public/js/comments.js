@@ -47,8 +47,7 @@ async function displayComments(articleID, url){
 
         for (let i = 0; i < commentsTreeStrucutre.length; i++) {
             // Make comment HTML for top level comments
-            let topCommentCardHTML = commentCardHTML(commentsTreeStrucutre[i])
-            topCommentCardHTML.setAttribute("class", "top-level-comment");
+            let topCommentCardHTML = commentCardHTML(commentsTreeStrucutre[i], 0);
 
             let topLevelReply = await makeReplyButtons(commentsTreeStrucutre[i])
             topCommentCardHTML.appendChild(topLevelReply)
@@ -63,8 +62,7 @@ async function displayComments(articleID, url){
                 for (let j = 0; j < commentsTreeStrucutre[i].children.length; j++) {
 
                     // Make comment HTML for Level 1 comments
-                    let level1CommentCardHTML = commentCardHTML(commentsTreeStrucutre[i].children[j]);
-                    level1CommentCardHTML.setAttribute("class", "level-1-comment");
+                    let level1CommentCardHTML = commentCardHTML(commentsTreeStrucutre[i].children[j], 1);
 
                     let level1Reply = await makeReplyButtons(commentsTreeStrucutre[i].children[j]);
                     level1CommentCardHTML.appendChild(level1Reply);
@@ -80,8 +78,7 @@ async function displayComments(articleID, url){
 
                             // Make comment HTML for Level 2 comments
 
-                            let level2CommentCardHTML = commentCardHTML(commentsTreeStrucutre[i].children[j].children[k]);
-                            level2CommentCardHTML.setAttribute("class", "level-2-comment");
+                            let level2CommentCardHTML = commentCardHTML(commentsTreeStrucutre[i].children[j].children[k], 2);
 
                             let level2Delete = await makeDeleteButtons(commentsTreeStrucutre[i].children[j].children[k])
                             level2CommentCardHTML.appendChild(level2Delete)
@@ -96,21 +93,18 @@ async function displayComments(articleID, url){
 
                 }
             }
-
-
-
         }
-
         return displayCommentContainer;
-
     }
 
 // Generates a tempalted comment, based on supplied comment details.
-    function commentCardHTML(commentDetails){
+    function commentCardHTML(commentDetails, level){
         console.log(commentDetails);
 
         let commentCard = document.createElement('div');
         commentCard.setAttribute("id", `comment-card-${commentDetails.commentID}`);
+        commentCard.setAttribute("class", `level-${level}-comment`);
+
 
         if(commentDetails.commentAuthorID == 1){
             // If the commentAuthorID is 1 this means the comment has been deleted.
@@ -122,7 +116,7 @@ async function displayComments(articleID, url){
                 </div>
                 <div class="comment-content">
                     <p>${commentDetails.content}</p>
-                </div
+                </div>
             `
         } else {
             commentCard.innerHTML = `
@@ -139,10 +133,19 @@ async function displayComments(articleID, url){
                 </div>
                 <div class="comment-content">
                     <p>${commentDetails.content}</p>
-                </div
+                </div>
             `
         }
         return commentCard;
+    }
+
+    async function generateCommentOps(commentDetails){
+        let userIDresponse = await fetch("./getUserID");
+        let userIDjson = await userIDresponse.json();
+
+        let authorIDresponse = await fetch(`./getArticleAuthorID?articleID=${commentDetails.articleID}`);
+        let authorIDjson = await authorIDresponse.json();
+
     }
 
 
