@@ -1,5 +1,5 @@
 <div class="header-image">
-    <img src="./images/profile.jpg" width=100%>
+    <img src="./images/subscribe.jpg" width=100%>
     <div><span>Subscribe</span></div>
 </div>
 
@@ -7,7 +7,7 @@
     <div class="profile-body-left">
         <h1>User</h1>
         <div class="profile-detail-card">
-            <img class="avatar" src={{result.avatarFilePath}} />
+            <img class="avatar" id="user-image" src={{result.avatarFilePath}} />
             <h1 id="profile-name">{{result.name}}</h1>
         </div>
 
@@ -28,6 +28,7 @@
                 {{/ifCond}}
                 
             </div>
+            <HR id="HR">
         {{/each}}
     </div>
 
@@ -46,6 +47,7 @@
                 {{/ifCond}}
                 
             </div>
+            <HR id="HR">
         {{/each}}
     </div>
 </div>

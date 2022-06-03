@@ -327,6 +327,23 @@ body {
     float:right;
 }
 
+.profile-detail-card-middle a{
+    color: #0E1C40;
+}
+
+.profile-detail-card-middle a:link {
+    text-decoration: none;
+}
+
+.profile-detail-card-middle a:visited {
+    text-decoration: none;
+}
+
+.profile-detail-card-middle a:hover, a:active {
+    background-color: #f24691;
+    color: white;
+}
+
 .profile-article-card-body{
     margin: 20px 20px 40px 20px;
 }
@@ -367,6 +384,24 @@ body {
 
 .profile-body-like-card{
     margin: 20px 20px 20px 7px;
+}
+
+/*subscribe page*/
+.profile-body{
+    width: 80%;
+    display:grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-gap: 5%;
+    margin: 60px auto 80px auto;
+}
+
+#user-image{
+    width: 70%;
+}
+
+#subscribe-button{
+    margin: 15px;
+    float: right;
 }
 
 
