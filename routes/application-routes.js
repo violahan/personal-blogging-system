@@ -5,7 +5,7 @@ const bcrypt = require("../Helper/bcrypt-helper");
 
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
-const articleFunctions = require("../modules/display-articles");
+const articleFunctions = require("../public/js/article-load");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const notificationDAO = require("../modules/notifications-dao.js")
