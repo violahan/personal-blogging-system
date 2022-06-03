@@ -23,18 +23,26 @@
 
         <div class="profile-detail-card">
             <div>
-                <span class="profile-detail-card-left"><i class="fa-solid fa-book-open"></i> ARTICLES: </span> <span class="profile-detail-span-right">{{profileObj.totalArticleNos}}</span>
+                <span class="profile-detail-card-left"><i class="fa-solid fa-book-open"></i> ARTICLES: </span> 
+                <span class="profile-detail-span-right">{{profileObj.totalArticleNos}}</span>
             </div>
             <div>
-                <span class="profile-detail-card-left"><i class="fa-solid fa-user-group"></i> FOLLOWERS: </span> <span class="profile-detail-span-right" >{{profileObj.totalFollowerNos}}</span>
+                <span class="profile-detail-card-left"><i class="fa-solid fa-user-group"></i> FOLLOWERS: </span> 
+                <span class="profile-detail-span-right">
+                    <a href="./subscribes?userId={{profileObj.authorID}}">{{profileObj.totalFollowerNos}}</a>
+                </span>
             </div>
             <div>
-                <span class="profile-detail-card-left"><i class="fa-solid fa-glasses"></i> FOLLOWING: </span> <span class="profile-detail-span-right">{{profileObj.totalFollowingNos}}</span>
+                <span class="profile-detail-card-left"><i class="fa-solid fa-glasses"></i> FOLLOWING: </span> 
+                <span class="profile-detail-span-right">
+                    <a href="./subscribes?userId={{profileObj.authorID}}">{{profileObj.totalFollowingNos}}</a>
+                </span>
             </div>
         </div>
         <HR id="HR">
 
         <div class="profile-detail-card">
+            <a href="./subscribes?userId={{profileObj.authorID}}">Subscription</a><br>
             {{#if isCurrentUser}}
                 <a href="./editProfile">Edit Profile</a><br>
                 <a href="./analytics?userId={{profileObj.authorID}}">Analytics</a><br>
