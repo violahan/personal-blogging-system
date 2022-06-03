@@ -31,23 +31,36 @@ let cardsToDisplay = "";
         }
        
         let cardHTML = `
-                <div class="card">
-                    <div class="cardImage">
-                        <img src="${thumbnailImagePath}" alt="">
-                    </div>
-                    <div class="cardContent">
-                        <p>ArticleID = ${articleID}</p>
-                        <a class="article-link" href="./getArticle?articleID=${articleID}">
+            <div class="card">
+                <div class="card-left">
+                    <img src="${thumbnailImagePath}" alt="">
+                </div>
+                <div class="card-right">
+                    <div class="card-title">
+                        <a href="./getArticle?articleID=${articleID}">
                             <h3>${title}</h3>
                         </a>
-                        <a class="article-link" href="./profile?id=${authorID}">
-                            <h4>${userName}</h4>
-                        </a>
-                            
-                        <p>${publishDate}</p>
+                    </div>
+                    <div class="card-author">
+                        <span>
+                            <i class="fa-solid fa-user-pen"></i><a href="./profile?id=${authorID}"> ${userName}</a>
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-calendar-days"></i> ${publishDate}
+                        </span>
+                    </div>
+                    <div class="card-content">
+                        <p>content</p>
+                    </div>
+                    <div class="card-breakline">
+                        
+                    </div>
+                    <div class="card-info">
+                        
                     </div>
                 </div>
-                `    
+            </div>
+        `
         
         cardsToDisplay = cardsToDisplay+cardHTML;
     };

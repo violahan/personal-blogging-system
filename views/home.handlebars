@@ -10,18 +10,18 @@ between viewing all articles and viewing your articles --}}
 
     <div class="articles-body">
 
-        {{deleteMessage}}
-
+        <div class="card-delete-message">
+            {{deleteMessage}}
+        </div>
 
         {{#if user}}
-        <div class="show-users-button">
+        <div class="card-user-only-switch">
             <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
         </div>
         {{/if}}
 
-        <div id="all-articles-home">
 
-        <div class="all-article-Sort">
+        <div class="card-filters">
             <form class="all-article-form" action="">
                 <label for="allSortOption">Sort articles by:</label>
                 <select id="allSortOption" name="allSortOption" onchange="allSortOptions()">
@@ -36,14 +36,13 @@ between viewing all articles and viewing your articles --}}
             </form>
         </div>
 
-            <h2>All Articles</h2>
-
-            <div class="card-container" id="all-card-container">
-
-                {{{allArticleToDisplay}}}
-
-            </div>
+        <div class="card-container" id="all-card-container">
+            {{{allArticleToDisplay}}}
         </div>
+
+
+
+
         {{#if user}}
         <div id="user-articles-home" style="display: none">
             <div class="user-article-Sort">
@@ -74,3 +73,4 @@ between viewing all articles and viewing your articles --}}
 
 </div>
 
+</div>

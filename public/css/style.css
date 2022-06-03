@@ -584,47 +584,50 @@ form>* {
 
 
 .card-container {
-    /* border: 1px solid black; */
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
 .card {
-    border: 1px solid black;
     display: flex;
     flex-direction: row;
-    width: 70%;
-    padding: 20px;
+    width: 80%;
+    margin: 50px auto;
+    height: 400px;
+    background-color: #f2f2f2;
 }
 
-.cardImage{
+.card-left{
     width: 50%;
     float: left;
 }
 
-.cardContent{
-    width: 50%;
-    float: right;
+.card-left > img{
+    height: 100%;
+    width: 100%;
 }
 
-.cardContent a{
+.card-right{
+    width: 50%;
+    float: right;
+    padding: 30px;
+}
+
+.card-right a{
    font-size: 20px;
     color: #0E1C40;
 }
 
-.cardContent a:link {
+.card-right a:link {
     text-decoration: none;
 }
 
-.cardContent a:visited {
+.card-right a:visited {
     text-decoration: none;
 }
 
-.cardContent a:hover {
+.card-right a:hover {
     color: #2A53C1;
 }
 
