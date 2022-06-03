@@ -188,6 +188,7 @@ async function templateCommentHTML(commentsTreeStrucutre){
             let replyButton = document.createElement('button');
             replyButton.setAttribute("id", `let-reply-${commentDetails.commentID}`)
             replyButton.setAttribute("onclick", `letReply(${commentDetails.commentID}, ${commentDetails.articleID}, ${userIDjson})`)
+            replyButton.setAttribute("class", "comment-reply-button");
             replyButton.innerText = "Reply";
 
             let replyFormContainer = document.createElement('div');
@@ -347,7 +348,7 @@ async function templateCommentHTML(commentsTreeStrucutre){
     function makeReplyForm(parentCommentID, articleID, commentAuthorID){
         let replyFormContainer = document.getElementById(`reply-form-container-${parentCommentID}`)
         replyFormContainer.innerHTML = `
-        <form id="reply-form-${parentCommentID}" action="./makeReply?articleID=${articleID}&parentID=${parentCommentID}&commentAuthorID=${commentAuthorID}" method="POST" style="display: none">
+        <form class="comment-reply-form" id="reply-form-${parentCommentID}" action="./makeReply?articleID=${articleID}&parentID=${parentCommentID}&commentAuthorID=${commentAuthorID}" method="POST" style="display: none">
             <label for="reply">Enter Reply:</label>
             <textarea id="reply-to-comment-${parentCommentID}-text-box" onkeyup="checkReplyHasContent(${parentCommentID})" name="reply" rows="4" cols="50"></textarea>
             <button id="submit-reply-to-comment-${parentCommentID}-button" type="submit">Post Reply</button>
