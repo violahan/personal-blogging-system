@@ -10,18 +10,17 @@ between viewing all articles and viewing your articles --}}
 
     <div class="articles-body">
 
-        {{deleteMessage}}
-
+        <div class="card-delete-message">
+            {{deleteMessage}}
+        </div>
 
         {{#if user}}
-        <div class="show-users-button">
+        <div class="card-user-only-switch">
             <button id="switch-article-button" onclick="switchDisplayedArticles()">Show User Articles</button>
         </div>
         {{/if}}
 
-        <div id="all-articles-home">
-
-        <div class="all-article-Sort">
+        <div class="card-filters">
             <form class="all-article-form" action="">
                 <label for="allSortOption">Sort articles by:</label>
                 <select id="allSortOption" name="allSortOption" onchange="allSortOptions()">
@@ -36,41 +35,18 @@ between viewing all articles and viewing your articles --}}
             </form>
         </div>
 
-            <h2>All Articles</h2>
 
-            <div class="card-container" id="all-card-container">
-
-                {{{allArticleToDisplay}}}
-
-            </div>
+        {{!-- 1. All article cards--}}
+        <div class="card-container" id="all-card-container">
+            {{{articlesHTML}}}
         </div>
+
+        {{!-- 2. User's article cards--}}
         {{#if user}}
-        <div id="user-articles-home" style="display: none">
-            <div class="user-article-Sort">
-            <form class="all-article-form" action="">
-                <label for="userSortOption">Sort articles by:</label>
-                <select id="userSortOption" name="userSortOption" onchange="userSortOptions()">
-                    <option value="publishDate" selected>Date</option>
-                    <option value="title">Article Title</option>
-                </select>
-                <label for="desc">Descending:</label>
-                <input type="radio" checked name="userSortOrder" value="desc" onclick="userSortOptions()">
-                <label for="asc">Ascending:</label>
-                <input type="radio" name="userSortOrder" value="asc" onclick="userSortOptions()">
-            </form>
-        </div>
-
-            <h2>{{user.userName}} Articles</h2>
-
-            <div class="card-container" id="user-card-container">
-
-                {{{userAllArticlesToDisplay}}}
-
-            </div>
+        <div class="card-container" id="user-card-container" style="display: none">
+            <h2>{{user.userName}}'s Articles</h2>
+            {{{userArticlesHTML}}}
         </div>
         {{/if}}
-
     </div>
-
 </div>
-

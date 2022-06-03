@@ -5,7 +5,7 @@ const bcrypt = require("../Helper/bcrypt-helper");
 
 const imageDAO = require("../modules/images-dao");
 const articleDAO = require("../modules/article-dao.js");
-const articleFunctions = require("../modules/display-articles");
+const articleFunctions = require("../public/js/article-load");
 const userDao = require("../modules/user-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const notificationDAO = require("../modules/notifications-dao.js")
@@ -26,9 +26,8 @@ const { resourceLimits } = require("worker_threads");
 
 // Display the home page with list of all articles
 router.get("/", verifyAuthenticated, async function(req, res) {
-    
-    const user = res.locals.user;
 
+    const user = res.locals.user;
     if(req.query.deleteMessage){
       res.locals.deleteMessage = req.query.deleteMessage
     }
@@ -36,19 +35,14 @@ router.get("/", verifyAuthenticated, async function(req, res) {
     // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
     let orderBy = "desc";
-    let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
-    let totalArticles = orderedArticles.length;
-    
-    // This call can be adjusted (change total articles) to change the number of articles initially loaded
-    let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
-    
-    res.locals.allArticleToDisplay = cardsToDisplay;
+    let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
+    let totalArticles = articlesData.length;
+    res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
 
-    if(user != ""){
-      let userOrderedArticles = await articleDAO.getArticlesCardInformationByUserOrderedBy(user.userID, orderColumn, orderBy);
+    if(user !== ""){
+      let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
       let totalUserArticles = userOrderedArticles.length;
-      let userCardsToDisplay = await articleFunctions.loadArticles(userOrderedArticles, totalUserArticles)
-      res.locals.userAllArticlesToDisplay = userCardsToDisplay;
+      res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
     }
     res.locals.title = 'Home';
     res.render("home");
@@ -61,7 +55,7 @@ router.get("/noUser", async function(req, res) {
   let orderColumn = "publishDate";
   let orderBy = "desc";
 
-  let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
+  let orderedArticles = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
   let totalArticles = orderedArticles.length;
 
   // This call can be adjusted (change total articles) to change the number of articles initially loaded
@@ -188,7 +182,7 @@ router.get("/sortedArticles", async function (req, res) {
   const orderBy = req.query.order;
    
   // make database call for articles sorted by the required options. Include User fields to extract user name
-  let orderedArticles = await articleDAO.getArticleCardInformationOrderedBy(orderColumn, orderBy);
+  let orderedArticles = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
   
   // loop through articles and add thumbnail path
   for (let i = 0; i < orderedArticles.length; i++) {

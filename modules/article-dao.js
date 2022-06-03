@@ -1,98 +1,53 @@
 const SQL = require("sql-template-strings");
 const dbPromise = require("./database.js");
 
-async function getAllArticles(){
-    const db = await dbPromise;
 
-    const allArticles = await db.all(SQL`
-        select *
-        from articles
-        `);
-
-    return allArticles;
-
-};
-
-async function getAllArticlesOrderedBy(orderColumn, orderDirection){
+async function getAllSortedArticles(orderColumn, orderDirection){
 
     const db = await dbPromise;
+    const articles = await db.all(`
+        with commentCount as (
+            select a.articleID as articleID, count(c.commentID) as commentCount
+            from articles a left join comments c on a.articleID = c.articleID
+            group by a.articleID
+        )
+           ,likeCount as (
+            select a.articleID as articleID, count(l.userID) as likeCount
+            from articles a left join likes l on a.articleID = l.articleID
+            group by a.articleID
+        )
+        select
+            A.articleID,
+            A.authorID,
+            A.title,
+            strftime('%Y/%m/%d', A.publishDate) as publishDate,
+            A.numberOfComments,
+            A.numberOfLikes,
+            U.userID,
+            U.userName,
+            U.fName,
+            U.lName,
+            U.avatarFilePath,
+            substring(A.content, 0, 250) || '......' as content,
+            c.commentCount,
+            l.likeCount
+        from
+            articles A
+                join user U on A.authorID = U.userID
+                join commentCount c on A.articleID = c.articleID
+                join likeCount l on A.articleID = l.articleID
+        order by
+            ${orderColumn} ${orderDirection}
+    `);
+    return articles
+}
 
-    // Removed SQL template string protection to allow the user of order by
-    // These variables are not editable from the user
-    const allArticlesOrderedBy = await db.all(`
-        select *
-        from articles
-        order by ${orderColumn} ${orderDirection}
-        `);
-
-    return allArticlesOrderedBy;
-
-};
-
-async function getArticleCardInformationOrderedBy(orderColumn, orderDirection){
-
-    const db = await dbPromise;
-
-    // Removed SQL template string protection to allow the user of order by
-    // These variables are not editable from the user
-    const allArticlesOrderedBy = await db.all(`
-        select A.articleID, A.authorID, A.title, A.publishDate, A.numberOfComments,
-                A.numberOfLikes, U.userID, U.userName, U.fName, U.lName, U.avatarFilePath 
-        from articles as A, user as U
-        where A.authorID = U.userID
-        order by ${orderColumn} ${orderDirection}
-        `);
-
-    return allArticlesOrderedBy;
-
-};
-
-async function getArticlesCardInformationByUserOrderedBy(userID, orderColumn, orderDirection){
-
-    const db = await dbPromise;
-
-    // Removed SQL template string protection to allow the user of order by
-    // These variables are not editable from the user
-    const allUserArticlesOrderedBy = await db.all(`
-        select A.articleID, A.authorID, A.title, A.publishDate, A.numberOfComments,
-                A.numberOfLikes, U.userID, U.userName, U.fName, U.lName, U.avatarFilePath 
-        from articles as A, user as U
-        where A.authorID = U.userID and U.userID = ${userID}
-        order by ${orderColumn} ${orderDirection}
-        `);
-
-    return allUserArticlesOrderedBy;
-
-};
-
-
-
-
-// This function will likely be deleted - use "getAllArticlesOrderedBy" instead after testing
-async function getAllArticlesByDateDescending(){
-    const db = await dbPromise;
-
-    const allArticlesByDateDescending = await db.all(SQL`
-        select *
-        from articles
-        order by publishDate desc
-        `);
-
-    return allArticlesByDateDescending;
-
-};
-
-// This function will likely be deleted - use order by condition instead after testing
-async function getAllArticlesByDateAscending(){
-    const db = await dbPromise;
-
-    const allArticlesByDateDescending = await db.all(SQL`
-        select *
-        from articles
-        order by publishDate asc
-        `);
-
-    return allArticlesByDateDescending;
+async function getAllSortedArticlesByUser(userID, orderColumn, orderDirection){
+    const allArticles = await getAllSortedArticles(orderColumn, orderDirection);
+    const articlesByUser = allArticles.filter(function (article){
+        return article.authorID ===userID;
+    })
+    return articlesByUser;
 
 };
 
@@ -192,18 +147,11 @@ async function updateArticle(articleID, title, content) {
         `);
 }
 
-
-
-// Export functions.
 module.exports = {
-    getAllArticles,
-    getAllArticlesOrderedBy,
-    getAllArticlesByDateAscending,
-    getAllArticlesByDateDescending,
-    getArticleCardInformationOrderedBy,
+    getAllSortedArticles,
     getArticlesByAuthorId,
     getArticleByID,
-    getArticlesCardInformationByUserOrderedBy,
+    getAllSortedArticlesByUser,
     getArticleSortedByPopularity,
     createNewArticle,
     deleteArticle,

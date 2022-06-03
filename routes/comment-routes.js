@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const articleFunctions = require("../modules/display-articles");
+const articleFunctions = require("../public/js/article-load");
 const articleDAO = require("../modules/article-dao.js");
 const commentDao = require("../modules/comment-dao.js");
 const subscribeDao = require("../modules/subscribe-dao");

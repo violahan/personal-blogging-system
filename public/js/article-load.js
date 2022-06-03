@@ -1,5 +1,59 @@
-async function allSortOptions(){
+const imageDAO = require("../../modules/images-dao");
+const commentDAO = require("../../modules/comment-dao");
 
+async function generateArticlesHTML(articleArray, numberToLoad){
+    let cardsToDisplay = "";
+    for (let i = 0; i < numberToLoad; i++) {
+        let articleData = articleArray[i];
+        let thumbnailImage = await imageDAO.getThumbnailImageByArticleID(articleData.articleID);
+
+        let thumbnailImagePath = "";
+        if(thumbnailImage != ""){
+            thumbnailImagePath = await thumbnailImage[0].path;
+        } else {
+            thumbnailImagePath = "";
+        }
+
+        let cardHTML = `
+            <div class="card">
+                <div class="card-left">
+                    <img src="${thumbnailImagePath}" alt="">
+                </div>
+                <div class="card-right">
+                    <div class="card-title">
+                        <a href="./getArticle?articleID=${articleData.articleID}">
+                            <h3>${articleData.title}</h3>
+                        </a>
+                    </div>
+                    <div class="card-author">
+                        <span>
+                            <i class="fa-solid fa-user-pen"></i><a href="./profile?id=${articleData.authorID}"> ${articleData.userName}</a>
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-calendar-days"></i> ${articleData.publishDate}
+                        </span>
+                    </div>
+                    <div class="card-content">
+                        <p>${articleData.content}</p>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-breakline"></div>
+                        <div>
+                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.authorID} comments</span>
+                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.authorID} likes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+        cardsToDisplay = cardsToDisplay + cardHTML;
+    }
+    return cardsToDisplay;
+}
+
+
+
+async function allSortOptions(){
     // Obtain the selected option from the drop down menu - returns the value
     let allSortOption = document.getElementById('allSortOption');
     let allSortOptionValue = allSortOption.options[allSortOption.selectedIndex].value;
@@ -110,12 +164,12 @@ function updateUserArticles(userCardsToDisplay){
 function switchDisplayedArticles(){
 
     if(document.getElementById('switch-article-button').innerText == "Show User Articles"){
-        document.getElementById('all-articles-home').style.display = "none"
-        document.getElementById('user-articles-home').style.display = "block"
+        document.getElementById('all-card-container').style.display = "none"
+        document.getElementById('user-card-container').style.display = "block"
         document.getElementById('switch-article-button').innerText = "Show All Articles"
     } else {
-        document.getElementById('all-articles-home').style.display = "block"
-        document.getElementById('user-articles-home').style.display = "none"
+        document.getElementById('all-card-container').style.display = "block"
+        document.getElementById('user-card-container').style.display = "none"
         document.getElementById('switch-article-button').innerText = "Show User Articles"
     }
    
@@ -138,3 +192,56 @@ function deleteArticle(articleID){
     }
 
 }
+
+
+
+//***************************************************************************
+//Testing tree structure array
+async function getAllCommentsByArticleIDOrdered(articleID){
+    const topLevelComments = await commentDAO.getAllCommentsByArticleIDOrdered(articleID);
+    const treeStructureComments = unflattenComments(topLevelComments)
+    return treeStructureComments;
+}
+
+// This is not a proper unflattening function, but works to make required two levels of comments
+function unflattenComments(flatArrayOfComments){
+    let treeArray = [];
+    // Add children placehodler array to each comment:
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        flatArrayOfComments[i].children = [];
+    }
+    // make top level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        if(flatArrayOfComments[i].parentID == null){
+            treeArray.push(flatArrayOfComments[i])
+        }
+    }
+    // add first level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            if(flatArrayOfComments[i].parentID == treeArray[j].commentID){
+                treeArray[j].children.push(flatArrayOfComments[i]);
+            }
+        }
+    }
+    // add second level of array
+    for (let i = 0; i < flatArrayOfComments.length; i++) {
+        for (let j = 0; j < treeArray.length; j++) {
+            for (let k = 0; k < treeArray[j].children.length; k++) {
+                if(flatArrayOfComments[i].parentID == treeArray[j].children[k].commentID){
+                    treeArray[j].children[k].children.push(flatArrayOfComments[i]);
+                }
+            }
+        }
+    }
+    return treeArray;
+}
+
+
+// Export functions.
+module.exports = {
+    generateArticlesHTML,
+    getAllCommentsByArticleIDOrdered,
+    unflattenComments
+
+};
