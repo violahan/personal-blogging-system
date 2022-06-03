@@ -725,5 +725,13 @@ button:disabled{
 
 
 
+.subscribe-list-avatar{
+    vertical-align: middle;
+
+}
+
+.subscribe-list-text{
+    display: inline-block;
+}
 
 

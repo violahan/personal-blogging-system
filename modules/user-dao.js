@@ -110,6 +110,32 @@ async function changePassword(userID, newPassword) {
         `);
 }
 
+async function getAllFollowersByUserId(userId) {
+    const db = await dbPromise;
+
+    return await db.all(SQL`
+        select * from user
+        where userID in (
+            select userSubscriberID
+            from subscribes
+            where articleAuthorID = ${userId}
+        )
+    `);
+}
+
+async function getAllFollowingUserByUserId(userId) {
+    const db = await dbPromise;
+
+    return await db.all(SQL`
+        select * from user
+        where userID in (
+            select articleAuthorID
+            from subscribes
+            where userSubscriberID = ${userId}
+        )
+    `);
+}
+
 module.exports = {
     createNewUser,
     getUserByUserName,
@@ -120,5 +146,7 @@ module.exports = {
     getAllUsernames,
     updateUser,
     deleteUser,
-    changePassword
+    changePassword,
+    getAllFollowersByUserId,
+    getAllFollowingUserByUserId
 };
