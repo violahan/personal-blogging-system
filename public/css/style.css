@@ -663,6 +663,16 @@ form>* {
     height: 2px;
 }
 
+.card-display-mode-switch{
+    display: flex;
+    margin-left: 10%;
+}
+
+.card-sorter{
+    margin-top: 20px;
+    margin-left: 10%;
+}
+
 .switch {
     position: relative;
     display: inline-block;
