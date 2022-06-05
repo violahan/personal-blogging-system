@@ -52,18 +52,12 @@ router.get("/", async function(req, res) {
 
 //Basic homepage showing all articles - but no user specific items
 router.get("/noUser", async function(req, res) {
-
-    // Get default article view - all articles in descending order from latest:
+   // Get default article view - all articles in descending order from latest:
   let orderColumn = "publishDate";
   let orderBy = "desc";
-
-  let orderedArticles = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
-  let totalArticles = orderedArticles.length;
-
-  // This call can be adjusted (change total articles) to change the number of articles initially loaded
-  let cardsToDisplay = await articleFunctions.loadArticles(orderedArticles, totalArticles)
-
-  res.locals.allArticleToDisplay = cardsToDisplay;
+  let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
+  let totalArticles = articlesData.length;
+  res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
   res.locals.title = 'Home';
   res.render("home");
 });
