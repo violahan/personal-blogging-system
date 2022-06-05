@@ -54,7 +54,8 @@ async function refreshArticleCards(){
     let sortOrderValue = sortOrderElement.options[sortOrderElement.selectedIndex].value;
 
     let userId;
-    if(document.getElementById("only-display-users-article").checked){
+    const onlyDisplayUserElem = document.getElementById("only-display-users-article");
+    if (onlyDisplayUserElem && onlyDisplayUserElem.checked) {
         let userIdResponse = await fetch("./getUserID");
         userId = await userIdResponse.json();
     }
