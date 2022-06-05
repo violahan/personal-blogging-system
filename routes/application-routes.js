@@ -67,30 +67,6 @@ router.get("/noUser", async function(req, res) {
 });
 
 
-router.get("/signup", async function (req, res) {
-  res.locals.title = "Sign up";
-  res.render("signup");
-});
-
-router.post("/signup", async function (req, res) {
-  //get user data
-  const user = {
-    username: req.body.username,
-    password: req.body.password,
-    fname: req.body.fname,
-    lname: req.body.lname,
-    dob: req.body.dob,
-    bio: req.body.bio,
-    avatarPath: req.body.avatar,
-    adminFlag: 0,
-  };
-  //hash password
-  user.password = await bcrypt.hashPassword(user.password);
-  //save user, return the user_id we might need it later
-  const userId = await userDao.createNewUser(user);
-  res.redirect("/login");
-});
-
 // load page to display a given article will require /getArticle?articleID=XXX in the URL
 router.get("/getArticle", async function (req, res){
  
@@ -392,55 +368,6 @@ router.post("/editProfile", async function (req, res) {
   };
   await userDao.updateUser(userToEdit);
   res.redirect("/profile?id="+userToEdit.userID)
-})
-
-router.get("/deleteUser", async function (req, res) {
-  const userId = req.query.userId;
-  const articleImages = await imageDAO.getAllImagesByAuthorID(userId)
-  if(articleImages){
-    for (let i = 0; i < articleImages.length; i++) {
-      let imagePathToDelete = articleImages[i].path;
-      let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
-      if(articleImages[i].fileName != "default_thumbnail.png"){
-        fs.unlinkSync(fullImageFilePath)
-      }
-    }
-  }
-  await notificationDAO.deleteAllNotificationsRelatedToUser(userId);
-  await commentDao.deleteCommentsByUserID(userId);
-  await userDao.deleteUser(userId);
-  res.locals.user = null;
-  res.clearCookie("authToken");
-  res.redirect("/");
-})
-
-router.get("/changePassword", verifyAuthenticated, async function (req, res) {
-  res.locals.title = "Change password";
-  res.render("change-password");
-});
-
-router.post("/changePassword", async function (req, res) {
-
-  const user = await userDao.getUserByID(req.body.userID);
-  if (user) {
-    const currentPassword = req.body.currentPassword;
-    const validPassword = await bcrypt.comparePassword(currentPassword, user.password);
-    if (validPassword) {
-      let newPassword = req.body.password;
-      newPassword= await bcrypt.hashPassword(newPassword);
-      await userDao.changePassword(user.userID, newPassword);
-      //re-login after user change password successfully
-      res.clearCookie("authToken");
-      res.locals.user = null;
-      res.redirect("./login");
-    } else {
-      res.locals.error = 'Wrong current password';
-      res.render("change-password");
-    }
-  } else {
-    res.locals.error = 'User not exists';
-    res.render("change-password");
-  }
 })
 
 
