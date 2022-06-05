@@ -31,8 +31,8 @@ function generateArticlesHTML(articleArray, numberToLoad){
                     <div class="card-info">
                         <div class="card-breakline"></div>
                         <div>
-                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.authorID} comments</span>
-                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.authorID} likes</span>
+                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.commentCount} comments</span>
+                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.likeCount} likes</span>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,8 @@ async function refreshArticleCards(){
     let sortOrderValue = sortOrderElement.options[sortOrderElement.selectedIndex].value;
 
     let userId;
-    if(document.getElementById("only-display-users-article").checked){
+    const onlyDisplayUserElem = document.getElementById("only-display-users-article");
+    if (onlyDisplayUserElem && onlyDisplayUserElem.checked) {
         let userIdResponse = await fetch("./getUserID");
         userId = await userIdResponse.json();
     }

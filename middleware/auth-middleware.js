@@ -7,13 +7,8 @@ async function addUserToLocals(req, res, next) {
 }
 
 async function verifyAuthenticated(req, res, next) {
-
-
   //check if user exists
   if (res.locals.user) {
-    
-
-    
     next();
   } else {
     //check if token is in cookies
@@ -22,26 +17,18 @@ async function verifyAuthenticated(req, res, next) {
       const user = await userDao.retrieveUserWithAuthToken(req.cookies.authToken);
       
       if(user == undefined){
-        
-
         res.clearCookie("authToken");
         res.locals.user = null;
-        res.redirect("./noUser");
-        
+        res.redirect("./login");
       } else  {
-       
-
         res.locals.user = user;
         next();
       }
-
     } else {
-      
       // A user is able to see the home page if they are not logged in
       // this redirects to home, rather than login
       res.locals.user = null;
-      res.redirect("./noUser");
-
+      res.redirect("./login");
     }
   }
 }

@@ -25,27 +25,30 @@ const { resourceLimits } = require("worker_threads");
 
 
 // Display the home page with list of all articles
-router.get("/", verifyAuthenticated, async function(req, res) {
+router.get("/", async function(req, res) {
 
-    const user = res.locals.user;
+  const user = res.locals.user;
+  if (!user) {
+    res.redirect("./noUser");
+  } else {
     if(req.query.deleteMessage){
       res.locals.deleteMessage = req.query.deleteMessage
     }
-
+  
     // Get default article view - all articles in descending order from latest:
     let orderColumn = "publishDate";
     let orderBy = "desc";
     let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
     let totalArticles = articlesData.length;
     res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
-
-    if(user !== ""){
-      let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
-      let totalUserArticles = userOrderedArticles.length;
-      res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
-    }
+  
+    let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
+    let totalUserArticles = userOrderedArticles.length;
+    res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
+    
     res.locals.title = 'Home';
     res.render("home");
+  }
 });
 
 //Basic homepage showing all articles - but no user specific items
@@ -61,133 +64,10 @@ router.get("/noUser", async function(req, res) {
 });
 
 
-router.get("/signup", async function (req, res) {
-  res.locals.title = "Sign up";
-  res.render("signup");
-});
-
-router.post("/signup", async function (req, res) {
-  //get user data
-  const user = {
-    username: req.body.username,
-    password: req.body.password,
-    fname: req.body.fname,
-    lname: req.body.lname,
-    dob: req.body.dob,
-    bio: req.body.bio,
-    avatarPath: req.body.avatar,
-    adminFlag: 0,
-  };
-  //hash password
-  user.password = await bcrypt.hashPassword(user.password);
-  //save user, return the user_id we might need it later
-  const userId = await userDao.createNewUser(user);
-  res.redirect("/login");
-});
-
-// load page to display a given article will require /getArticle?articleID=XXX in the URL
-router.get("/getArticle", async function (req, res){
- 
-  if(req.query.deleteMessage){
-    res.locals.deleteMessage = req.query.deleteMessage
-  }
-
-  const articleID = req.query.articleID;
-  const articleInfo = await articleDAO.getArticleByID(articleID);
-
-  const articleImages = await imageDAO.getMainImageByArticleID(articleID)
-
-  if(articleImages == "undefined"){
-    res.locals.articleImages = "";
-  } else {
-    res.locals.articleImages = articleImages[0];
-  }
-
-  const commentsToDisplay = await articleFunctions.getAllCommentsByArticleIDOrdered(articleID)
-
-// Get details of all likes on article
-  const likesOnArticle = await likeDao.getLikesByArticle(articleID)
-
-  res.locals.numberOfLikes = likesOnArticle.length
-
-  // Check if user has liked the article
-    if (res.locals.user){
-      // There is a logged in user
-
-      
-      let userHasLiked = "";
-      for (let i = 0; i < likesOnArticle.length; i++) {
-        
-        if (res.locals.user.userID == likesOnArticle[i].userID){
-          userHasLiked = "true";
-        }
-        
-      }
-      
-      res.locals.userHasLiked = userHasLiked;
-
-    } else {
-      
-      // There is no logged in user - user has not liked
-      res.locals.userHasLiked = ""
-
-    }
-
-  // Check if user has subscribed to author
-    if (res.locals.user){
-      // There is a logged in user
-
-      // Get details of all subscribers to the author
-      const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(articleInfo.authorID)
-      
-      let userHasSubscribed = "";
-      for (let i = 0; i < subscribersToAuthor.length; i++) {
-        
-        if (res.locals.user.userID == subscribersToAuthor[i].userSubscriberID){
-          userHasSubscribed = "true";
-        }
-        
-      }
-      
-      res.locals.userHasSubscribed = userHasSubscribed;
-
-    } else {
-      
-      // There is no logged in user - user has not Subscribed
-      res.locals.userHasSubscribed = ""
-
-    }
-// 
-
-  res.locals.articleInfo = articleInfo;
-  res.locals.commentsToDisplay = commentsToDisplay;
-  res.locals.title = "Article";
-
-  res.render("article")
-});
-
-
-// Route to allow AJAX requests from clientside JS for ordered articles
-router.get("/sortedAllArticles", async function (req, res) {
-  // Obtain the sort option, and the order option from the 
-  // request generated on change of the filters in handlebars
-  const orderColumn = req.query.value;
-  const orderBy = req.query.order;
-  const userId = req.query.userId || null;
-  let orderedArticles;
-  if(userId){
-    orderedArticles = await articleDAO.getAllSortedArticlesByUser(userId, orderColumn, orderBy);
-  }
-  else{
-    orderedArticles = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
-  }
-  res.json(orderedArticles)
-});
-
 router.get("/profile", verifyAuthenticated, async function (req, res) {
   const userId = req.query.id;
   let user;
-  if (userId === res.locals.user.userID) {
+  if (userId == res.locals.user.userID) {
     res.locals.isCurrentUser = true;
     user = res.locals.user;
   } else {
@@ -246,48 +126,6 @@ router.get("/getAllUsernames", async function (req, res) {
   res.json(usernames);
 })
   
-router.get("/deleteArticle", async function (req, res){
-  //As the deleting an article is a get request, check that the 
-  // user is allowed to delete the article - either they are the
-  // article author
-  const articleID = req.query.articleID;
-  const articleAuthorID = req.query.articleAuthorID;
-  const currentUserID = res.locals.user.userID
-    if(articleAuthorID === currentUserID){
-      // Allowed to delete the article
-      deleteMessage = "Article deleted"
-      // Delete items in order to ensure no database issues:
-      // Delete all comments on article
-      await commentDao.deleteAllArticleComments(articleID);
-      // Delete all likes
-      await likeDao.deleteAllArticleLikes(articleID)
-      // Delete images
-      // Delete images from server
-      const articleImages = await imageDAO.getAllImageByArticleID(articleID)
-      if(articleImages){
-        for (let i = 0; i < articleImages.length; i++) {
-          let imagePathToDelete = articleImages[i].path;
-          let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
-          if(articleImages[i].fileName == "default_thumbnail.png"){
-            // Do not delete the default thumbnail image 
-          } else {
-            // Delete the image on the server
-            fs.unlinkSync(fullImageFilePath)
-          }
-        }
-      }
-      // Delete images from Database
-      await imageDAO.deleteAllArticleImages(articleID)
-      // Delete the article from the Database
-      await articleDAO.deleteArticle(articleID)
-    } else {
-      deleteMessage = "Not authorised to delete comment"
-    }
-    // Once an article is deleted, check to see if any notifications related to it
-      // and remove them
-      await notificationDAO.removeNotificationsByTypeAndIDLink("newArticle", articleID)
-  res.redirect("/?deleteMessage="+deleteMessage)
-})
 
 router.get("/likeArticle", async function (req, res){
 
@@ -386,55 +224,6 @@ router.post("/editProfile", async function (req, res) {
   };
   await userDao.updateUser(userToEdit);
   res.redirect("/profile?id="+userToEdit.userID)
-})
-
-router.get("/deleteUser", async function (req, res) {
-  const userId = req.query.userId;
-  const articleImages = await imageDAO.getAllImagesByAuthorID(userId)
-  if(articleImages){
-    for (let i = 0; i < articleImages.length; i++) {
-      let imagePathToDelete = articleImages[i].path;
-      let fullImageFilePath = "./public"+imagePathToDelete.substring(imagePathToDelete.indexOf("/"));
-      if(articleImages[i].fileName != "default_thumbnail.png"){
-        fs.unlinkSync(fullImageFilePath)
-      }
-    }
-  }
-  await notificationDAO.deleteAllNotificationsRelatedToUser(userId);
-  await commentDao.deleteCommentsByUserID(userId);
-  await userDao.deleteUser(userId);
-  res.locals.user = null;
-  res.clearCookie("authToken");
-  res.redirect("/");
-})
-
-router.get("/changePassword", verifyAuthenticated, async function (req, res) {
-  res.locals.title = "Change password";
-  res.render("change-password");
-});
-
-router.post("/changePassword", async function (req, res) {
-
-  const user = await userDao.getUserByID(req.body.userID);
-  if (user) {
-    const currentPassword = req.body.currentPassword;
-    const validPassword = await bcrypt.comparePassword(currentPassword, user.password);
-    if (validPassword) {
-      let newPassword = req.body.password;
-      newPassword= await bcrypt.hashPassword(newPassword);
-      await userDao.changePassword(user.userID, newPassword);
-      //re-login after user change password successfully
-      res.clearCookie("authToken");
-      res.locals.user = null;
-      res.redirect("./login");
-    } else {
-      res.locals.error = 'Wrong current password';
-      res.render("change-password");
-    }
-  } else {
-    res.locals.error = 'User not exists';
-    res.render("change-password");
-  }
 })
 
 
