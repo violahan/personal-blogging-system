@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const userDao = require("../modules/user-dao.js");
 const bcrypt = require("../Helper/bcrypt-helper");
+const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
 
 // Whenever we navigate to /login, if we're already logged in, redirect to "/".
 // Otherwise, render the "login" view.

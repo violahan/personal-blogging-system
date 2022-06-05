@@ -25,27 +25,29 @@ const { resourceLimits } = require("worker_threads");
 
 
 // Display the home page with list of all articles
-router.get("/", verifyAuthenticated, async function(req, res) {
+router.get("/", async function(req, res) {
 
-    const user = res.locals.user;
-    if(req.query.deleteMessage){
-      res.locals.deleteMessage = req.query.deleteMessage
-    }
+  const user = res.locals.user;
+  if (!user) {
+    res.redirect("./noUser");
+  }
+  if(req.query.deleteMessage){
+    res.locals.deleteMessage = req.query.deleteMessage
+  }
 
-    // Get default article view - all articles in descending order from latest:
-    let orderColumn = "publishDate";
-    let orderBy = "desc";
-    let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
-    let totalArticles = articlesData.length;
-    res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
+  // Get default article view - all articles in descending order from latest:
+  let orderColumn = "publishDate";
+  let orderBy = "desc";
+  let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
+  let totalArticles = articlesData.length;
+  res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
 
-    if(user !== ""){
-      let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
-      let totalUserArticles = userOrderedArticles.length;
-      res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
-    }
-    res.locals.title = 'Home';
-    res.render("home");
+  let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
+  let totalUserArticles = userOrderedArticles.length;
+  res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
+  
+  res.locals.title = 'Home';
+  res.render("home");
 });
 
 //Basic homepage showing all articles - but no user specific items
@@ -169,7 +171,7 @@ router.get("/sortedAllArticles", async function (req, res) {
 router.get("/profile", verifyAuthenticated, async function (req, res) {
   const userId = req.query.id;
   let user;
-  if (userId === res.locals.user.userID) {
+  if (userId == res.locals.user.userID) {
     res.locals.isCurrentUser = true;
     user = res.locals.user;
   } else {
