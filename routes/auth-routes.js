@@ -46,7 +46,7 @@ router.post("/login", async function (req, res) {
       // Auth fail
       res.locals.user = null;
       //    res.setToastMessage("Password is incorrect!");
-      res.redirect("/");
+      res.redirect("/login");
     }
 
     // if no matching user:
@@ -54,7 +54,7 @@ router.post("/login", async function (req, res) {
     // Auth fail
     res.locals.user = null;
     //    res.setToastMessage("No such user!");
-    res.redirect("/");
+    res.redirect("/login");
   }
 });
 
