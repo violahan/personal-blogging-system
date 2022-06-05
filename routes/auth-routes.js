@@ -4,6 +4,11 @@ const router = express.Router();
 const userDao = require("../modules/user-dao.js");
 const bcrypt = require("../Helper/bcrypt-helper");
 const { verifyAuthenticated } = require("../middleware/auth-middleware.js");
+const imageDAO = require("../modules/images-dao");
+const notificationDAO = require("../modules/notifications-dao.js");
+const commentDao = require("../modules/comment-dao.js");
+
+const fs = require("fs");
 
 // Whenever we navigate to /login, if we're already logged in, redirect to "/".
 // Otherwise, render the "login" view.
