@@ -31,8 +31,8 @@ function generateArticlesHTML(articleArray, numberToLoad){
                     <div class="card-info">
                         <div class="card-breakline"></div>
                         <div>
-                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.authorID} comments</span>
-                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.authorID} likes</span>
+                            <span style="float: left"><i class="fa-solid fa-comment-dots"></i> ${articleData.commentCount} comments</span>
+                            <span style="float: right"><i class="fa-solid fa-heart"></i> ${articleData.likeCount} likes</span>
                         </div>
                     </div>
                 </div>
