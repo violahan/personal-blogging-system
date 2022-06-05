@@ -1040,4 +1040,8 @@ button:disabled{
     color: black;
 }
 
+#pwd-error, #username-error {
+    color: red;
+}
+
 
