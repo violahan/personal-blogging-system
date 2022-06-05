@@ -30,24 +30,25 @@ router.get("/", async function(req, res) {
   const user = res.locals.user;
   if (!user) {
     res.redirect("./noUser");
-  }
-  if(req.query.deleteMessage){
-    res.locals.deleteMessage = req.query.deleteMessage
-  }
-
-  // Get default article view - all articles in descending order from latest:
-  let orderColumn = "publishDate";
-  let orderBy = "desc";
-  let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
-  let totalArticles = articlesData.length;
-  res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
-
-  let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
-  let totalUserArticles = userOrderedArticles.length;
-  res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
+  } else {
+    if(req.query.deleteMessage){
+      res.locals.deleteMessage = req.query.deleteMessage
+    }
   
-  res.locals.title = 'Home';
-  res.render("home");
+    // Get default article view - all articles in descending order from latest:
+    let orderColumn = "publishDate";
+    let orderBy = "desc";
+    let articlesData = await articleDAO.getAllSortedArticles(orderColumn, orderBy);
+    let totalArticles = articlesData.length;
+    res.locals.articlesHTML = await articleFunctions.generateArticlesHTML(articlesData, totalArticles);
+  
+    let userOrderedArticles = await articleDAO.getAllSortedArticlesByUser(user.userID, orderColumn, orderBy);
+    let totalUserArticles = userOrderedArticles.length;
+    res.locals.userArticlesHTML = await articleFunctions.generateArticlesHTML(userOrderedArticles, totalUserArticles);
+    
+    res.locals.title = 'Home';
+    res.render("home");
+  }
 });
 
 //Basic homepage showing all articles - but no user specific items
