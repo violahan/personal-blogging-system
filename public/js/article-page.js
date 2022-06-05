@@ -1,4 +1,4 @@
-const { blit } = require("jimp");
+// const { blit } = require("jimp");
 
 async function likeArticle(articleID, userID){
 
