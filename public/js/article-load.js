@@ -1,5 +1,5 @@
-// const imageDAO = require("../../modules/images-dao");
-// const commentDAO = require("../../modules/comment-dao");
+const imageDAO = require("../../modules/images-dao");
+const commentDAO = require("../../modules/comment-dao");
 
 function generateArticlesHTML(articleArray, numberToLoad){
     let cardsToDisplay = "";
@@ -147,10 +147,10 @@ function unflattenComments(flatArrayOfComments){
 }
 
 
-// // Export functions.
-// module.exports = {
-//     generateArticlesHTML,
-//     getAllCommentsByArticleIDOrdered,
-//     unflattenComments
+// Export functions.
+module.exports = {
+    generateArticlesHTML,
+    getAllCommentsByArticleIDOrdered,
+    unflattenComments
 
-// };
+};
