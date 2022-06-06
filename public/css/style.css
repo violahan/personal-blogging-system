@@ -811,9 +811,18 @@ input:checked + .slider:before {
 .details-author-right{
     position: absolute;
     top: 30%;
-    left: 70%;
-
+    left: 60%;
 }
+
+.details-author-right span{
+    margin: 0 10px;
+}
+
+.details-likes-count i{
+    color: #f24691;
+}
+
+
 
 .details-container h1{
     font-family: "Arial Black";
