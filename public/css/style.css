@@ -824,7 +824,8 @@ input:checked + .slider:before {
 
 .details-image img{
     margin: 40px auto;
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .details-content{
