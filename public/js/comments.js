@@ -81,7 +81,6 @@ function generateBasicCommentCard(commentDetails, level, label) {
         commentCard.innerHTML = `
                 <div class="comment-title">
                     <div class="comment-title-left">
-                        <span class="comment-label">${label}</span>&nbsp;&nbsp;
                         <span>Deleted User</span>
                     </div>
                     <div class="comment-title-right">
@@ -96,7 +95,6 @@ function generateBasicCommentCard(commentDetails, level, label) {
         commentCard.innerHTML = `
             <div class="comment-title">
                 <div class="comment-title-left">
-                <span class="comment-label">${label}</span>&nbsp;&nbsp;
                 <span>
                     <img src="${commentDetails.avatarFilePath}" alt="" class="avatar">
                 </span>
