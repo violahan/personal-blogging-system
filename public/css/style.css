@@ -999,7 +999,8 @@ input:checked + .slider:before {
 
 
 
-button:disabled{
+#save-user-btn:disabled, 
+#article-submit-button:disabled{
     background-color: #dddddd;
     color: black;
 }
@@ -1040,7 +1041,7 @@ button:disabled{
     color: black;
 }
 
-#pwd-error, #username-error {
+#pwd-error, #username-error , .error-text{
     color: red;
 }
 

@@ -228,7 +228,7 @@ router.get("/editArticle", async function (req, res) {
     }
 
     res.locals.imagesToEdit = articleImages;
-
+    res.locals.title = "Edit Article";
     res.render("edit-article");
   } else {
     // Not allowed to edit article
