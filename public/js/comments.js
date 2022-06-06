@@ -41,7 +41,7 @@ async function generateCommentHTML(commentsData) {
 
         // Comment Card Level 0
         let commentCardLevel0 = generateBasicCommentCard(commentsData[i], 0, "Level "+(i+1));
-        let commentOpsLevel0 = await generateOperationDiv(commentsData[i]);
+        let commentOpsLevel0 = await generateOperationDiv(commentsData[i], 0);
         commentCardLevel0.appendChild(commentOpsLevel0);
         commentsContainer.appendChild(commentCardLevel0)
 
@@ -50,14 +50,14 @@ async function generateCommentHTML(commentsData) {
             for (let j = 0; j < commentsData[i].children.length; j++) {
                 // Comment Card Level 1
                 let commentCardLevel1 = generateBasicCommentCard(commentsData[i].children[j], 1, "Reply "+(j+1));
-                let commentOpsLevel1 = await generateOperationDiv(commentsData[i].children[j]);
+                let commentOpsLevel1 = await generateOperationDiv(commentsData[i].children[j], 1);
                 commentCardLevel1.appendChild(commentOpsLevel1);
                 commentsContainer.appendChild(commentCardLevel1);
                 // If this comment has "grandchildren" comments
                 if (commentsData[i].children[j].children !== "") {
                     for (let k = 0; k < commentsData[i].children[j].children.length; k++) {
                         let commentCardLevel2 = generateBasicCommentCard(commentsData[i].children[j].children[k], 2, "Reply "+(k+1));
-                        let commentOpsLevel2 = await generateOperationDiv(commentsData[i].children[j].children[k]);
+                        let commentOpsLevel2 = await generateOperationDiv(commentsData[i].children[j].children[k], 2);
                         commentCardLevel2.appendChild(commentOpsLevel2);
                         commentsContainer.appendChild(commentCardLevel2);
                     }
@@ -99,7 +99,7 @@ function generateBasicCommentCard(commentDetails, level, label) {
                     <img src="${commentDetails.avatarFilePath}" alt="" class="avatar">
                 </span>
                 <span>
-                    <p><a href="./profile?id=${commentDetails.authorID}">${commentDetails.userName}</a></p>
+                    <p><a href="./profile?id=${commentDetails.commentAuthorID}">${commentDetails.userName}</a></p>
                 </span>
                 </div>
                 
@@ -118,7 +118,7 @@ function generateBasicCommentCard(commentDetails, level, label) {
 }
 
 // Generate an ops div which contains "delete button" and "reply button"
-async function generateOperationDiv(commentDetails) {
+async function generateOperationDiv(commentDetails, level) {
     let userIdResponse = await fetch("./getUserID");
     let currentUserId = await userIdResponse.json();
 
@@ -162,7 +162,7 @@ async function generateOperationDiv(commentDetails) {
     }
 
     // 2. Reply Comment
-    if (commentDetails.commentAuthorID !== 1 && currentUserId !== "") {
+    if (commentDetails.commentAuthorID !== 1 && currentUserId !== "" && level < 2) {
 
         let replyBox = document.createElement('div');
         replyBox.setAttribute("class", "reply-box");
