@@ -3,6 +3,12 @@
     <span class="close" id="loginClose">&times;</span>
     <form class="login-form" action="./login" method="POST">
         <h1>Login</h1>
+        {{#if loginError}}
+        <div class="alert-message">
+            <span class="alert-message-close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{loginError}}
+        </div>
+        {{/if}}
         <div>
             <label for="txtUserName">Username:</label>
             <input type="text" name="userName" id="txtUserName" required>
