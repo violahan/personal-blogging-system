@@ -1041,7 +1041,7 @@ input:checked + .slider:before {
     color: black;
 }
 
-#pwd-error, #username-error {
+#pwd-error, #username-error , .error-text{
     color: red;
 }
 
