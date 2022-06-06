@@ -16,6 +16,7 @@ router.get("/login", function (req, res) {
   if (res.locals.user) {
     res.redirect("/");
   } else {
+    res.locals.loginError = "Username or password was incorrect"
     res.locals.title = "Login";
     res.render("login");
   }
