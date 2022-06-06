@@ -209,6 +209,7 @@ body {
     border: 1px solid grey;
     margin: 20px 0 40px 0;
     padding: 10px;
+    text-align: center;
 }
 
 /*profile page*/
@@ -620,11 +621,18 @@ form>* {
 .card-left{
     width: 50%;
     float: left;
+    text-align: center;
 }
 
 .card-left > img{
-    height: 100%;
+    /*old code */
     width: 100%;
+    height: 100%;
+
+    /*max-height: 100%;*/
+    /*width: 100%;*/
+    /*object-fit: contain;*/
+    /*vertical-align: middle;*/
 }
 
 .card-right{
@@ -713,11 +721,11 @@ form>* {
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #2A53C1;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2A53C1;
 }
 
 input:checked + .slider:before {
@@ -810,9 +818,18 @@ input:checked + .slider:before {
 .details-author-right{
     position: absolute;
     top: 30%;
-    left: 70%;
-
+    left: 60%;
 }
+
+.details-author-right span{
+    margin: 0 10px;
+}
+
+.details-likes-count i{
+    color: #f24691;
+}
+
+
 
 .details-container h1{
     font-family: "Arial Black";
@@ -824,7 +841,8 @@ input:checked + .slider:before {
 
 .details-image img{
     margin: 40px auto;
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .details-content{
@@ -1043,6 +1061,10 @@ input:checked + .slider:before {
 
 #pwd-error, #username-error , .error-text{
     color: red;
+}
+
+.notification-time-stamp{
+    font-size: 60%;
 }
 
 

@@ -27,7 +27,7 @@
                 <div class="analytics-article-card">
                     <div class="analytics-article-card-body">
                         <h2>{{this.title}}</h2>
-                        <p>{{this.content}}</p>
+                        <p>{{{this.content}}}</p>
                     </div>
                     <div class="analytics-article-card-bottom-line"></div>
                 </div>
@@ -38,6 +38,7 @@
             <h1>Trending </h1>
             <div class="analytics-graph-card">
                 <canvas id="commentChart" width="200" height="120"></canvas>
+                <p>Note: only show data from the past 5 dates.</p>
             </div>
             <div class="analytics-graph-card">
                 <canvas id="subscribeChart" width="200" height="120"></canvas>
