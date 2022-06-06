@@ -33,8 +33,8 @@ const res = require("express/lib/response");
 // Adjust these values to change size of images or thumbnails:
 const articleImageMaxWidth = 600;
 const articleImageMaxHeight = 600;
-const thumbnailImageMaxWidth = 150;
-const thumbnailImageMaxHeight = 150;
+const thumbnailImageMaxWidth = 280;
+const thumbnailImageMaxHeight = 280;
 
 router.get("/createArticle", verifyAuthenticated, async function (req, res) {
   res.locals.imageMaxWidth = articleImageMaxWidth;
