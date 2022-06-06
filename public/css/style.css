@@ -1000,7 +1000,8 @@ input:checked + .slider:before {
 
 
 #save-user-btn:disabled, 
-#article-submit-button:disabled{
+#article-submit-button:disabled,
+#comment-submit-button:disabled {
     background-color: #dddddd;
     color: black;
 }

@@ -88,9 +88,9 @@
                 <div>
                     <form action="./makeComment?articleID={{articleInfo.articleID}}" method="POST">
                         <label for="comment">Enter Comment:</label>
-                        <textarea name="comment" rows="8" cols="50"></textarea>
-                        <button type="submit">Post Comment</button>
-                         <iframe onload="checkCommentHasContent()" style="display: none"></iframe>
+                        <textarea id="comment-text-box" onkeyup="checkCommentHasContent()" name="comment" rows="8" cols="50"></textarea>
+                        <button id="comment-submit-button" type="submit">Post Comment</button>
+                         <iframe onload="checkCommentHasContent()" style="display: none"></iframe> 
                     </form>
                 </div>
             {{/if}}
