@@ -29,3 +29,13 @@ async function subscribeUserFromList(authorID, userID) {
         b.innerText = subscriptionConfirmation;
     })
 }
+
+// Function to forceably remove a subscriber from an author (by the author)
+async function removeSubscriber(userID, authorID) {
+    
+    const removeSubscribe = await fetch(`./removeSubscriber?authorID=${authorID}&userID=${userID}`)
+    const subscriptionConfirmation = await removeSubscribe.json();
+    document.getElementById('remove-subscriber-button').innerText = subscriptionConfirmation;
+    document.getElementById('remove-subscriber-button').disabled = true;
+
+}
