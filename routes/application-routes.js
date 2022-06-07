@@ -206,6 +206,37 @@ router.get("/subscribeToAuthor", async function (req, res){
 
 })
 
+router.get("/removeSubscriber", async function (req, res){
+
+  const authorID = req.query.authorID;
+  const subscribeUserID = req.query.userID;
+
+  const subscriberDetails = await userDao.getUserByID(subscribeUserID);
+  const subscriberUserName = subscriberDetails.userName;
+  const subscribersToAuthor = await subscribeDao.getSubscribesByAuthorId(authorID);
+  
+  // Check in place to ensure that the current user, is the user that hit like
+  // Required as this is a get request and URL could be entered by anyone.
+  if(res.locals.user.userID == authorID){
+    
+      //Remove subscriber:
+      await subscribeDao.removeFollow(subscribeUserID, authorID);
+      // Once a user has unsubscribed, check to see if any notifications related to it
+      // and remove them
+      await notificationDAO.removeNotificationsByTypeAndIDLink("newSubscriber", subscribeUserID)
+      res.json("Followed Removed")
+     
+    }
+  else {
+    // No logged in user / user does not match user that hit like - do nothing.
+  }
+
+})
+
+
+
+
+
 router.get("/editProfile", verifyAuthenticated, async function (req, res) {
   res.locals.title = "Edit Profile";
   res.locals.userToEdit = res.locals.user;

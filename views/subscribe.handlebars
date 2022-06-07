@@ -19,6 +19,7 @@
             <div>
                 <img class="avatar subscribe-list-avatar" src="{{this.avatarFilePath}}" alt="">
                 <a href="./profile?id={{this.userID}}"><h3 class="subscribe-list-text"> {{this.fName}} {{this.lName}}</h3> </a>
+                <button id="remove-subscriber-button" class="subscribe-button-{{this.userID}}" onclick="removeSubscriber({{this.userID}}, {{../user.userID}})" >Remove Subscriber</button>
                 {{#ifCond this.userID '!=' ../user.userID}} 
                     {{#if isSubscribed}}
                         <button id="subscribe-button" class="subscribe-button-{{this.userID}}" onclick="subscribeUserFromList({{this.userID}}, {{../user.userID}})" >Unsubscribe</button>
@@ -38,6 +39,7 @@
             <div>
                 <img class="avatar subscribe-list-avatar" src="{{this.avatarFilePath}}" alt="">
                 <a href="./profile?id={{this.userID}}"><h3 class="subscribe-list-text"> {{this.fName}} {{this.lName}}</h3> </a>
+                
                 {{#ifCond this.userID '!=' ../user.userID}}  
                     {{#if isSubscribed}}
                         <button id="subscribe-button" class="subscribe-button-{{this.userID}}" onclick="subscribeUserFromList({{this.userID}}, {{../user.userID}})" >Unsubscribe</button>

@@ -269,6 +269,22 @@ body {
     border: 1px solid #f24691;
 }
 
+#remove-subscriber-button{
+    font-family: "Arial";
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f24691;
+    color: white;
+    border: 1px solid white;
+}
+
+#remove-subscriber-button:hover {
+    background-color: white;
+    color: #f24691;
+    border: 1px solid #f24691;
+}
+
 #HR{
     border: 1px solid lightgray;
 }
@@ -391,6 +407,16 @@ body {
     margin: 15px;
     float: right;
 }
+
+#remove-subscriber-button{
+    margin: 15px;
+    float: right;
+}
+#remove-subscriber-button:disabled{
+    background-color: #dddddd;
+    color: black;
+}
+
 
 
 
@@ -1018,7 +1044,8 @@ input:checked + .slider:before {
 
 
 #save-user-btn:disabled, 
-#article-submit-button:disabled{
+#article-submit-button:disabled,
+#comment-submit-button:disabled {
     background-color: #dddddd;
     color: black;
 }
