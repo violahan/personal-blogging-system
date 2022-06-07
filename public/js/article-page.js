@@ -35,7 +35,8 @@ async function removeSubscriber(userID, authorID) {
     
     const removeSubscribe = await fetch(`./removeSubscriber?authorID=${authorID}&userID=${userID}`)
     const subscriptionConfirmation = await removeSubscribe.json();
-    document.getElementById('remove-subscriber-button').innerText = subscriptionConfirmation;
-    document.getElementById('remove-subscriber-button').disabled = true;
-
+    document.querySelectorAll(`.remove-subscribe-button-${userID}`).forEach(b => {
+        b.innerText = subscriptionConfirmation;
+        b.disabled = true;
+    })
 }

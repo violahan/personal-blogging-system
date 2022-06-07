@@ -16,10 +16,15 @@
     <div class="profile-body-right">
         <h1><i class="fa-solid"></i> Followers</h1>
         {{#each result.followers}}
-            <div>
+            <div id="followers-cards">
+                <div>
                 <img class="avatar subscribe-list-avatar" src="{{this.avatarFilePath}}" alt="">
                 <a href="./profile?id={{this.userID}}"><h3 class="subscribe-list-text"> {{this.fName}} {{this.lName}}</h3> </a>
-                <button id="remove-subscriber-button" class="subscribe-button-{{this.userID}}" onclick="removeSubscriber({{this.userID}}, {{../user.userID}})" >Remove Subscriber</button>
+                </div>
+                <div>
+                    <button id="remove-subscriber-button" class="remove-subscribe-button-{{this.userID}}" onclick="removeSubscriber({{this.userID}}, {{../user.userID}})" >Remove Subscriber</button>
+                </div>
+                <div>
                 {{#ifCond this.userID '!=' ../user.userID}} 
                     {{#if isSubscribed}}
                         <button id="subscribe-button" class="subscribe-button-{{this.userID}}" onclick="subscribeUserFromList({{this.userID}}, {{../user.userID}})" >Unsubscribe</button>
@@ -27,7 +32,7 @@
                         <button id="subscribe-button" class="subscribe-button-{{this.userID}}" onclick="subscribeUserFromList({{this.userID}}, {{../user.userID}})" >Subscribe</button>
                     {{/if}}
                 {{/ifCond}}
-                
+                </div>
             </div>
             <HR id="HR">
         {{/each}}
