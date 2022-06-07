@@ -406,15 +406,24 @@ body {
 #subscribe-button{
     margin: 15px;
     float: right;
+    width: 110px;
 }
 
 #remove-subscriber-button{
     margin: 15px;
-    float: right;
+    float: center;
+    width: 160px;
 }
 #remove-subscriber-button:disabled{
     background-color: #dddddd;
     color: black;
+}
+#followers-cards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 

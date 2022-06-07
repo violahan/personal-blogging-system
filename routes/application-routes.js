@@ -224,7 +224,7 @@ router.get("/removeSubscriber", async function (req, res){
       // Once a user has unsubscribed, check to see if any notifications related to it
       // and remove them
       await notificationDAO.removeNotificationsByTypeAndIDLink("newSubscriber", subscribeUserID)
-      res.json("Followed Removed")
+      res.json("Follower Removed")
      
     }
   else {
