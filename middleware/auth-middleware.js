@@ -19,6 +19,7 @@ async function verifyAuthenticated(req, res, next) {
       if(user == undefined){
         res.clearCookie("authToken");
         res.locals.user = null;
+        res.locals.loginError = "None"
         res.redirect("./login");
       } else  {
         res.locals.user = user;
@@ -28,6 +29,7 @@ async function verifyAuthenticated(req, res, next) {
       // A user is able to see the home page if they are not logged in
       // this redirects to home, rather than login
       res.locals.user = null;
+      res.locals.loginError = "None"
       res.redirect("./login");
     }
   }
