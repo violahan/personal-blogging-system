@@ -1104,3 +1104,47 @@ input:checked + .slider:before {
 }
 
 
+@media screen and (max-width: 1100px) {
+    .header-left{
+        font-size: 120px;
+    }
+
+    .header-middle{
+        height: 100px;
+    }
+
+    .header-right{
+        font-size: 17px;
+    }
+
+    .card-info{
+        visibility: hidden;
+    }
+
+    .articles-body{
+        width: 95%;
+    }
+
+
+    .profile-body{
+        width: 95%;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-body{
+        width: 90%;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-body-right{
+        visibility: hidden;
+    }
+
+    .profile-body-right{
+        visibility: hidden;
+    }
+}
+
+
