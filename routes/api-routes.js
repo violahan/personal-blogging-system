@@ -30,39 +30,56 @@ router.post("/api/login", async function (req, res) {
 
     if (user) {
 
-    // If there is a user, check the plain password matches the hash password:
-        const validPassword = await bcrypt.comparePassword(password, user.password);
+        // If there is a user, check the plain password matches the hash password:
+            const validPassword = await bcrypt.comparePassword(password, user.password);
 
-    // If there is a user, and the password returns valid
-        if (validPassword == true) {
-        
-        // Auth success - give that user an authToken, save the token in a cookie
-        const authToken = uuid();
-        user.authToken = authToken;
-        await userDao.giveAuthToken(user);
-        res.cookie("authToken", authToken);
-        res.locals.user = user;
+        // If there is a user, and the password returns valid
+            if (validPassword == true) {
+            
+            // Auth success - give that user an authToken, save the token in a cookie
+            const authToken = uuid();
+            user.authToken = authToken;
+            await userDao.giveAuthToken(user);
+            res.cookie("authToken", authToken);
+            res.locals.user = user;
 
-        res.statusCode = 204;
-        res.send();
+            res.statusCode = 204;
+            res.send({
+                "message": "Login succeeded.",
+                "authToken": authToken
+            });
 
-// b. If unsuccessful, instead a 401 response should be returned.
-    } else {
+        // b. If unsuccessful, instead a 401 response should be returned.
+            } else {
+                res.locals.user = null;
+                res.statusCode = 401;
+                res.send({"message": "Login failed: Password is incorrect."});
+            }
+    
+    } else{
         res.locals.user = null;
         res.statusCode = 401;
-        res.send();
+        res.send({"message": "Login failed: User does not exist."});
     }
-
-}
 
 });
 
 //api GET request to logout
 router.get("/api/logout", async function (req, res) {
-    res.clearCookie("authToken");
-    res.setToastMessage("Successfully logged out!");
-    res.statusCode = 204;
-    res.send();
+    
+    if(req.cookies.authToken){
+        
+        res.clearCookie("authToken");
+        res.setToastMessage("Successfully logged out!");
+        res.statusCode = 204;
+        res.send({"message": "Logout succeeded."});
+
+    } else {
+        res.clearCookie("authToken");
+        res.statusCode = 401;
+        res.send({"message": "Logout failed - no user logged in."});
+    }
+
 });
 
 //api GET request to get all users
@@ -85,17 +102,35 @@ router.get("/api/users", async function(req, res) {
 
 //api DELETE request
 router.delete("/api/users/:id", async function(req, res){
-    if (res.locals.user.adminFlag === 1){
-        const userID = req.params.id;
-        await commentDao.deleteCommentsByUserID(userID);
-        await userDao.deleteUser(userID);
-        res.statusCode = 204;
-        res.send();
+    
+    
+    if(req.cookies.authToken){
         
-    } else {(res.locals.user = null)
+        if (res.locals.user.adminFlag === 1){
+            const userID = req.params.id;
+
+            // check user exists:
+            const user = await userDao.getUserByID(userID);
+            if (user == undefined){
+                res.statusCode = 401;
+                res.send({"message": "Error: No such user exists to delete."});
+            } else {
+
+                await commentDao.deleteCommentsByUserID(userID);
+                await userDao.deleteUser(userID);
+                res.statusCode = 204;
+                res.send({"message": "Delete user succeeded."});
+            }     
+                   
+        } else {(res.locals.user = null)
+            res.statusCode = 401;
+            res.send({"message": "Error: you are not the admin user."});
+        }
+
+    } else {
         res.statusCode = 401;
-        res.send();
-    }}
-)
+        res.send({"message": "Error: No use logged in, cannot perform delete."});
+    }
+})
 
 module.exports = router;
