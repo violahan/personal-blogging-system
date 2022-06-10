@@ -14,6 +14,8 @@ const subscribeDao = require("../modules/subscribe-dao");
 const { route } = require("express/lib/application");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./auth-routes");
+const SQL = require("sql-template-strings");
+const dbPromise = require("../modules/database.js");
 
 router.use(express.json())
 
@@ -87,7 +89,23 @@ router.get("/api/users", async function(req, res) {
     try {
         const user = res.locals.user;
     if (user.adminFlag === 1) {
-        const allUsers = await userDao.getAllUsers();
+        // const allUsers = await userDao.getAllUsers();
+
+        const db = await dbPromise;
+            const allUsers = await db.all(SQL`
+                select 
+                    u.userID,
+                    u.userName,
+                    u.fName,
+                    u.lName,
+                    u.DOB,
+                    u.description,
+                    u.adminFlag,
+                    count(a.articleID) as articleCount
+                from user u left join articles a on u.userID = a.authorID
+                group by u.userID
+            `);
+
         res.json(allUsers);
     } else {
         res.statusCode = 401;
@@ -121,7 +139,7 @@ router.delete("/api/users/:id", async function(req, res){
                 res.statusCode = 204;
                 res.send({"message": "Delete user succeeded."});
             }     
-                   
+
         } else {(res.locals.user = null)
             res.statusCode = 401;
             res.send({"message": "Error: you are not the admin user."});
